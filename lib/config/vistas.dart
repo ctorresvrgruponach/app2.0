@@ -1,0 +1,16 @@
+export '../../views/inicio/splashscreen.dart';
+export '../../views/login/login.dart';
+export '../../views/otrapantalla/otra_pantalla.dart';
+//export '../../views/display.dart';
+export '../../views/misadelantos/mis_adelantos.dart';
+export '../../views/pdfs/pdf_view.dart';
+export 'package:flutter/material.dart';
+export '../../views/adelanto/adelantoscreen.dart';
+//export '../../views/auth_screen.dart';
+export '../../views/firma/firma.dart';
+export '../../views/home/homescreen.dart';
+export '../../views/docshtml/html_view.dart';
+export '../../views/adelanto/pedir_adelanto.dart';
+export '../../views/adelanto/valores_pedir_adelanto.dart';
+export '../../views/servicios/serviciosscreen.dart';
+//export '../../views/splash_Screen.dart';

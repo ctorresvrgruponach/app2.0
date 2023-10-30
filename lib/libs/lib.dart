@@ -1,0 +1,20 @@
+export '../../api/peticion.dart';
+export '../../config/datos.dart';
+export '../../helpers/display.dart';
+export '../../helpers/guardarvars.dart';
+export '../../routes/app_routes.dart';
+export '../../ui/alerts.dart';
+export '../../ui/cargando.dart';
+export 'package:flutter/foundation.dart';
+export 'package:hooks_riverpod/hooks_riverpod.dart';
+export 'package:package_info/package_info.dart';
+export 'package:flutter_widget_from_html/flutter_widget_from_html.dart'
+    hide ImageSource;
+export 'package:logo_n_spinner/logo_n_spinner.dart';
+export 'package:flutter/material.dart';
+export 'package:flutter_pdfview/flutter_pdfview.dart';
+export 'dart:convert';
+export 'package:edge_detection/edge_detection.dart';
+export 'package:image_picker/image_picker.dart';
+export 'package:permission_handler/permission_handler.dart'; // Importa la biblioteca de permisos
+export 'package:flutter_image_compress/flutter_image_compress.dart';
