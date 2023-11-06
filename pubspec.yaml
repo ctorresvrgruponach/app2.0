@@ -55,7 +55,7 @@ dependencies:
   flutter_pdfview: ^1.2.5
   pdf: ^3.10.1
   image_cropper: ^4.0.1
-  cropper: ^0.5.3
+  cropper: 
   flutter_image_compress: ^2.1.0
   hooks_riverpod: ^1.0.4
   http: ^0.13.6

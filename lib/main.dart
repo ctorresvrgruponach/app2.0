@@ -36,7 +36,8 @@ class MyApp extends StatelessWidget {
         'adelanto_nomina': (context) => const AdelantoScreen(),
         'pedir_adelanto': (context) => const PedirAdelantoScreen(),
         'vista_html': (context) => const HTMLtoWidget(),
-        'valores_pedir_adelanto': (context) => const ImagePickerApp(),
+        'valores_pedir_adelanto': (context) =>
+            const ValoresPedirAdelantoScreen(),
         'pdf': (context) => const PdfViewerPage(),
       },
     );

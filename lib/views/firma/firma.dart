@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:signature/signature.dart';
 
 import '../../ui/barra_abajo.dart';
+import '../../ui/lieneacentro.dart';
 
 class Firma extends StatefulWidget {
   const Firma({Key? key}) : super(key: key);
@@ -41,6 +42,7 @@ class _FirmaState extends State<Firma> {
               backgroundColor: const Color.fromARGB(255, 53, 86, 117),
             ),
           ),
+          const CenteredLineContainer(),
           buttonWidgets(context)!,
         ],
       ),

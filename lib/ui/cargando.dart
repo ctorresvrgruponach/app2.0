@@ -14,7 +14,7 @@ class Cargando extends StatelessWidget {
           const LogoandSpinner(
             imageAssets: 'assets/images/logonach_azul.png',
             reverse: true,
-            arcColor: Colors.blue,
+            arcColor: Color.fromARGB(255, 53, 86, 117),
             spinSpeed: Duration(milliseconds: 500),
           ),
           Container(

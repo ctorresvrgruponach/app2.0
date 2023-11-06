@@ -1,3 +1,4 @@
+import '../../helpers/somelugar.dart';
 import '../../libs/lib.dart';
 
 class IdOperacionNotifier extends StateNotifier<String> {
@@ -49,9 +50,22 @@ class AdelantoScreen extends ConsumerStatefulWidget {
 class AdelantoScreenState extends ConsumerState<AdelantoScreen> {
   @override
   Widget build(BuildContext context) {
+    final customDialogManager = CustomDialogManager(context);
+    final navegador = NavegadorDeRuta(context);
+
     Future<void> somelugar() async {
-      Navigator.pushNamedAndRemoveUntil(
-          context, 'pedir_adelanto', (route) => false);
+      final mensaje = await SharedPreferencesHelper.getdatos('circuloacepta');
+
+      if (mensaje.toString() == '') {
+        SharedPreferencesHelper.setdatos("circuloacepta", "Aceptado");
+        await customDialogManager.showCustomDialog(
+          icon: Icons.airlines_rounded,
+          message: 'Se consultará círculo de crédito',
+          title: 'Se consultará círculo de crédito',
+          color: const Color.fromARGB(255, 244, 54, 54),
+        );
+      }
+      await navegador.algunlugar('pedir_adelanto');
     }
 
     return Scaffold(

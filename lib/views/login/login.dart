@@ -21,8 +21,12 @@ class LoginState extends ConsumerState<Login> {
     someFunction();
   }
 
-  Future<void> somelugar() async {
-    Navigator.pushNamedAndRemoveUntil(context, 'home', (route) => false);
+  Future<void> somelugar(int firma) async {
+    if (firma == 0) {
+      Navigator.pushNamedAndRemoveUntil(context, 'firma', (route) => false);
+    } else {
+      Navigator.pushNamedAndRemoveUntil(context, 'home', (route) => false);
+    }
   }
 
   Future<void> someFunction() async {
@@ -121,7 +125,8 @@ class LoginState extends ConsumerState<Login> {
         SharedPreferencesHelper.setdatos('success', data['success'].toString());
         SharedPreferencesHelper.setdatos(
             'flag_firma', data['flag_firma'].toString());
-        somelugar();
+        var firma = data['flag_firma'];
+        somelugar(firma);
         stateController.state = false;
       } else {
         SharedPreferencesHelper.setdatos('token', '');

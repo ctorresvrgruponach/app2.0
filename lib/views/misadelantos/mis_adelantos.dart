@@ -1,5 +1,6 @@
 import '../../libs/lib.dart';
 import '../../ui/barra_abajo.dart';
+import '../../ui/botonfiles.dart';
 
 class IdAdelantoNotifier extends StateNotifier<String> {
   IdAdelantoNotifier() : super('');
@@ -179,62 +180,16 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                                               children: [
                                                                 const Text(
                                                                     'Selecciona que archivo quieres editar'),
-                                                                //  BotoneditGC(
-                                                                //    monto:
-                                                                //        'monto',
-                                                                //    tdescontar:
-                                                                //        'tdescontar',
-                                                                //    texto:
-                                                                //        'COMPROBANTE',
-                                                                //    idopselect: snapshot
-                                                                //        .data!['adelantos'][
-                                                                //            index]
-                                                                //            ['id']
-                                                                //        .toString(),
-                                                                //    ishiden: true,
-                                                                //    archivo:
-                                                                //        'COMPROBANTE',
-                                                                //    nombre:
-                                                                //        'COMPROBANTE',
-                                                                //    correo:
-                                                                //        'COMPROBANTE',
-                                                                //  ),
-                                                                //  BotoneditGC(
-                                                                //    monto:
-                                                                //        'monto',
-                                                                //    tdescontar:
-                                                                //        'tdescontar',
-                                                                //    texto: 'INE',
-                                                                //    idopselect: snapshot
-                                                                //        .data!['adelantos'][
-                                                                //            index]
-                                                                //            ['id']
-                                                                //        .toString(),
-                                                                //    ishiden: true,
-                                                                //    archivo:
-                                                                //        'INE',
-                                                                //    nombre: 'INE',
-                                                                //    correo: 'INE',
-                                                                //  ),
-                                                                //  BotoneditGC(
-                                                                //    monto:
-                                                                //        'monto',
-                                                                //    tdescontar:
-                                                                //        'tdescontar',
-                                                                //    texto: 'CURP',
-                                                                //    idopselect: snapshot
-                                                                //        .data!['adelantos'][
-                                                                //            index]
-                                                                //            ['id']
-                                                                //        .toString(),
-                                                                //    ishiden: true,
-                                                                //    archivo:
-                                                                //        'CURP',
-                                                                //    nombre:
-                                                                //        'CURP',
-                                                                //    correo:
-                                                                //        'CURP',
-                                                                //  ),
+                                                                const Botonfile(
+                                                                  texto: 'INE',
+                                                                ),
+                                                                const Botonfile(
+                                                                  texto:
+                                                                      'Comprobante',
+                                                                ),
+                                                                const Botonfile(
+                                                                  texto: 'CURP',
+                                                                ),
                                                                 const Text(
                                                                     'Selecciona que archivo quieres visualizar'),
                                                                 Center(
@@ -371,52 +326,16 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                                           children: [
                                                             const Text(
                                                                 'Selecciona que archivo quieres editar'),
-                                                            //BotoneditGC(
-                                                            //  monto: 'monto',
-                                                            //  tdescontar:
-                                                            //      'tdescontar',
-                                                            //  texto:
-                                                            //      'COMPROBANTE',
-                                                            //  idopselect: snapshot
-                                                            //      .data!['adelantos'][index]
-                                                            //          ['id']
-                                                            //      .toString(),
-                                                            //  ishiden: true,
-                                                            //  archivo:
-                                                            //      'COMPROBANTE',
-                                                            //  nombre:
-                                                            //      'COMPROBANTE',
-                                                            //  correo:
-                                                            //      'COMPROBANTE',
-                                                            //),
-                                                            //BotoneditGC(
-                                                            //  monto: 'monto',
-                                                            //  tdescontar:
-                                                            //      'tdescontar',
-                                                            //  texto: 'INE',
-                                                            //  idopselect: snapshot
-                                                            //      .data!['adelantos'][index]
-                                                            //          ['id']
-                                                            //      .toString(),
-                                                            //  ishiden: true,
-                                                            //  archivo: 'INE',
-                                                            //  nombre: 'INE',
-                                                            //  correo: 'INE',
-                                                            //),
-                                                            //BotoneditGC(
-                                                            //  monto: 'monto',
-                                                            //  tdescontar:
-                                                            //      'tdescontar',
-                                                            //  texto: 'CURP',
-                                                            //  idopselect: snapshot
-                                                            //      .data!['adelantos'][index]
-                                                            //          ['id']
-                                                            //      .toString(),
-                                                            //  ishiden: true,
-                                                            //  archivo: 'CURP',
-                                                            //  nombre: 'CURP',
-                                                            //  correo: 'CURP',
-                                                            //),
+                                                            const Botonfile(
+                                                              texto: 'INE',
+                                                            ),
+                                                            const Botonfile(
+                                                              texto:
+                                                                  'Comprobante',
+                                                            ),
+                                                            const Botonfile(
+                                                              texto: 'CURP',
+                                                            ),
                                                             const Text(
                                                                 'Selecciona que archivo quieres visualizar'),
                                                             Center(

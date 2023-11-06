@@ -3,7 +3,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../api/firmaapi.dart';
 import '../../helpers/guardarvars.dart';
+import '../../helpers/somelugar.dart';
+import '../../ui/alerts.dart';
 
 class ReviewSignaturePage extends StatelessWidget {
   final Uint8List signature;
@@ -63,11 +66,30 @@ class ReviewSignaturePage extends StatelessWidget {
   Future? saveSignature(BuildContext context) async {
     // final status = await Permission.storage.status;
     String base64String = base64.encode(signature);
-    // final result =
-    //     await ImageGallerySaver.saveImage(signature, name: 'datos.png');
+    final customDialogManager = CustomDialogManager(context);
+    final navegador = NavegadorDeRuta(context);
 
-    ////print(base64String);
     //Clipboard.setData(ClipboardData(text: base64String));
     SharedPreferencesHelper.setdatos("imagen_emplaedo", base64String);
+    final instanciaEnviaFirma = EnviaFirmaClass();
+    final resultado = await instanciaEnviaFirma.enviaFirma(base64String);
+    // print(resultado['success']);
+    if (resultado['success']) {
+      await customDialogManager.showCustomDialog(
+        icon: Icons.airlines_rounded,
+        message: resultado['mensaje'],
+        title: resultado['mensaje'],
+        color: const Color.fromARGB(255, 98, 54, 244),
+      );
+
+      await navegador.algunlugar('home');
+    } else {
+      await customDialogManager.showCustomDialog(
+        icon: Icons.airlines_rounded,
+        message: resultado['mensaje'],
+        title: resultado['mensaje'],
+        color: const Color.fromARGB(255, 244, 54, 54),
+      );
+    }
   }
 }

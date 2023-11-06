@@ -1,134 +1,632 @@
-import 'dart:io';
-// Importa la biblioteca de permisos
-import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart' as path_provider;
-
+import '../../api/apiadelanto.dart';
 import '../../libs/lib.dart';
+import '../../ui/barra_abajo.dart';
+import '../../ui/botonfiles.dart';
 
-final imageProvider = StateNotifierProvider<ImageNotifier, File?>((ref) {
-  return ImageNotifier();
-});
+String? html;
+bool readmonto = false;
+String? montototal;
+String? comisiontotal;
+String? montoenviar;
+String? idopselect;
+bool ishiden = false;
+bool ishiden2 = false;
+bool ishiden20 = true;
+bool ishiden4 = false;
+bool hidendobleIne = true;
+bool hidendobleCurp = true;
+bool isLoading = false;
+bool enviados = true;
+bool isblank = true;
 
-class ImageNotifier extends StateNotifier<File?> {
-  ImageNotifier() : super(null);
+bool visibleBt = false;
+int textomarcoemail = 0;
+String? salarioMensual;
+String? montoMaximoAdelanto;
+String? folioConsulta;
+String? curp;
 
-  final picker = ImagePicker();
+String? actualizadireccionEstado;
+String? actualizadireccionExt;
+String? actualizadireccionInt;
+String? actualizadireccionMunicipio;
+String? actualizacurp;
 
-  Future<void> pickImage(ImageSource source) async {
-    // Verifica y solicita los permisos de cámara y galería
-    var cameraStatus = await Permission.camera.status;
-    var photosStatus = await Permission.photos.status;
+String? actualizadireccionColonia;
+String? actualizadireccionCp;
+String? actualizanombre;
+String? actualizaapellidoMaterno;
+String? actualizaapellidoPaterno;
 
-    if (!cameraStatus.isGranted) {
-      await Permission.camera.request();
-    }
+String? actualizacorreo;
+String? actualizatelefono;
 
-    if (!photosStatus.isGranted) {
-      await Permission.photos.request();
-    }
+class ValoresPedirAdelantoScreen extends ConsumerStatefulWidget {
+  const ValoresPedirAdelantoScreen({super.key});
+  @override
+  ValoresPedirAdelantoScreenState createState() =>
+      ValoresPedirAdelantoScreenState();
+}
 
-    // Verifica si los permisos se otorgaron
+class ValoresPedirAdelantoScreenState
+    extends ConsumerState<ValoresPedirAdelantoScreen> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
-    final ImagePicker picker = ImagePicker();
+  var textomarcoemail = 255;
 
-    final now = DateTime.now();
-    String formatter = DateFormat('d/MM/y').format(now);
+  double _currentSliderValue = 100;
+  TextEditingController monto = TextEditingController();
+  double montomaximo = 1;
 
-    String img64 = '';
+  TextEditingController comision = TextEditingController();
+  TextEditingController tdescontar = TextEditingController();
+  TextEditingController nombret = TextEditingController();
+  TextEditingController correo = TextEditingController();
+  TextEditingController sueldoMensual = TextEditingController();
 
-    bool isCameraGranted = await Permission.camera.request().isGranted;
-    if (!isCameraGranted) {
-      isCameraGranted =
-          await Permission.camera.request() == PermissionStatus.granted;
-    }
+  TextEditingController telefonot = TextEditingController();
+  TextEditingController emailt = TextEditingController();
+  Map<String, String> someMap = {};
 
-    if (!isCameraGranted) {
-      // No se tienen permisos para la cámara
-    }
-    final dir = await path_provider.getTemporaryDirectory();
+  @override
+  Widget build(BuildContext context) {
+    // var datos = getdatos();
 
-    var targetFileName = "archivo";
+    return SafeArea(
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              FutureBuilder<Map<String, dynamic>>(
+                future: ref.watch(postPedirAdelantoProviders.future),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData &&
+                      snapshot.data!['informacion_adelanto'] != null) {
+                    if (kDebugMode) {
+                      print(snapshot.data!);
+                    }
+                    final operaciones = snapshot.data!['informacion_adelanto'];
+                    sueldoMensual.text =
+                        operaciones['salario_mensual'].toString();
+                    String periodosPagos;
 
-    var imagePath = "${dir.path}/$targetFileName.jpeg";
-    if (kDebugMode) {
-      print('imagePath1: $imagePath');
-    }
+                    if (operaciones["tipo_nomina"] == 'Semanal') {
+                      periodosPagos = '52';
+                    } else if (operaciones["tipo_nomina"] == 'Catorcenal') {
+                      periodosPagos = '26';
+                    } else if (operaciones["tipo_nomina"] == 'Quincenal') {
+                      periodosPagos = '24';
+                    } else if (operaciones["tipo_nomina"] == 'Mensual') {
+                      periodosPagos = '12';
+                    } else if (operaciones["tipo_nomina"] == 'Unidad obra') {
+                      periodosPagos = '17';
+                    } else {
+                      periodosPagos = '';
+                    }
+                    SharedPreferencesHelper.setdatos(
+                        "periodosPagos", periodosPagos);
 
-    try {
-      // Asegúrate de esperar la llamada a detectEdge.
-      await EdgeDetection.detectEdge(
-        imagePath,
-        canUseGallery: true,
-        androidScanTitle:
-            'Frente', // Utiliza localizaciones personalizadas para Android
-        androidCropTitle: 'Recortar',
-        androidCropBlackWhiteTitle: 'Blanco y negro',
-        androidCropReset: 'Restablecer',
-      );
-    } catch (e) {
-      //print(e);
-    }
+                    return Card(
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage(
+                                "assets/images/fondo_blanco.png",
+                              ),
+                              fit: BoxFit.cover),
+                        ),
+                        child: Column(
+                          children: [
+                            textoFijo10(context, 'Sueldo Mensual'),
+                            SizedBox(
+                              child: TextFormField(
+                                readOnly: true,
+                                controller: sueldoMensual,
+                                // inputFormatters: [
+                                //   FilteringTextInputFormatter.allow(
+                                //     RegExp(
+                                //       //r'^[-]{0,1}[0-9]*[,]?[0-9]*', //signed regex
+                                //       r'[1-9]*[.]?[0-9]',
+                                //     ),
+                                //   ),
+                                // ],
+                                style: const TextStyle(
+                                    color: Color.fromARGB(255, 5, 50, 91)),
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(),
+                                decoration: const InputDecoration(
+                                  filled: true,
+                                  fillColor: Color.fromARGB(128, 190, 191, 194),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(5.0)),
+                                    borderSide: BorderSide(
+                                      width: 2, //<-- SEE HERE
+                                      color: Color.fromARGB(255, 190, 191, 194),
+                                    ),
+                                  ),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        width: 5, //<-- SEE HERE
+                                        color:
+                                            Color.fromARGB(128, 190, 191, 194),
+                                      ),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(5.0))),
+                                  labelStyle: TextStyle(
+                                      color: Color.fromARGB(255, 5, 50, 91)),
+                                ),
+                              ),
+                            ),
+                            textoFijo10(context, 'Monto a Solicitar'),
+                            SizedBox(
+                              child: Slider(
+                                activeColor:
+                                    const Color.fromARGB(255, 5, 50, 91),
+                                inactiveColor:
+                                    const Color.fromARGB(255, 120, 120, 120),
+                                value: _currentSliderValue,
+                                max: double.parse(
+                                    operaciones['monto_real_prestamo']),
+                                min: 100,
+                                // divisions: 6,
+                                label: _currentSliderValue
+                                    .round()
+                                    .toStringAsFixed(2),
+                                onChanged: readmonto
+                                    ? null
+                                    : (double value) {
+                                        SharedPreferencesHelper.setdatos(
+                                            "montoapedir", monto.text);
+                                        setState(() {
+                                          _currentSliderValue = value;
+                                          monto.text = _currentSliderValue
+                                              .toStringAsFixed(2);
 
-    // Ajusta la calidad de la imagen antes de convertirla en base64
-    final compressedImage = await FlutterImageCompress.compressAndGetFile(
-      imagePath,
-      imagePath, // Sobrescribe el archivo original
-      quality: 70, // Ajusta la calidad (0 a 100)
+                                          montototal = monto.text;
+
+                                          comision.text =
+                                              ((_currentSliderValue * 0.13)
+                                                  .toStringAsFixed(2));
+
+                                          comisiontotal = comisiontotal =
+                                              (double.parse(comision.text) +
+                                                      (double.parse(
+                                                              comision.text) *
+                                                          0.16))
+                                                  .toString();
+                                          SharedPreferencesHelper.setdatos(
+                                              "comision", comisiontotal);
+                                          montoenviar = monto.text;
+                                          sueldoMensual.text =
+                                              salarioMensual.toString();
+
+                                          tdescontar.text =
+                                              ((((_currentSliderValue * 0.13) +
+                                                          (_currentSliderValue *
+                                                                  0.13) *
+                                                              0.16) +
+                                                      _currentSliderValue)
+                                                  .toStringAsFixed(2));
+                                          SharedPreferencesHelper.setdatos(
+                                              "totaldescontar",
+                                              tdescontar.text);
+                                        });
+                                      },
+                              ),
+                            ),
+                            SizedBox(
+                              child: TextFormField(
+                                controller: monto,
+                                readOnly: readmonto,
+                                //inputFormatters: [
+                                //  FilteringTextInputFormatter.allow(
+                                //    RegExp(
+                                //      //r'^[-]{0,1}[0-9]*[,]?[0-9]*', //signed regex
+                                //      r'[1-9]*[.]?[0-9]',
+                                //    ),
+                                //  ),
+                                //],
+                                onChanged: (value) {
+                                  SharedPreferencesHelper.setdatos(
+                                      "montoapedir", monto.text);
+                                  if (double.parse(monto.text) > 100) {
+                                    setState(() {
+                                      if (monto.text != '') {
+                                        if (double.parse(monto.text) <
+                                            montomaximo) {
+                                          _currentSliderValue =
+                                              double.parse(monto.text);
+                                          comision.text =
+                                              (((_currentSliderValue * 0.13))
+                                                  .toStringAsFixed(2));
+                                          montoenviar = monto.text;
+                                          tdescontar.text =
+                                              ((((_currentSliderValue * 0.13) +
+                                                          (_currentSliderValue *
+                                                                  0.13) *
+                                                              0.16) +
+                                                      _currentSliderValue)
+                                                  .toStringAsFixed(2));
+                                          SharedPreferencesHelper.setdatos(
+                                              "totaldescontar",
+                                              tdescontar.text);
+                                          comisiontotal = (double.parse(
+                                                      comision.text) +
+                                                  (double.parse(comision.text) *
+                                                      0.16))
+                                              .toString();
+                                          SharedPreferencesHelper.setdatos(
+                                              "comision", comisiontotal);
+                                        } else {
+                                          _currentSliderValue = montomaximo;
+                                          monto.text = '$montomaximo';
+                                          montoenviar = monto.text;
+                                          comision.text =
+                                              (((_currentSliderValue * 0.13))
+                                                  .toStringAsFixed(2));
+
+                                          comisiontotal = (double.parse(
+                                                      comision.text) +
+                                                  (double.parse(comision.text) *
+                                                      0.16))
+                                              .toString();
+                                          SharedPreferencesHelper.setdatos(
+                                              "comision", comisiontotal);
+                                          tdescontar.text =
+                                              ((((_currentSliderValue * 0.13) +
+                                                          (_currentSliderValue *
+                                                                  0.13) *
+                                                              0.16) +
+                                                      _currentSliderValue)
+                                                  .toStringAsFixed(2));
+                                          SharedPreferencesHelper.setdatos(
+                                              "totaldescontar",
+                                              tdescontar.text);
+                                        }
+                                      }
+                                    });
+                                  } else {}
+                                },
+                                style: const TextStyle(
+                                    color: Color.fromARGB(255, 5, 50, 91)),
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(),
+                                decoration: const InputDecoration(
+                                  filled: true,
+                                  fillColor: Color.fromARGB(128, 190, 191, 194),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(5.0)),
+                                    borderSide: BorderSide(
+                                      width: 2, //<-- SEE HERE
+                                      color: Color.fromARGB(128, 190, 191, 194),
+                                    ),
+                                  ),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        width: 5, //<-- SEE HERE
+                                        color:
+                                            Color.fromARGB(128, 190, 191, 194),
+                                      ),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(5.0))),
+                                  labelStyle: TextStyle(
+                                      color: Color.fromARGB(255, 5, 50, 91)),
+                                ),
+                              ),
+                            ),
+                            textoFijo10(context, 'Comisión'),
+                            SizedBox(
+                              child: TextFormField(
+                                readOnly: true,
+                                controller: comision,
+                                onChanged: (value) {
+                                  SharedPreferencesHelper.setdatos(
+                                      "comision", value);
+                                },
+                                //inputFormatters: [
+                                //  FilteringTextInputFormatter.allow(
+                                //    RegExp(
+                                //      //r'^[-]{0,1}[0-9]*[,]?[0-9]*', //signed regex
+                                //      r'[1-9]*[.]?[0-9]',
+                                //    ),
+                                //  ),
+                                //],
+                                style: const TextStyle(
+                                    color: Color.fromARGB(255, 5, 50, 91)),
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(),
+                                decoration: const InputDecoration(
+                                  filled: true,
+                                  fillColor: Color.fromARGB(128, 190, 191, 194),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(5.0)),
+                                    borderSide: BorderSide(
+                                      width: 2, //<-- SEE HERE
+                                      color: Color.fromARGB(255, 190, 191, 194),
+                                    ),
+                                  ),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        width: 5, //<-- SEE HERE
+                                        color:
+                                            Color.fromARGB(128, 190, 191, 194),
+                                      ),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(5.0))),
+                                  labelStyle: TextStyle(
+                                      color: Color.fromARGB(255, 5, 50, 91)),
+                                ),
+                              ),
+                            ),
+                            textoFijo10(context, 'Total a descontar'),
+                            SizedBox(
+                              child: TextFormField(
+                                readOnly: true,
+                                controller: tdescontar,
+                                onChanged: (value) {
+                                  SharedPreferencesHelper.setdatos(
+                                      "totaldescontar", value);
+                                },
+                                //inputFormatters: [
+                                //FilteringTextInputFormatter.allow(
+                                //  RegExp(
+                                //    //r'^[-]{0,1}[0-9]*[,]?[0-9]*', //signed regex
+                                //    r'[1-9]*[.]?[0-9]',
+                                //  ),
+                                //),
+                                // ],
+                                style: const TextStyle(
+                                    color: Color.fromARGB(255, 5, 50, 91)),
+                                keyboardType:
+                                    const TextInputType.numberWithOptions(),
+                                decoration: const InputDecoration(
+                                  filled: true,
+                                  fillColor: Color.fromARGB(128, 190, 191, 194),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(5.0)),
+                                    borderSide: BorderSide(
+                                      width: 2, //<-- SEE HERE
+                                      color: Color.fromARGB(255, 190, 191, 194),
+                                    ),
+                                  ),
+                                  border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        width: 5, //<-- SEE HERE
+                                        color:
+                                            Color.fromARGB(128, 190, 191, 194),
+                                      ),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(5.0))),
+                                  labelStyle: TextStyle(
+                                      color:
+                                          Color.fromARGB(255, 255, 255, 255)),
+                                ),
+                              ),
+                            ),
+                            textoFijo10(
+                                context, 'Correo electrónico (obligatorio)'),
+                            SizedBox(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 16),
+                                child: TextFormField(
+                                  controller: correo,
+                                  onChanged: (text) {},
+                                  style: const TextStyle(
+                                      color: Color.fromARGB(255, 5, 50, 91)),
+                                  decoration: const InputDecoration(
+                                    filled: true,
+                                    fillColor:
+                                        Color.fromARGB(128, 190, 191, 194),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(5.0)),
+                                      borderSide: BorderSide(
+                                        width: 2, //<-- SEE HERE
+                                        color: Color.fromARGB(0, 237, 0, 0),
+                                      ),
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        width: 0.1, //<-- SEE HERE
+                                        color:
+                                            Color.fromARGB(128, 190, 191, 194),
+                                      ),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(5.0)),
+                                    ),
+                                    labelText: 'Correo',
+                                    labelStyle: TextStyle(
+                                        color: Color.fromARGB(255, 5, 50, 91)),
+                                    iconColor:
+                                        Color.fromARGB(255, 255, 255, 255),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Stack(
+                              children: [
+                                Column(
+                                  children: [
+                                    //   Boton(
+                                    //     idtexto: '1',
+                                    //     ishiden: ishiden,
+                                    //     texto: 'Caratula adelanto',
+                                    //     idopselect: idopselect.toString(),
+                                    //   ),
+                                    //   Boton(
+                                    //     idtexto: '2',
+                                    //     ishiden: ishiden,
+                                    //     texto: 'Pagare adelanto',
+                                    //     idopselect: idopselect.toString(),
+                                    //   ),
+                                    //   Boton(
+                                    //     idtexto: '3',
+                                    //     ishiden: ishiden,
+                                    //     texto: 'Contrato adelanto',
+                                    //     idopselect: idopselect.toString(),
+                                    //   ),
+                                    //   Boton(
+                                    //     idtexto: '4',
+                                    //     ishiden: ishiden,
+                                    //     texto: 'Tabla amortizacion adelanto',
+                                    //     idopselect: idopselect.toString(),
+                                    //   ),
+                                    //   Boton(
+                                    //     idtexto: '5',
+                                    //     ishiden: ishiden,
+                                    //     texto: 'Consulta buro adelanto',
+                                    //     idopselect: idopselect.toString(),
+                                    //   ),
+                                    //   Boton(
+                                    //     idtexto: '6',
+                                    //     ishiden: ishiden,
+                                    //     texto: 'Solicitud adelanto',
+                                    //     idopselect: idopselect.toString(),
+                                    //   ),
+                                    // ignore: unnecessary_new
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Color.fromARGB(
+                                              someMap["boton"] != "boton"
+                                                  ? 255
+                                                  : 50,
+                                              5,
+                                              50,
+                                              91),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                                displayWidth(context) * 0.02),
+                                          ),
+                                        ),
+                                        onPressed: () async {
+                                          Navigator.pushNamed(
+                                              context, 'vista_html');
+
+                                          setState(() {
+                                            // ishiden = true;
+                                          });
+                                        },
+                                        child:
+                                            const Text("Ver contrato y anexos"),
+                                      ),
+                                    ),
+
+                                    //Visibility(
+                                    //  visible: hidendobleCurp,
+                                    //  child: BotonGC(
+                                    //    monto: monto,
+                                    //    tdescontar: tdescontar,
+                                    //    texto: 'CURP',
+                                    //    idopselect: idopselect.toString(),
+                                    //    ishiden: ishiden,
+                                    //    archivo: firma.toString(),
+                                    //    nombre: nombrecompleto.toString(),
+                                    //    correo: email.toString(),
+                                    //  ),
+                                    //),
+                                    const Botonfile(
+                                      texto: 'INE',
+                                    ),
+                                    const Botonfile(
+                                      texto: 'Comprobante',
+                                    ),
+                                    const Botonfile(
+                                      texto: 'CURP',
+                                    ),
+                                    ////
+                                    // Visibility(
+                                    // visible: hidendobleIne,
+                                    // child: BotonGC(
+                                    //   monto: 1,
+                                    //  tdescontar: 1,
+                                    //   texto: 'INE',
+                                    //   idopselect: 1,
+                                    //   ishiden: ishiden,
+                                    //   archivo: '',
+                                    //   nombre: '',
+                                    //   correo: '',
+                                    // ),
+                                    // ),
+
+                                    // Visibility(
+                                    //   visible: ishiden,
+                                    //   child: BotonFinalizar(
+                                    //     texto: 'Aceptar Adelanto',
+                                    //     ishiden: ishiden,
+                                    //     idopselect: idopselect.toString(),
+                                    //     montoSolicitar: monto.text,
+                                    //     totalDescontar: tdescontar.text,
+                                    //     correo: emailt.text,
+                                    //     comision: comision.text,
+                                    //   ),
+                                    // )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  } else if (snapshot.hasError) {
+                    return const Text('data');
+                    // return Text(snapshot.error.toString());
+                  } else if (snapshot.hasData &&
+                      snapshot.data!['mensaje'] != null) {
+                    return const Text('data');
+                    // return Text(snapshot.error.toString());
+                  }
+                  // By default show a loading spinner.
+                  return const Cargando();
+                },
+              ),
+            ],
+          ),
+        ),
+        bottomNavigationBar: bottomNachBar(context, 1),
+      ),
     );
-    if (kDebugMode) {
-      print('imagePath2: $compressedImage');
-    }
-    if (compressedImage != null) {
-      var bytes = await compressedImage.readAsBytes();
-      img64 = base64Encode(bytes);
-      if (kDebugMode) {
-        print('imagePath3: $img64');
-      }
-    } else {
-      // Error al comprimir la imagen
-      if (kDebugMode) {
-        print('Error al comprimir la imagen.');
-      }
-    }
   }
 }
 
-class ImagePickerApp extends ConsumerWidget {
-  const ImagePickerApp({super.key});
+//void datos(codigoPostal) {
+//  final GetCopo auth = GetCopo();
+//  auth.getCopo(codigoPostal);
+//}
 
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final image = ref.watch(imageProvider);
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Image Picker Example'),
+textoFijo10(context, texto) {
+  return Padding(
+    padding: EdgeInsets.all(displayWidth(context) * 0.02),
+    child: SizedBox(
+      child: Text(
+        texto,
+        style: TextStyle(fontSize: displayWidth(context) * 0.05),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            if (image != null)
-              Image.file(
-                image,
-                width: 200,
-                height: 200,
-              ),
-            ElevatedButton(
-              onPressed: () {
-                ref.read(imageProvider.notifier).pickImage(ImageSource.gallery);
-              },
-              child: const Text('Select Image from Gallery'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                ref.read(imageProvider.notifier).pickImage(ImageSource.camera);
-              },
-              child: const Text('Take a Photo'),
-            ),
-          ],
+    ),
+  );
+}
+
+textot10(BuildContext context, String? texto) {
+  return SizedBox(
+    width: displayWidth(context) * 0.4,
+    child: Padding(
+      padding: EdgeInsets.all(displayWidth(context) * 0.03),
+      child: Text(
+        '$texto',
+        style: const TextStyle(
+          color: Color.fromARGB(255, 255, 255, 255),
         ),
       ),
-    );
-  }
+    ),
+  );
 }
