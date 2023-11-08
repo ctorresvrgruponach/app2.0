@@ -18,3 +18,6 @@ export 'package:edge_detection/edge_detection.dart';
 export 'package:image_picker/image_picker.dart';
 export 'package:permission_handler/permission_handler.dart'; // Importa la biblioteca de permisos
 export 'package:flutter_image_compress/flutter_image_compress.dart';
+export '../../helpers/obtdatos.dart';
+export '../../helpers/somelugar.dart';
+export '../../ui/barra_abajo.dart';

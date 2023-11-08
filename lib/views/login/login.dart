@@ -123,6 +123,8 @@ class LoginState extends ConsumerState<Login> {
         SharedPreferencesHelper.setdatos(
             'apellidoMaterno', data['empleado']['apellidoMaterno']);
         SharedPreferencesHelper.setdatos('success', data['success'].toString());
+        SharedPreferencesHelper.setdatos('nombreCompleto',
+            '${data['empleado']['nombres']} ${data['empleado']['apellidoPaterno']} ${data['empleado']['apellidoMaterno']}');
         SharedPreferencesHelper.setdatos(
             'flag_firma', data['flag_firma'].toString());
         var firma = data['flag_firma'];

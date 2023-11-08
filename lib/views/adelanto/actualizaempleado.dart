@@ -1,15 +1,15 @@
+import '../../api/actualizadatosempleado.dart';
 import '../../api/apiadelanto.dart';
-import '../../helpers/obtdatos.dart';
 import '../../libs/lib.dart';
-import '../../ui/barra_abajo.dart';
 
-class PedirAdelantoScreen extends ConsumerStatefulWidget {
-  const PedirAdelantoScreen({super.key});
+class ActualizaEmpleadoScreen extends ConsumerStatefulWidget {
+  const ActualizaEmpleadoScreen({super.key});
   @override
-  PedirAdelantoScreenState createState() => PedirAdelantoScreenState();
+  ActualizaEmpleadoScreenState createState() => ActualizaEmpleadoScreenState();
 }
 
-class PedirAdelantoScreenState extends ConsumerState<PedirAdelantoScreen> {
+class ActualizaEmpleadoScreenState
+    extends ConsumerState<ActualizaEmpleadoScreen> {
   @override
   void initState() {
     super.initState();
@@ -48,8 +48,11 @@ class PedirAdelantoScreenState extends ConsumerState<PedirAdelantoScreen> {
   TextEditingController telefonot = TextEditingController();
   TextEditingController emailt = TextEditingController();
   Map<String, String> someMap = {};
+
   @override
   Widget build(BuildContext context) {
+    final customDialogManager = CustomDialogManager(context);
+    final navegador = NavegadorDeRuta(context);
     // var datos = getdatos();
     telefonof = FocusNode();
     emailf = FocusNode();
@@ -144,7 +147,10 @@ class PedirAdelantoScreenState extends ConsumerState<PedirAdelantoScreen> {
                                         height: 60,
                                         child: TextFormField(
                                           controller: nombret,
-                                          onChanged: (value) {},
+                                          onChanged: (value) {
+                                            SharedPreferencesHelper.setdatos(
+                                                'nombrese', value);
+                                          },
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 255, 255, 255)),
@@ -191,7 +197,10 @@ class PedirAdelantoScreenState extends ConsumerState<PedirAdelantoScreen> {
                                         height: 60,
                                         child: TextFormField(
                                           controller: apellidoPaternot,
-                                          onChanged: (value) {},
+                                          onChanged: (value) {
+                                            SharedPreferencesHelper.setdatos(
+                                                'apellidoPaternoe', value);
+                                          },
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 255, 255, 255)),
@@ -246,7 +255,10 @@ class PedirAdelantoScreenState extends ConsumerState<PedirAdelantoScreen> {
                                         height: 60,
                                         child: TextFormField(
                                           controller: apellidoMaternot,
-                                          onChanged: (value) {},
+                                          onChanged: (value) {
+                                            SharedPreferencesHelper.setdatos(
+                                                'apellidoMaternoe', value);
+                                          },
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 255, 255, 255)),
@@ -350,7 +362,10 @@ class PedirAdelantoScreenState extends ConsumerState<PedirAdelantoScreen> {
                                         child: TextFormField(
                                           controller: curpt,
                                           readOnly: true,
-                                          onChanged: (value) {},
+                                          onChanged: (value) {
+                                            SharedPreferencesHelper.setdatos(
+                                                'curpe', value);
+                                          },
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 255, 255, 255)),
@@ -397,7 +412,10 @@ class PedirAdelantoScreenState extends ConsumerState<PedirAdelantoScreen> {
                                         height: 60,
                                         child: TextFormField(
                                           controller: direccionCpt,
-                                          onChanged: (value) {},
+                                          onChanged: (value) {
+                                            SharedPreferencesHelper.setdatos(
+                                                'direccionCp', value);
+                                          },
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 255, 255, 255)),
@@ -452,7 +470,10 @@ class PedirAdelantoScreenState extends ConsumerState<PedirAdelantoScreen> {
                                         height: 60,
                                         child: TextFormField(
                                           controller: direccionCallet,
-                                          onChanged: (value) {},
+                                          onChanged: (value) {
+                                            SharedPreferencesHelper.setdatos(
+                                                'direccionCalle', value);
+                                          },
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 255, 255, 255)),
@@ -499,7 +520,10 @@ class PedirAdelantoScreenState extends ConsumerState<PedirAdelantoScreen> {
                                         height: 60,
                                         child: TextFormField(
                                           controller: direccionExtt,
-                                          onChanged: (value) {},
+                                          onChanged: (value) {
+                                            SharedPreferencesHelper.setdatos(
+                                                'direccionExt', value);
+                                          },
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 255, 255, 255)),
@@ -554,7 +578,10 @@ class PedirAdelantoScreenState extends ConsumerState<PedirAdelantoScreen> {
                                         height: 60,
                                         child: TextFormField(
                                           controller: direccionIntt,
-                                          onChanged: (value) {},
+                                          onChanged: (value) {
+                                            SharedPreferencesHelper.setdatos(
+                                                'direccionInt', value);
+                                          },
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 255, 255, 255)),
@@ -601,7 +628,10 @@ class PedirAdelantoScreenState extends ConsumerState<PedirAdelantoScreen> {
                                         height: 60,
                                         child: TextFormField(
                                           controller: direccionMunicipiot,
-                                          onChanged: (value) {},
+                                          onChanged: (value) {
+                                            SharedPreferencesHelper.setdatos(
+                                                'Municipio', value);
+                                          },
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 255, 255, 255)),
@@ -656,7 +686,10 @@ class PedirAdelantoScreenState extends ConsumerState<PedirAdelantoScreen> {
                                         height: 60,
                                         child: TextFormField(
                                           controller: direccionColoniat,
-                                          onChanged: (value) {},
+                                          onChanged: (value) {
+                                            SharedPreferencesHelper.setdatos(
+                                                'Colonia', value);
+                                          },
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 255, 255, 255)),
@@ -703,7 +736,10 @@ class PedirAdelantoScreenState extends ConsumerState<PedirAdelantoScreen> {
                                         height: 60,
                                         child: TextFormField(
                                           controller: direccionEstadot,
-                                          onChanged: (value) {},
+                                          onChanged: (value) {
+                                            SharedPreferencesHelper.setdatos(
+                                                'Estado', value);
+                                          },
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 255, 255, 255)),
@@ -963,7 +999,10 @@ class PedirAdelantoScreenState extends ConsumerState<PedirAdelantoScreen> {
                                         child: TextFormField(
                                           controller: emailt,
                                           focusNode: emailf,
-                                          onChanged: (value) {},
+                                          onChanged: (value) {
+                                            SharedPreferencesHelper.setdatos(
+                                                'email', value);
+                                          },
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 255, 255, 255)),
@@ -1068,7 +1107,10 @@ class PedirAdelantoScreenState extends ConsumerState<PedirAdelantoScreen> {
                                           controller: telefonot,
                                           focusNode: telefonof,
                                           maxLength: 10,
-                                          onChanged: (value) {},
+                                          onChanged: (value) {
+                                            SharedPreferencesHelper.setdatos(
+                                                'telefono', value);
+                                          },
                                           keyboardType: TextInputType.phone,
                                           style: const TextStyle(
                                               color: Color.fromARGB(
@@ -1141,12 +1183,37 @@ class PedirAdelantoScreenState extends ConsumerState<PedirAdelantoScreen> {
                                                               0.02),
                                                 ), // This is what you need!
                                               ),
-                                              onPressed: () {
-                                                Navigator
-                                                    .pushNamedAndRemoveUntil(
-                                                        context,
-                                                        'valores_pedir_adelanto',
-                                                        (route) => false);
+                                              onPressed: () async {
+                                                final enviaDatosEmpleado =
+                                                    EnviaDatosEmpleadoClass();
+                                                final resultado =
+                                                    await enviaDatosEmpleado
+                                                        .enviaDatos();
+                                                if (resultado['success'] ==
+                                                    false) {
+                                                  await customDialogManager
+                                                      .showCustomDialog(
+                                                    icon:
+                                                        Icons.airlines_rounded,
+                                                    message:
+                                                        resultado['mensaje'],
+                                                    title: resultado['mensaje'],
+                                                    color: const Color.fromARGB(
+                                                        255, 244, 54, 54),
+                                                  );
+                                                }
+
+                                                if (resultado.isNotEmpty) {
+                                                  // Navigator
+                                                  //     .pushNamedAndRemoveUntil(
+                                                  //         context,
+                                                  //         'valores_pedir_adelanto',
+                                                  //         (route) => false);
+                                                  await navegador.algunlugar(
+                                                      'valores_pedir_adelanto');
+                                                }
+
+                                                // print(resultado['success']);
                                               },
                                               child: SizedBox(
                                                 width:

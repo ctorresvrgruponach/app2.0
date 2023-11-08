@@ -21,9 +21,11 @@ class ApiHelper {
       },
       body: jsonEncode(data),
     );
-
+    // print(response.statusCode);
     if (response.statusCode == 200) {
       return (response.body);
+    } else if (response.statusCode == 401) {
+      return ('{"success": false,"mensaje":"Unauthorized"}');
     } else {
       throw Exception('Failed to load data');
     }

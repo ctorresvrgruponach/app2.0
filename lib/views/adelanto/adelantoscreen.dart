@@ -1,4 +1,3 @@
-import '../../helpers/somelugar.dart';
 import '../../libs/lib.dart';
 
 class IdOperacionNotifier extends StateNotifier<String> {
@@ -65,7 +64,7 @@ class AdelantoScreenState extends ConsumerState<AdelantoScreen> {
           color: const Color.fromARGB(255, 244, 54, 54),
         );
       }
-      await navegador.algunlugar('pedir_adelanto');
+      await navegador.algunlugar('actualizaempleado');
     }
 
     return Scaffold(
@@ -125,7 +124,7 @@ class AdelantoScreenState extends ConsumerState<AdelantoScreen> {
                                                           .styleFrom(
                                                         backgroundColor:
                                                             const Color
-                                                                    .fromARGB(
+                                                                .fromARGB(
                                                                 255, 5, 50, 91),
                                                         shape:
                                                             RoundedRectangleBorder(
@@ -216,7 +215,7 @@ class AdelantoScreenState extends ConsumerState<AdelantoScreen> {
                                           height: 100,
                                           child: Center(
                                             child: Text(
-                                              'Hubo un error en los datos',
+                                              'Hubo un error en la carga de datos',
                                               textAlign: TextAlign.justify,
                                               style: TextStyle(
                                                   color: const Color.fromARGB(
