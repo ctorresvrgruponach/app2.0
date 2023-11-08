@@ -148,6 +148,7 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
               child: FutureBuilder<Map<String, dynamic>>(
                 future: ref.watch(postMisAdelantosProviders.future),
                 builder: (context, snapshot) {
+                  print(snapshot.data!['adelantos']);
                   if (snapshot.hasData &&
                       snapshot.data!['adelantos'] != null &&
                       snapshot.data!['adelantos']['resultados1'] != null) {

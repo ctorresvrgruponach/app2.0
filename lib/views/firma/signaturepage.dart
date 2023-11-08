@@ -67,7 +67,8 @@ class ReviewSignaturePage extends StatelessWidget {
     // final status = await Permission.storage.status;
     String base64String = base64.encode(signature);
     final customDialogManager = CustomDialogManager(context);
-    final navegador = NavegadorDeRuta(context);
+    List<dynamic> argumentos = ['home'];
+    final navegador = NavegadorDeRuta(context, argumentos);
 
     //Clipboard.setData(ClipboardData(text: base64String));
     SharedPreferencesHelper.setdatos("imagen_emplaedo", base64String);
@@ -81,8 +82,12 @@ class ReviewSignaturePage extends StatelessWidget {
         title: resultado['mensaje'],
         color: const Color.fromARGB(255, 98, 54, 244),
       );
-
-      await navegador.algunlugar('home');
+      final firma = await SharedPreferencesHelper.getdatos('flag_firma');
+      if (firma == 0) {
+        await navegador.algunlugar('actualizaempleado');
+      } else {
+        await navegador.algunlugar('home');
+      }
     } else {
       await customDialogManager.showCustomDialog(
         icon: Icons.airlines_rounded,

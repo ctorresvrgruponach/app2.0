@@ -50,7 +50,8 @@ class AdelantoScreenState extends ConsumerState<AdelantoScreen> {
   @override
   Widget build(BuildContext context) {
     final customDialogManager = CustomDialogManager(context);
-    final navegador = NavegadorDeRuta(context);
+    List<dynamic> argumentos = ['valores_pedir_adelanto'];
+    final navegador = NavegadorDeRuta(context, argumentos);
 
     Future<void> somelugar() async {
       final mensaje = await SharedPreferencesHelper.getdatos('circuloacepta');
