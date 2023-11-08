@@ -157,7 +157,7 @@ android/.gradle/buildOutputCleanup/outputFiles.bin
 android/.gradle/vcs-1/gc.properties
 android/app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java
 android/gradle/wrapper/gradle-wrapper.jar
-ios/.gitignore
-linux/.gitignore
-macos/.gitignore
-windows/.gitignore
+ios
+linux
+macos
+windows
