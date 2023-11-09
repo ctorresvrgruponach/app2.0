@@ -34,7 +34,7 @@ class _InicioSplashScreen extends State<InicioSplashScreen> {
                   fit: BoxFit.cover),
             ),
             alignment: Alignment.center,
-            child: Column(
+            child: const Column(
               mainAxisAlignment: MainAxisAlignment.center,
               //vertically align center
             )));

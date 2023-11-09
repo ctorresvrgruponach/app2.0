@@ -16,6 +16,8 @@ class AppRoutes {
   static const String recibos = 'recibos';
   static const String valoresPedirAdelanto = 'valores_pedir_adelanto';
   static const String pdf = 'pdf';
+  static const String reviewSignaturePage = 'reviewSignaturePage';
+  static const String xml = 'xml';
 
   // Agrega la definición de initialRoute
   static const String initialRoute = inicio;
@@ -35,5 +37,7 @@ class AppRoutes {
     recibos: (context) => const RecibosScreen(),
     valoresPedirAdelanto: (context) => const ValoresPedirAdelantoScreen(),
     pdf: (context) => const PdfViewerPage(),
+    reviewSignaturePage: (context) => const ReviewSignaturePage(),
+    xml: (context) => const XmlDownloadPage(),
   };
 }

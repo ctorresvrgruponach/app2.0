@@ -21,3 +21,6 @@ export 'package:flutter_image_compress/flutter_image_compress.dart';
 export '../../helpers/obtdatos.dart';
 export '../../helpers/somelugar.dart';
 export '../../ui/barra_abajo.dart';
+export 'package:webview_flutter/webview_flutter.dart';
+export '../api/misadelantosapi.dart';
+export '../../ui/botonfiles.dart';

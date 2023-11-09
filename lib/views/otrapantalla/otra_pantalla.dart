@@ -24,8 +24,8 @@ class OtraPantalla extends HookConsumerWidget {
                 // Navega a la otra pantalla utilizando Navigator.pushNamed
                 Navigator.pushNamed(context, '/');
               },
-              child: Column(
-                children: const [
+              child: const Column(
+                children: [
                   // Text('Received Data: $receivedData'),
                   Text('Ir a Otra Pantalla'),
                 ],

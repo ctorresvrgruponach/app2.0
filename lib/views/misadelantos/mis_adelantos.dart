@@ -1,130 +1,5 @@
 import '../../libs/lib.dart';
-import '../../ui/barra_abajo.dart';
-import '../../ui/botonfiles.dart';
-
-class IdAdelantoNotifier extends StateNotifier<String> {
-  IdAdelantoNotifier() : super('');
-
-  void updateIdAdelanto(String newValue) {
-    state = newValue;
-  }
-}
-
-class Tamanolist extends StateNotifier<String> {
-  Tamanolist() : super('1');
-
-  void updatetamanolist(String newValue) {
-    state = newValue;
-  }
-}
-
-final idAdelantoProvider =
-    StateNotifierProvider<IdAdelantoNotifier, String>((ref) {
-  return IdAdelantoNotifier();
-});
-
-final tamanolistProvider = StateNotifierProvider<Tamanolist, String>((ref) {
-  return Tamanolist();
-});
-final postMisAdelantosProviders =
-    FutureProvider.autoDispose<Map<String, dynamic>>((ref) async {
-  final token = await SharedPreferencesHelper.getdatos('token');
-  final empleadoId = await SharedPreferencesHelper.getdatos('empleado');
-  final postDatas = {
-    "idEmpleado": empleadoId,
-    "token": token,
-  };
-
-  final dynamic dataAdelantos = await fetchPostData(
-      modo, completeUrldev, baseUrl, endpointMisAadelantos, postDatas);
-
-  //print(dataAdelantos["success"]);
-
-  if (dataAdelantos["success"] == false) {}
-
-  if (dataAdelantos is Map<String, dynamic> &&
-      dataAdelantos["success"] != null) {
-    if (dataAdelantos["success"]) {
-      final notifier = ref.read(tamanolistProvider.notifier);
-      notifier.updatetamanolist(5.toString());
-    } else {
-      final notifier = ref.read(tamanolistProvider.notifier);
-      notifier.updatetamanolist(1.toString());
-    }
-  } else {
-    if (kDebugMode) {
-      print(
-          'Error: dataAdelantos no es un mapa válido o "success" no está presente.');
-    }
-    // Manejar el caso en el que dataAdelantos no es un mapa válido o cuando "success" no está presente.
-  }
-
-  return dataAdelantos;
-});
-
-final postMisAdelantosdetalleProviders =
-    FutureProvider.autoDispose<Map<String, dynamic>>((ref) async {
-  final token = await SharedPreferencesHelper.getdatos('token');
-  final empleadoId = await SharedPreferencesHelper.getdatos('empleado');
-
-  final postDatas = {
-    "idEmpleado": empleadoId,
-    "token": token,
-    "idAdelanto": ref.watch(idAdelantoProvider),
-  };
-
-  final dynamic dataAdelantosdetalle = await fetchPostData(
-      modo, completeUrldev, baseUrl, endpointMisAadelantosFiles, postDatas);
-
-  if (dataAdelantosdetalle is Map<String, dynamic> &&
-      dataAdelantosdetalle["success"] != null) {
-    if (dataAdelantosdetalle["success"]) {
-      // Hacer algo si "success" es true.
-    } else {
-      // Hacer algo si "success" es false.
-    }
-  } else {
-    if (kDebugMode) {
-      print(
-          'Error: dataAdelantos no es un mapa válido o "success" no está presente.');
-    }
-    // Manejar el caso en el que dataAdelantos no es un mapa válido o cuando "success" no está presente.
-  }
-
-  return dataAdelantosdetalle;
-});
-
-final postMisPrestamosdetalleProviders =
-    FutureProvider.autoDispose<Map<String, dynamic>>((ref) async {
-  final token = await SharedPreferencesHelper.getdatos('token');
-  final empleadoId = await SharedPreferencesHelper.getdatos('empleado');
-
-  final postDatas = {
-    "idEmpleado": empleadoId,
-    "token": token,
-    "idAdelanto": ref.watch(idAdelantoProvider),
-  };
-
-  final dynamic dataAdelantosdetalle = await fetchPostData(
-      modo, completeUrldev, baseUrl, endpointMisPrestamosFiles, postDatas);
-
-  if (dataAdelantosdetalle is Map<String, dynamic> &&
-      dataAdelantosdetalle["success"] != null) {
-    if (dataAdelantosdetalle["success"]) {
-      // Hacer algo si "success" es true.
-    } else {
-      // Hacer algo si "success" es false.
-    }
-  } else {
-    if (kDebugMode) {
-      print(
-          'Error: dataAdelantos no es un mapa válido o "success" no está presente.');
-    }
-    // Manejar el caso en el que dataAdelantos no es un mapa válido o cuando "success" no está presente.
-  }
-
-  return dataAdelantosdetalle;
-});
+import '../../ui/botondatatable.dart';
 
 class MisAdelantos extends ConsumerStatefulWidget {
   const MisAdelantos({super.key});
@@ -137,1568 +12,323 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Column(
-          children: [
-            Container(
-              color: const Color.fromARGB(255, 93, 94, 94),
-              width: displayWidth(context) *
-                  int.parse(ref.watch(tamanolistProvider)),
-              height: displayHeight(context) * 0.30,
-              child: FutureBuilder<Map<String, dynamic>>(
-                future: ref.watch(postMisAdelantosProviders.future),
-                builder: (context, snapshot) {
-                  print(snapshot.data!['adelantos']);
-                  if (snapshot.hasData &&
-                      snapshot.data!['adelantos'] != null &&
-                      snapshot.data!['adelantos']['resultados1'] != null) {
-                    if (kDebugMode) {
-                      print(snapshot.data!);
-                    }
+        scrollDirection: Axis.vertical,
+        child: SafeArea(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                      top: 1.0, bottom: 1.0, left: 8.0, right: 8.0),
+                  child: Consumer(builder: (context, watch, child) {
+                    final postMisAdelantosProvider =
+                        ref.watch(postMisAdelantosProviders);
+                    return postMisAdelantosProvider.when(
+                      data: (data) {
+                        if (data["success"] != null && data["success"]) {
+                          // Procesar y mostrar datos en DataTable
+                          final rows =
+                              (data['adelantos']['resultados1'] as List?)
+                                  ?.cast<Map<String, dynamic>>();
 
-                    final adelantos =
-                        snapshot.data!['adelantos']['resultados1'];
-                    return ListView.builder(
-                        itemCount: adelantos.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return SizedBox(
-                            height: displayWidth(context) * 0.3,
-                            // color: const Color.fromARGB(0, 208, 7, 7),
-                            child: Center(
-                              child: SizedBox(
-                                child: Row(
-                                  children: [
-                                    index == 0
-                                        ? Padding(
-                                            padding: EdgeInsets.only(
-                                              left: displayWidth(context) * 0.1,
-                                              top: displayWidth(context) * 0.06,
-                                            ),
-                                            child: Column(
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                      bottom: displayWidth(
-                                                              context) *
-                                                          0.05,
-                                                      top: displayWidth(
-                                                              context) *
-                                                          0.02),
-                                                  child: const Text('Ver'),
-                                                ),
-                                                IconButton(
-                                                  icon: const Icon(Icons
-                                                      .remove_red_eye_sharp),
-                                                  onPressed: () {
-                                                    final notifier = ref.read(
-                                                        idAdelantoProvider
-                                                            .notifier);
-                                                    notifier.updateIdAdelanto(
-                                                        snapshot
-                                                            .data!['adelantos']
-                                                                ['resultados1']
-                                                                [index]['id']
-                                                            .toString());
-
-                                                    showDialog<String>(
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                              context) =>
-                                                          SizedBox(
-                                                        width: displayWidth(
-                                                                context) *
-                                                            0.9,
-                                                        height: displayHeight(
-                                                                context) *
-                                                            0.6,
-                                                        child: AlertDialog(
-                                                          title: const Text(
-                                                              "Visualizar archivos"),
-                                                          content:
-                                                              const Text(''),
-                                                          actions: <Widget>[
-                                                            Column(
-                                                              children: [
-                                                                const Text(
-                                                                    'Selecciona que archivo quieres editar'),
-                                                                const Botonfile(
-                                                                  texto: 'INE',
-                                                                ),
-                                                                const Botonfile(
-                                                                  texto:
-                                                                      'Comprobante',
-                                                                ),
-                                                                const Botonfile(
-                                                                  texto: 'CURP',
-                                                                ),
-                                                                const Text(
-                                                                    'Selecciona que archivo quieres visualizar'),
-                                                                Center(
-                                                                  child:
-                                                                      SizedBox(
-                                                                    width: displayWidth(
-                                                                            context) *
-                                                                        1.9,
-                                                                    height:
-                                                                        displayHeight(context) *
-                                                                            0.5,
-                                                                    child: FutureBuilder<
-                                                                        Map<String,
-                                                                            dynamic>>(
-                                                                      future: ref
-                                                                          .watch(
-                                                                              postMisAdelantosdetalleProviders.future),
-                                                                      builder:
-                                                                          (context,
-                                                                              snapshot) {
-                                                                        if (snapshot
-                                                                            .hasData) {
-                                                                          if (kDebugMode) {
-                                                                            print(snapshot.data!);
-                                                                          }
-                                                                          return ListView.builder(
-                                                                              itemCount: snapshot.data!['adelantos'].length,
-                                                                              itemBuilder: (BuildContext context, int index) {
-                                                                                return Center(
-                                                                                  child: Container(
-                                                                                    width: displayWidth(context) * 0.6,
-                                                                                    color: const Color.fromARGB(0, 208, 7, 7),
-                                                                                    child: Center(
-                                                                                      child: SingleChildScrollView(
-                                                                                        scrollDirection: Axis.horizontal,
-                                                                                        child: SizedBox(
-                                                                                          child: Row(
-                                                                                            children: [
-                                                                                              Center(
-                                                                                                child: Padding(
-                                                                                                  padding: EdgeInsets.only(top: displayWidth(context) * 0.05),
-                                                                                                  child: ElevatedButton(
-                                                                                                    //onPressed: () => ()),
-                                                                                                    style: ElevatedButton.styleFrom(
-                                                                                                      backgroundColor: const Color.fromARGB(255, 5, 50, 91),
-                                                                                                      shape: RoundedRectangleBorder(
-                                                                                                        borderRadius: BorderRadius.circular(displayWidth(context) * 0.02),
-                                                                                                      ), // This is what you need!
-                                                                                                    ),
-                                                                                                    onPressed: () {
-                                                                                                      String url;
-                                                                                                      if ((snapshot.data!['adelantos'][index]['mobil'].toString()) == "0") {
-                                                                                                        url = """https://nachservice.com.mx/${snapshot.data!['adelantos'][index]['archivo_adelanto'].toString()}""";
-                                                                                                      } else {
-                                                                                                        var protocolo = modo == 'dev' ? protocolodev : protocolossl;
-                                                                                                        var apiii = modo == '' ? completeUrldev : baseUrl;
-                                                                                                        url = '$protocolo://$apiii/${snapshot.data!['adelantos'][index]['archivo_adelanto'].toString().replaceAll('uploads', 'pdf')}';
-                                                                                                      }
-                                                                                                      SharedPreferencesHelper.setdatos("urlPdfVisor", url);
-                                                                                                      Navigator.pushNamed(context, 'pdf');
-                                                                                                    },
-                                                                                                    child: Text(
-                                                                                                      snapshot.data!['adelantos'][index]['nombre_archivo'].toString().toUpperCase(),
-                                                                                                    ),
-                                                                                                  ),
-                                                                                                ),
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                        ),
-                                                                                      ),
-                                                                                    ),
-                                                                                  ),
-                                                                                );
-                                                                              });
-                                                                        } else if (snapshot
-                                                                            .hasError) {
-                                                                          return const Center(
-                                                                              child: Cargando());
-                                                                        }
-                                                                        // By default show a loading spinner.
-                                                                        return const Center(
-                                                                            child:
-                                                                                Cargando());
-                                                                      },
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    );
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                          )
-                                        : Padding(
-                                            padding: EdgeInsets.only(
-                                              left: displayWidth(context) * 0.1,
-                                              top: displayWidth(context) * 0.1,
-                                            ),
-                                            child: IconButton(
-                                              icon: const Icon(
-                                                  Icons.remove_red_eye_sharp),
-                                              onPressed: () {
-                                                final notifier = ref.read(
-                                                    idAdelantoProvider
-                                                        .notifier);
-                                                notifier.updateIdAdelanto(
-                                                    snapshot.data!['adelantos']
-                                                            ['resultados1']
-                                                            [index]['id']
-                                                        .toString());
-                                                showDialog<String>(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) =>
-                                                          SizedBox(
-                                                    width:
-                                                        displayWidth(context) *
-                                                            0.9,
-                                                    height:
-                                                        displayHeight(context) *
-                                                            0.5,
-                                                    child: AlertDialog(
-                                                      title: const Text(
-                                                          "Visualizar archivos"),
-                                                      content: const Text(
-                                                          'Selecciona que archivo quieres visualizar'),
-                                                      actions: <Widget>[
-                                                        Column(
-                                                          children: [
-                                                            const Text(
-                                                                'Selecciona que archivo quieres editar'),
-                                                            const Botonfile(
-                                                              texto: 'INE',
-                                                            ),
-                                                            const Botonfile(
-                                                              texto:
-                                                                  'Comprobante',
-                                                            ),
-                                                            const Botonfile(
-                                                              texto: 'CURP',
-                                                            ),
-                                                            const Text(
-                                                                'Selecciona que archivo quieres visualizar'),
-                                                            Center(
-                                                              child: SizedBox(
-                                                                width: displayWidth(
-                                                                        context) *
-                                                                    1.9,
-                                                                height: displayHeight(
-                                                                        context) *
-                                                                    0.5,
-                                                                child: FutureBuilder<
-                                                                    Map<String,
-                                                                        dynamic>>(
-                                                                  future: ref.watch(
-                                                                      postMisAdelantosdetalleProviders
-                                                                          .future),
-                                                                  builder: (context,
-                                                                      snapshot) {
-                                                                    if (snapshot
-                                                                        .hasData) {
-                                                                      if (kDebugMode) {
-                                                                        print(snapshot
-                                                                            .data!['adelantos']);
-                                                                      }
-                                                                      return ListView.builder(
-                                                                          itemCount: snapshot.data!['adelantos'].length,
-                                                                          itemBuilder: (BuildContext context, int index) {
-                                                                            return Center(
-                                                                              child: Container(
-                                                                                width: displayWidth(context) * 0.6,
-                                                                                color: const Color.fromARGB(0, 208, 7, 7),
-                                                                                child: Center(
-                                                                                  child: SingleChildScrollView(
-                                                                                    scrollDirection: Axis.horizontal,
-                                                                                    child: SizedBox(
-                                                                                      child: Row(
-                                                                                        children: [
-                                                                                          Center(
-                                                                                            child: Padding(
-                                                                                              padding: EdgeInsets.only(top: displayWidth(context) * 0.05),
-                                                                                              child: ElevatedButton(
-                                                                                                style: ElevatedButton.styleFrom(
-                                                                                                  backgroundColor: const Color.fromARGB(255, 5, 50, 91),
-                                                                                                  shape: RoundedRectangleBorder(
-                                                                                                    borderRadius: BorderRadius.circular(displayWidth(context) * 0.02),
-                                                                                                  ), // This is what you need!
-                                                                                                ),
-                                                                                                onPressed: () {
-                                                                                                  String url;
-                                                                                                  if ((snapshot.data!['adelantos'][index]['mobil'].toString()) == "0") {
-                                                                                                    url = """https://nachservice.com.mx/${snapshot.data!['adelantos'][index]['archivo_adelanto'].toString()}""";
-                                                                                                  } else {
-                                                                                                    var protocolo = modo == 'dev' ? protocolodev : protocolossl;
-                                                                                                    var apiii = modo == '' ? completeUrldev : baseUrl;
-                                                                                                    url = '$protocolo://$apiii/${snapshot.data!['adelantos']['resultados1'][index]['archivo_adelanto'].toString().replaceAll('uploads', 'pdf')}';
-                                                                                                  }
-                                                                                                  SharedPreferencesHelper.setdatos("urlPdfVisor", url);
-                                                                                                  Navigator.pushNamed(context, 'pdf');
-                                                                                                },
-                                                                                                child: Text(
-                                                                                                  snapshot.data!['adelantos'][index]['nombre_archivo'].toString().toUpperCase(),
-                                                                                                ),
-                                                                                              ),
-                                                                                            ),
-                                                                                          ),
-                                                                                        ],
-                                                                                      ),
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            );
-                                                                          });
-                                                                    } else if (snapshot
-                                                                        .hasError) {
-                                                                      return const Center(
-                                                                          child:
-                                                                              Text(''));
-                                                                    }
-                                                                    // By default show a loading spinner.
-                                                                    return const Center(
-                                                                        child:
-                                                                            Cargando());
-                                                                  },
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                            ),
-                                          ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                        left: displayWidth(context) * 0.1,
-                                        top: displayWidth(context) * 0.1,
-                                      ),
-                                      child: SizedBox(
-                                        width: displayWidth(context) * 0.2,
-                                        child: Center(
-                                          child: index == 0
-                                              ? Column(
-                                                  children: [
-                                                    Padding(
-                                                      padding: EdgeInsets.only(
-                                                        bottom: displayWidth(
-                                                                context) *
-                                                            0.08,
-                                                      ),
-                                                      child: const Text(
-                                                          'prestamo'),
-                                                    ),
-                                                    Text(
-                                                      snapshot
-                                                          .data!['adelantos']
-                                                              ['resultados1']
-                                                              [index]['id']
-                                                          .toString(),
-                                                      style: TextStyle(
-                                                        fontSize: displayWidth(
-                                                                context) *
-                                                            0.04,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                )
-                                              : Text(
-                                                  snapshot.data!['adelantos']
-                                                          ['resultados1'][index]
-                                                          ['id']
-                                                      .toString(),
-                                                  style: TextStyle(
-                                                    fontSize:
-                                                        displayWidth(context) *
-                                                            0.04,
-                                                  ),
-                                                ),
-                                        ),
-                                      ),
+                          if (rows != null && rows.isNotEmpty) {
+                            return Column(
+                              children: [
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width * 3,
+                                  height: 100,
+                                  child: const Text(
+                                    "Adelanto de nómina",
+                                    style: TextStyle(
+                                      color: Colors.blue,
+                                      fontSize: 40,
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                        left: displayWidth(context) * 0.1,
-                                        top: displayWidth(context) * 0.1,
-                                      ),
-                                      child: SizedBox(
-                                        width: displayWidth(context) * 0.2,
-                                        child: Center(
-                                          child: index == 0
-                                              ? Column(
-                                                  children: [
-                                                    Padding(
-                                                      padding: EdgeInsets.only(
-                                                        bottom: displayWidth(
-                                                                context) *
-                                                            0.08,
-                                                      ),
-                                                      child: const Text(
-                                                          'Empleado'),
-                                                    ),
-                                                    Text(
-                                                      snapshot
-                                                          .data!['adelantos']
-                                                              ['resultados1']
-                                                              [index]
-                                                              ['no_empleado']
-                                                          .toString(),
-                                                      style: TextStyle(
-                                                        fontSize: displayWidth(
-                                                                context) *
-                                                            0.04,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                )
-                                              : Text(
-                                                  snapshot.data!['adelantos']
-                                                          ['resultados1'][index]
-                                                          ['no_empleado']
-                                                      .toString(),
-                                                  style: TextStyle(
-                                                    fontSize:
-                                                        displayWidth(context) *
-                                                            0.04,
-                                                  ),
-                                                ),
-                                        ),
-                                      ),
+                                    textAlign: TextAlign
+                                        .left, // Set the text alignment to the left
+                                  ),
+                                ),
+                                DataTable(
+                                  columns: const [
+                                    DataColumn(
+                                      label: Text('id'),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                        left: displayWidth(context) * 0.1,
-                                        top: displayWidth(context) * 0.1,
-                                      ),
-                                      child: Center(
-                                        child: index == 0
-                                            ? Column(
-                                                children: [
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                      bottom: displayWidth(
-                                                              context) *
-                                                          0.08,
-                                                    ),
-                                                    child: const Text('Nombre'),
-                                                  ),
-                                                  Text(
-                                                    snapshot.data!['adelantos']
-                                                            ['resultados1']
-                                                            [index]
-                                                            ['nombre_completo']
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                      fontSize: displayWidth(
-                                                              context) *
-                                                          0.04,
-                                                    ),
-                                                  ),
-                                                ],
-                                              )
-                                            : Text(
-                                                snapshot.data!['adelantos']
-                                                        ['resultados1'][index]
-                                                        ['nombre_completo']
-                                                    .toString(),
-                                                style: TextStyle(
-                                                  fontSize:
-                                                      displayWidth(context) *
-                                                          0.04,
-                                                ),
-                                              ),
-                                      ),
+                                    DataColumn(
+                                      label: Text('no_empleado'),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                        left: displayWidth(context) * 0.1,
-                                        top: displayWidth(context) * 0.1,
-                                      ),
-                                      child: Center(
-                                        child: index == 0
-                                            ? Column(
-                                                children: [
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                      bottom: displayWidth(
-                                                              context) *
-                                                          0.08,
-                                                    ),
-                                                    child:
-                                                        const Text('Cliente'),
-                                                  ),
-                                                  Text(
-                                                    snapshot.data!['adelantos']
-                                                            ['resultados1']
-                                                            [index]['clientes']
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                      fontSize: displayWidth(
-                                                              context) *
-                                                          0.04,
-                                                    ),
-                                                  ),
-                                                ],
-                                              )
-                                            : Text(
-                                                snapshot.data!['adelantos']
-                                                        ['resultados1'][index]
-                                                        ['clientes']
-                                                    .toString(),
-                                                style: TextStyle(
-                                                  fontSize:
-                                                      displayWidth(context) *
-                                                          0.04,
-                                                ),
-                                              ),
-                                      ),
+                                    DataColumn(
+                                      label: Text('nombre_completo'),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                        left: displayWidth(context) * 0.1,
-                                        top: displayWidth(context) * 0.1,
-                                      ),
-                                      child: Center(
-                                        child: index == 0
-                                            ? Column(
-                                                children: [
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                      bottom: displayWidth(
-                                                              context) *
-                                                          0.08,
-                                                    ),
-                                                    child:
-                                                        const Text('Opereción'),
-                                                  ),
-                                                  Text(
-                                                    snapshot.data!['adelantos']
-                                                            ['resultados1']
-                                                            [index]
-                                                            ['operaciones']
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                      fontSize: displayWidth(
-                                                              context) *
-                                                          0.04,
-                                                    ),
-                                                  ),
-                                                ],
-                                              )
-                                            : Text(
-                                                snapshot.data!['adelantos']
-                                                        ['resultados1'][index]
-                                                        ['operaciones']
-                                                    .toString(),
-                                                style: TextStyle(
-                                                  fontSize:
-                                                      displayWidth(context) *
-                                                          0.04,
-                                                ),
-                                              ),
-                                      ),
+                                    DataColumn(
+                                      label: Text('operaciones'),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                        left: displayWidth(context) * 0.1,
-                                        top: displayWidth(context) * 0.1,
-                                      ),
-                                      child: Center(
-                                        child: index == 0
-                                            ? Column(
-                                                children: [
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                      bottom: displayWidth(
-                                                              context) *
-                                                          0.08,
-                                                    ),
-                                                    child:
-                                                        const Text('Descuento'),
-                                                  ),
-                                                  Text(
-                                                    double.parse(snapshot.data![
-                                                                    'adelantos']
-                                                                ['resultados1'][
-                                                            index]['descuento'])
-                                                        .toStringAsFixed(2)
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                      fontSize: displayWidth(
-                                                              context) *
-                                                          0.04,
-                                                    ),
-                                                  ),
-                                                ],
-                                              )
-                                            : Text(
-                                                double.parse(snapshot.data![
-                                                                'adelantos']
-                                                            ['resultados1']
-                                                        [index]['descuento'])
-                                                    .toStringAsFixed(2)
-                                                    .toString(),
-                                                style: TextStyle(
-                                                  fontSize:
-                                                      displayWidth(context) *
-                                                          0.04,
-                                                ),
-                                              ),
-                                      ),
+                                    DataColumn(
+                                      label: Text('descuento'),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                        left: displayWidth(context) * 0.1,
-                                        top: displayWidth(context) * 0.1,
-                                      ),
-                                      child: Center(
-                                        child: index == 0
-                                            ? Column(
-                                                children: [
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                      bottom: displayWidth(
-                                                              context) *
-                                                          0.08,
-                                                    ),
-                                                    child: const Text('Total'),
-                                                  ),
-                                                  Text(
-                                                    double.parse(snapshot.data![
-                                                                    'adelantos']
-                                                                [
-                                                                'resultados1'][index]
-                                                            ['total_descuento'])
-                                                        .toStringAsFixed(2)
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                      fontSize: displayWidth(
-                                                              context) *
-                                                          0.04,
-                                                    ),
-                                                  ),
-                                                ],
-                                              )
-                                            : Text(
-                                                double.parse(snapshot.data![
-                                                                    'adelantos']
-                                                                ['resultados1']
-                                                            [index]
-                                                        ['total_descuento'])
-                                                    .toStringAsFixed(2)
-                                                    .toString(),
-                                                style: TextStyle(
-                                                  fontSize:
-                                                      displayWidth(context) *
-                                                          0.04,
-                                                ),
-                                              ),
-                                      ),
+                                    DataColumn(
+                                      label: Text('total_descuento'),
                                     ),
+                                    DataColumn(
+                                      label: Text('editar'),
+                                    ),
+                                    // Agrega más DataColumn según sea necesario
                                   ],
-                                ),
-                              ),
-                            ),
-                          );
-                        });
-                  } else if (snapshot.hasError) {
-                    // print(snapshot);
-                    return SizedBox(
-                      child: Padding(
-                        padding: EdgeInsets.all(
-                          displayWidth(context) * 0.1,
-                        ),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(40.0),
-                          ),
-                          child: Column(
-                            children: [
-                              const Spacer(),
-                              Expanded(
-                                child: Card(
-                                  shape: RoundedRectangleBorder(
-                                    side: BorderSide(
-                                      color:
-                                          Theme.of(context).colorScheme.outline,
-                                    ),
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(12)),
-                                  ),
-                                  shadowColor:
-                                      const Color.fromARGB(246, 0, 0, 0),
-                                  elevation: 20,
-                                  child: SizedBox(
-                                    width: 300,
-                                    height: 100,
-                                    child: Center(
-                                      child: Text(
-                                        'Hubo un error en la carga de datos',
-                                        textAlign: TextAlign.justify,
-                                        style: TextStyle(
-                                            color: const Color.fromARGB(
-                                                255, 0, 0, 0),
-                                            fontSize:
-                                                displayWidth(context) * 0.05),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const Spacer(),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                    // return Text(snapshot.error.toString());
-                  } else if (snapshot.hasData &&
-                      snapshot.data!['mensaje'] != null) {
-                    return SizedBox(
-                      child: Padding(
-                        padding: EdgeInsets.all(
-                          displayWidth(context) * 0.1,
-                        ),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(40.0),
-                          ),
-                          child: Column(
-                            children: [
-                              const Spacer(),
-                              Expanded(
-                                child: Card(
-                                  shape: RoundedRectangleBorder(
-                                    side: BorderSide(
-                                      color:
-                                          Theme.of(context).colorScheme.outline,
-                                    ),
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(12)),
-                                  ),
-                                  shadowColor:
-                                      const Color.fromARGB(246, 0, 0, 0),
-                                  elevation: 20,
-                                  child: SizedBox(
-                                    width: 300,
-                                    height: 100,
-                                    child: Center(
-                                      child: Text(
-                                        snapshot.data!['mensaje'],
-                                        textAlign: TextAlign.justify,
-                                        style: TextStyle(
-                                            color: const Color.fromARGB(
-                                                255, 0, 0, 0),
-                                            fontSize:
-                                                displayWidth(context) * 0.05),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const Spacer(),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                    // return Text(snapshot.error.toString());
-                  }
-                  // By default show a loading spinner.
-                  return SizedBox(
-                    width: displayWidth(context) * 0.5,
-                    child: const Center(
-                      child: Cargando(),
-                    ),
-                  );
-                },
-              ),
-            ),
-            Container(
-              color: const Color.fromARGB(255, 93, 94, 94),
-              width: displayWidth(context) *
-                  int.parse(ref.watch(tamanolistProvider)),
-              height: displayHeight(context) * 0.30,
-              child: FutureBuilder<Map<String, dynamic>>(
-                future: ref.watch(postMisAdelantosProviders.future),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData &&
-                      snapshot.data!['adelantos'] != null &&
-                      snapshot.data!['adelantos']['resultados2'] != null) {
-                    if (kDebugMode) {
-                      print(snapshot.data!);
-                    }
-
-                    final adelantos =
-                        snapshot.data!['adelantos']['resultados2'];
-                    return ListView.builder(
-                        itemCount: adelantos.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return SizedBox(
-                            height: displayWidth(context) * 0.3,
-                            // color: const Color.fromARGB(0, 208, 7, 7),
-                            child: Center(
-                              child: SizedBox(
-                                child: Row(
-                                  children: [
-                                    index == 0
-                                        ? Padding(
-                                            padding: EdgeInsets.only(
-                                              left: displayWidth(context) * 0.1,
-                                              top: displayWidth(context) * 0.06,
-                                            ),
-                                            child: Column(
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsets.only(
-                                                      bottom: displayWidth(
-                                                              context) *
-                                                          0.05,
-                                                      top: displayWidth(
-                                                              context) *
-                                                          0.02),
-                                                  child: const Text('Ver'),
-                                                ),
-                                                IconButton(
-                                                  icon: const Icon(Icons
-                                                      .remove_red_eye_sharp),
-                                                  onPressed: () {
-                                                    final notifier = ref.read(
-                                                        idAdelantoProvider
-                                                            .notifier);
-                                                    notifier.updateIdAdelanto(
-                                                        snapshot
-                                                            .data!['adelantos']
-                                                                ['resultados2']
-                                                                [index]['id']
-                                                            .toString());
-
-                                                    showDialog<String>(
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                              context) =>
-                                                          SizedBox(
-                                                        width: displayWidth(
-                                                                context) *
-                                                            0.9,
-                                                        height: displayHeight(
-                                                                context) *
-                                                            0.6,
-                                                        child: AlertDialog(
-                                                          title: const Text(
-                                                              "Visualizar archivos"),
-                                                          content:
-                                                              const Text(''),
-                                                          actions: <Widget>[
-                                                            Column(
-                                                              children: [
-                                                                const Text(
-                                                                    'Selecciona que archivo quieres editar'),
-                                                                const Botonfile(
-                                                                  texto: 'INE',
-                                                                ),
-                                                                const Botonfile(
-                                                                  texto:
-                                                                      'Comprobante',
-                                                                ),
-                                                                const Botonfile(
-                                                                  texto: 'CURP',
-                                                                ),
-                                                                const Text(
-                                                                    'Selecciona que archivo quieres visualizar'),
-                                                                Center(
-                                                                  child:
-                                                                      SizedBox(
-                                                                    width: displayWidth(
-                                                                            context) *
-                                                                        1.9,
-                                                                    height:
-                                                                        displayHeight(context) *
-                                                                            0.5,
-                                                                    child: FutureBuilder<
-                                                                        Map<String,
-                                                                            dynamic>>(
-                                                                      future: ref
-                                                                          .watch(
-                                                                              postMisPrestamosdetalleProviders.future),
-                                                                      builder:
-                                                                          (context,
-                                                                              snapshot) {
-                                                                        if (snapshot
-                                                                            .hasData) {
-                                                                          if (kDebugMode) {
-                                                                            print(snapshot.data!);
-                                                                          }
-                                                                          return ListView.builder(
-                                                                              itemCount: snapshot.data!['adelantos'].length,
-                                                                              itemBuilder: (BuildContext context, int index) {
-                                                                                return Center(
-                                                                                  child: Container(
-                                                                                    width: displayWidth(context) * 0.6,
-                                                                                    color: const Color.fromARGB(0, 208, 7, 7),
-                                                                                    child: Center(
-                                                                                      child: SingleChildScrollView(
-                                                                                        scrollDirection: Axis.horizontal,
-                                                                                        child: SizedBox(
-                                                                                          child: Row(
-                                                                                            children: [
-                                                                                              Center(
-                                                                                                child: Padding(
-                                                                                                  padding: EdgeInsets.only(top: displayWidth(context) * 0.05),
-                                                                                                  child: ElevatedButton(
-                                                                                                    //onPressed: () => ()),
-                                                                                                    style: ElevatedButton.styleFrom(
-                                                                                                      backgroundColor: const Color.fromARGB(255, 5, 50, 91),
-                                                                                                      shape: RoundedRectangleBorder(
-                                                                                                        borderRadius: BorderRadius.circular(displayWidth(context) * 0.02),
-                                                                                                      ), // This is what you need!
-                                                                                                    ),
-                                                                                                    onPressed: () {
-                                                                                                      String url;
-                                                                                                      if ((snapshot.data!['adelantos'][index]['mobil'].toString()) == "0") {
-                                                                                                        url = """https://nachservice.com.mx/${snapshot.data!['adelantos'][index]['archivo_adelanto'].toString()}""";
-                                                                                                      } else {
-                                                                                                        var protocolo = modo == 'dev' ? protocolodev : protocolossl;
-                                                                                                        var apiii = modo == '' ? completeUrldev : baseUrl;
-                                                                                                        url = '$protocolo://$apiii/${snapshot.data!['adelantos'][index]['archivo_adelanto'].toString().replaceAll('uploads', 'pdf')}';
-                                                                                                      }
-                                                                                                      SharedPreferencesHelper.setdatos("urlPdfVisor", url);
-                                                                                                      Navigator.pushNamed(context, 'pdf');
-                                                                                                    },
-                                                                                                    child: Text(
-                                                                                                      snapshot.data!['adelantos'][index]['nombre_archivo'].toString().toUpperCase(),
-                                                                                                    ),
-                                                                                                  ),
-                                                                                                ),
-                                                                                              ),
-                                                                                            ],
-                                                                                          ),
-                                                                                        ),
-                                                                                      ),
-                                                                                    ),
-                                                                                  ),
-                                                                                );
-                                                                              });
-                                                                        } else if (snapshot
-                                                                            .hasError) {
-                                                                          return const Center(
-                                                                              child: Cargando());
-                                                                        }
-                                                                        // By default show a loading spinner.
-                                                                        return const Center(
-                                                                            child:
-                                                                                Cargando());
-                                                                      },
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    );
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                          )
-                                        : Padding(
-                                            padding: EdgeInsets.only(
-                                              left: displayWidth(context) * 0.1,
-                                              top: displayWidth(context) * 0.1,
-                                            ),
-                                            child: IconButton(
-                                              icon: const Icon(
-                                                  Icons.remove_red_eye_sharp),
-                                              onPressed: () {
-                                                final notifier = ref.read(
-                                                    idAdelantoProvider
-                                                        .notifier);
-                                                notifier.updateIdAdelanto(
-                                                    snapshot.data!['adelantos']
-                                                            ['resultados2']
-                                                            [index]['id']
-                                                        .toString());
-                                                showDialog<String>(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) =>
-                                                          SizedBox(
-                                                    width:
-                                                        displayWidth(context) *
-                                                            0.9,
-                                                    height:
-                                                        displayHeight(context) *
-                                                            0.5,
-                                                    child: AlertDialog(
-                                                      title: const Text(
-                                                          "Visualizar archivos"),
-                                                      content: const Text(
-                                                          'Selecciona que archivo quieres visualizar'),
-                                                      actions: <Widget>[
-                                                        Column(
-                                                          children: [
-                                                            const Text(
-                                                                'Selecciona que archivo quieres editar'),
-                                                            const Botonfile(
-                                                              texto: 'INE',
-                                                            ),
-                                                            const Botonfile(
-                                                              texto:
-                                                                  'Comprobante',
-                                                            ),
-                                                            const Botonfile(
-                                                              texto: 'CURP',
-                                                            ),
-                                                            const Text(
-                                                                'Selecciona que archivo quieres visualizar'),
-                                                            Center(
-                                                              child: SizedBox(
-                                                                width: displayWidth(
-                                                                        context) *
-                                                                    1.9,
-                                                                height: displayHeight(
-                                                                        context) *
-                                                                    0.5,
-                                                                child: FutureBuilder<
-                                                                    Map<String,
-                                                                        dynamic>>(
-                                                                  future: ref.watch(
-                                                                      postMisPrestamosdetalleProviders
-                                                                          .future),
-                                                                  builder: (context,
-                                                                      snapshot) {
-                                                                    if (snapshot
-                                                                        .hasData) {
-                                                                      if (kDebugMode) {
-                                                                        print(snapshot
-                                                                            .data!['adelantos']);
-                                                                      }
-                                                                      return ListView.builder(
-                                                                          itemCount: snapshot.data!['adelantos'].length,
-                                                                          itemBuilder: (BuildContext context, int index) {
-                                                                            return Center(
-                                                                              child: Container(
-                                                                                width: displayWidth(context) * 0.6,
-                                                                                color: const Color.fromARGB(0, 208, 7, 7),
-                                                                                child: Center(
-                                                                                  child: SingleChildScrollView(
-                                                                                    scrollDirection: Axis.horizontal,
-                                                                                    child: SizedBox(
-                                                                                      child: Row(
-                                                                                        children: [
-                                                                                          Center(
-                                                                                            child: Padding(
-                                                                                              padding: EdgeInsets.only(top: displayWidth(context) * 0.05),
-                                                                                              child: ElevatedButton(
-                                                                                                style: ElevatedButton.styleFrom(
-                                                                                                  backgroundColor: const Color.fromARGB(255, 5, 50, 91),
-                                                                                                  shape: RoundedRectangleBorder(
-                                                                                                    borderRadius: BorderRadius.circular(displayWidth(context) * 0.02),
-                                                                                                  ), // This is what you need!
-                                                                                                ),
-                                                                                                onPressed: () {
-                                                                                                  String url;
-                                                                                                  if ((snapshot.data!['adelantos'][index]['mobil'].toString()) == "0") {
-                                                                                                    url = """https://nachservice.com.mx/${snapshot.data!['adelantos'][index]['archivo_adelanto'].toString()}""";
-                                                                                                  } else {
-                                                                                                    var protocolo = modo == 'dev' ? protocolodev : protocolossl;
-                                                                                                    var apiii = modo == '' ? completeUrldev : baseUrl;
-                                                                                                    url = '$protocolo://$apiii/${snapshot.data!['adelantos']['resultados2'][index]['archivo_adelanto'].toString().replaceAll('uploads', 'pdf')}';
-                                                                                                  }
-                                                                                                  SharedPreferencesHelper.setdatos("urlPdfVisor", url);
-                                                                                                  Navigator.pushNamed(context, 'pdf');
-                                                                                                },
-                                                                                                child: Text(
-                                                                                                  snapshot.data!['adelantos'][index]['nombre_archivo'].toString().toUpperCase(),
-                                                                                                ),
-                                                                                              ),
-                                                                                            ),
-                                                                                          ),
-                                                                                        ],
-                                                                                      ),
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                            );
-                                                                          });
-                                                                    } else if (snapshot
-                                                                        .hasError) {
-                                                                      return const Center(
-                                                                          child:
-                                                                              Text(''));
-                                                                    }
-                                                                    // By default show a loading spinner.
-                                                                    return const Center(
-                                                                        child:
-                                                                            Cargando());
-                                                                  },
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                            ),
+                                  rows: rows.map<DataRow>((rowData) {
+                                    return DataRow(
+                                      cells: [
+                                        DataCell(
+                                          Text('${rowData['id']}'),
+                                        ),
+                                        DataCell(
+                                          Text('${rowData['no_empleado']}'),
+                                        ),
+                                        DataCell(
+                                          Text('${rowData['nombre_completo']}'),
+                                        ),
+                                        DataCell(
+                                          Text('${rowData['operaciones']}'),
+                                        ),
+                                        DataCell(
+                                          Text('${rowData['descuento']}'),
+                                        ),
+                                        DataCell(
+                                          Text('${rowData['total_descuento']}'),
+                                        ),
+                                        DataCell(
+                                          Botoneditar(
+                                            texto: 'INE',
+                                            indiceadelanto: '${rowData['id']}',
                                           ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                        left: displayWidth(context) * 0.1,
-                                        top: displayWidth(context) * 0.1,
-                                      ),
-                                      child: SizedBox(
-                                        width: displayWidth(context) * 0.2,
-                                        child: Center(
-                                          child: index == 0
-                                              ? Column(
-                                                  children: [
-                                                    Padding(
-                                                      padding: EdgeInsets.only(
-                                                        bottom: displayWidth(
-                                                                context) *
-                                                            0.08,
-                                                      ),
-                                                      child: const Text(
-                                                          'prestamo'),
-                                                    ),
-                                                    Text(
-                                                      snapshot
-                                                          .data!['adelantos']
-                                                              ['resultados2']
-                                                              [index]['id']
-                                                          .toString(),
-                                                      style: TextStyle(
-                                                        fontSize: displayWidth(
-                                                                context) *
-                                                            0.04,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                )
-                                              : Text(
-                                                  snapshot.data!['adelantos']
-                                                          ['resultados2'][index]
-                                                          ['id']
-                                                      .toString(),
-                                                  style: TextStyle(
-                                                    fontSize:
-                                                        displayWidth(context) *
-                                                            0.04,
-                                                  ),
-                                                ),
                                         ),
+                                        // Agrega más DataCell según sea necesario
+                                      ],
+                                    );
+                                  }).toList(),
+                                ),
+                              ],
+                            );
+                          } else {
+                            // Manejar caso en que rows es nulo o vacío
+                            return Center(
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width * 3,
+                                    height: 100,
+                                    child: const Text(
+                                      "Adelanto de nómina",
+                                      style: TextStyle(
+                                        color: Colors.blue,
+                                        fontSize: 40,
                                       ),
+                                      textAlign: TextAlign
+                                          .left, // Set the text alignment to the left
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                        left: displayWidth(context) * 0.1,
-                                        top: displayWidth(context) * 0.1,
+                                  ),
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width * 3,
+                                    height: 100,
+                                    child: const Text(
+                                      "No se encontraron datos.",
+                                      style: TextStyle(
+                                        color: Color.fromARGB(255, 0, 0, 1),
                                       ),
-                                      child: SizedBox(
-                                        width: displayWidth(context) * 0.2,
-                                        child: Center(
-                                          child: index == 0
-                                              ? Column(
-                                                  children: [
-                                                    Padding(
-                                                      padding: EdgeInsets.only(
-                                                        bottom: displayWidth(
-                                                                context) *
-                                                            0.08,
-                                                      ),
-                                                      child: const Text(
-                                                          'Empleado'),
-                                                    ),
-                                                    Text(
-                                                      snapshot
-                                                          .data!['adelantos']
-                                                              ['resultados2']
-                                                              [index]
-                                                              ['no_empleado']
-                                                          .toString(),
-                                                      style: TextStyle(
-                                                        fontSize: displayWidth(
-                                                                context) *
-                                                            0.04,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                )
-                                              : Text(
-                                                  snapshot.data!['adelantos']
-                                                          ['resultados2'][index]
-                                                          ['no_empleado']
-                                                      .toString(),
-                                                  style: TextStyle(
-                                                    fontSize:
-                                                        displayWidth(context) *
-                                                            0.04,
-                                                  ),
-                                                ),
-                                        ),
-                                      ),
+                                      textAlign: TextAlign
+                                          .left, // Set the text alignment to the left
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                        left: displayWidth(context) * 0.1,
-                                        top: displayWidth(context) * 0.1,
-                                      ),
-                                      child: Center(
-                                        child: index == 0
-                                            ? Column(
-                                                children: [
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                      bottom: displayWidth(
-                                                              context) *
-                                                          0.08,
-                                                    ),
-                                                    child: const Text('Nombre'),
-                                                  ),
-                                                  Text(
-                                                    snapshot.data!['adelantos']
-                                                            ['resultados2']
-                                                            [index]
-                                                            ['nombre_completo']
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                      fontSize: displayWidth(
-                                                              context) *
-                                                          0.04,
-                                                    ),
-                                                  ),
-                                                ],
-                                              )
-                                            : Text(
-                                                snapshot.data!['adelantos']
-                                                        ['resultados2'][index]
-                                                        ['nombre_completo']
-                                                    .toString(),
-                                                style: TextStyle(
-                                                  fontSize:
-                                                      displayWidth(context) *
-                                                          0.04,
-                                                ),
-                                              ),
-                                      ),
+                                  ),
+                                  const Text('No se encontraron datos.'),
+                                ],
+                              ),
+                            );
+                          }
+                        } else {
+                          // Manejar caso de éxito falso
+                          return const Center(
+                              child: Text('Error en la solicitud'));
+                        }
+                      },
+                      loading: () => Center(
+                          child: Padding(
+                        padding: const EdgeInsets.all(40.0),
+                        child: SizedBox(
+                          width: displayWidth(context) * 0.8,
+                          child: const Column(
+                            children: [
+                              Cargando(),
+                            ],
+                          ),
+                        ),
+                      )),
+                      error: (error, stackTrace) {
+                        // Manejar el error de la solicitud
+                        return Center(child: Text('Error: $error'));
+                      },
+                    );
+                  }),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      top: 1.0, bottom: 1.0, left: 8.0, right: 8.0),
+                  child: Consumer(builder: (context, watch, child) {
+                    final postMisAdelantosProvider =
+                        ref.watch(postMisAdelantosProviders);
+                    return postMisAdelantosProvider.when(
+                      data: (data) {
+                        if (data["success"] != null && data["success"]) {
+                          // Procesar y mostrar datos en DataTable
+                          final rows =
+                              (data['adelantos']['resultados2'] as List?)
+                                  ?.cast<Map<String, dynamic>>();
+
+                          if (rows != null && rows.isNotEmpty) {
+                            return Column(
+                              children: [
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width * 3,
+                                  height: 100,
+                                  child: const Text(
+                                    "Prestamos",
+                                    style: TextStyle(
+                                      color: Colors.blue,
+                                      fontSize: 40,
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                        left: displayWidth(context) * 0.1,
-                                        top: displayWidth(context) * 0.1,
-                                      ),
-                                      child: Center(
-                                        child: index == 0
-                                            ? Column(
-                                                children: [
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                      bottom: displayWidth(
-                                                              context) *
-                                                          0.08,
-                                                    ),
-                                                    child:
-                                                        const Text('Cliente'),
-                                                  ),
-                                                  Text(
-                                                    snapshot.data!['adelantos']
-                                                            ['resultados2']
-                                                            [index]['clientes']
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                      fontSize: displayWidth(
-                                                              context) *
-                                                          0.04,
-                                                    ),
-                                                  ),
-                                                ],
-                                              )
-                                            : Text(
-                                                snapshot.data!['adelantos']
-                                                        ['resultados2'][index]
-                                                        ['clientes']
-                                                    .toString(),
-                                                style: TextStyle(
-                                                  fontSize:
-                                                      displayWidth(context) *
-                                                          0.04,
-                                                ),
-                                              ),
-                                      ),
+                                    textAlign: TextAlign
+                                        .left, // Set the text alignment to the left
+                                  ),
+                                ),
+                                DataTable(
+                                  columns: const [
+                                    DataColumn(
+                                      label: Text('id'),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                        left: displayWidth(context) * 0.1,
-                                        top: displayWidth(context) * 0.1,
-                                      ),
-                                      child: Center(
-                                        child: index == 0
-                                            ? Column(
-                                                children: [
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                      bottom: displayWidth(
-                                                              context) *
-                                                          0.08,
-                                                    ),
-                                                    child:
-                                                        const Text('Opereción'),
-                                                  ),
-                                                  Text(
-                                                    snapshot.data!['adelantos']
-                                                            ['resultados2']
-                                                            [index]
-                                                            ['operaciones']
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                      fontSize: displayWidth(
-                                                              context) *
-                                                          0.04,
-                                                    ),
-                                                  ),
-                                                ],
-                                              )
-                                            : Text(
-                                                snapshot.data!['adelantos']
-                                                        ['resultados2'][index]
-                                                        ['operaciones']
-                                                    .toString(),
-                                                style: TextStyle(
-                                                  fontSize:
-                                                      displayWidth(context) *
-                                                          0.04,
-                                                ),
-                                              ),
-                                      ),
+                                    DataColumn(
+                                      label: Text('no_empleado'),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                        left: displayWidth(context) * 0.1,
-                                        top: displayWidth(context) * 0.1,
-                                      ),
-                                      child: Center(
-                                        child: index == 0
-                                            ? Column(
-                                                children: [
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                      bottom: displayWidth(
-                                                              context) *
-                                                          0.08,
-                                                    ),
-                                                    child:
-                                                        const Text('Descuento'),
-                                                  ),
-                                                  Text(
-                                                    double.parse(snapshot.data![
-                                                                    'adelantos']
-                                                                ['resultados2'][
-                                                            index]['pago_interes'])
-                                                        .toStringAsFixed(2)
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                      fontSize: displayWidth(
-                                                              context) *
-                                                          0.04,
-                                                    ),
-                                                  ),
-                                                ],
-                                              )
-                                            : Text(
-                                                double.parse(snapshot.data![
-                                                                'adelantos']
-                                                            ['resultados2']
-                                                        [index]['pago_interes'])
-                                                    .toStringAsFixed(2)
-                                                    .toString(),
-                                                style: TextStyle(
-                                                  fontSize:
-                                                      displayWidth(context) *
-                                                          0.04,
-                                                ),
-                                              ),
-                                      ),
+                                    DataColumn(
+                                      label: Text('nombre_completo'),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                        left: displayWidth(context) * 0.1,
-                                        top: displayWidth(context) * 0.1,
-                                      ),
-                                      child: Center(
-                                        child: index == 0
-                                            ? Column(
-                                                children: [
-                                                  Padding(
-                                                    padding: EdgeInsets.only(
-                                                      bottom: displayWidth(
-                                                              context) *
-                                                          0.08,
-                                                    ),
-                                                    child: const Text('Total'),
-                                                  ),
-                                                  Text(
-                                                    double.parse(snapshot.data![
-                                                                    'adelantos']
-                                                                ['resultados2'][
-                                                            index]['monto_prestamo'])
-                                                        .toStringAsFixed(2)
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                      fontSize: displayWidth(
-                                                              context) *
-                                                          0.04,
-                                                    ),
-                                                  ),
-                                                ],
-                                              )
-                                            : Text(
-                                                double.parse(snapshot.data![
-                                                                    'adelantos']
-                                                                ['resultados2']
-                                                            [index]
-                                                        ['monto_prestamo'])
-                                                    .toStringAsFixed(2)
-                                                    .toString(),
-                                                style: TextStyle(
-                                                  fontSize:
-                                                      displayWidth(context) *
-                                                          0.04,
-                                                ),
-                                              ),
-                                      ),
+                                    DataColumn(
+                                      label: Text('operaciones'),
                                     ),
+                                    DataColumn(
+                                      label: Text('monto_prestamo'),
+                                    ),
+                                    DataColumn(
+                                      label: Text('pago_interes'),
+                                    ),
+                                    DataColumn(
+                                      label: Text('pago'),
+                                    ),
+                                    DataColumn(
+                                      label: Text('editar'),
+                                    ),
+                                    // Agrega más DataColumn según sea necesario
                                   ],
+                                  rows: rows.map<DataRow>((rowData) {
+                                    return DataRow(
+                                      cells: [
+                                        DataCell(
+                                          Text('${rowData['id']}'),
+                                        ),
+                                        DataCell(
+                                          Text('${rowData['no_empleado']}'),
+                                        ),
+                                        DataCell(
+                                          Text('${rowData['nombre_completo']}'),
+                                        ),
+                                        DataCell(
+                                          Text('${rowData['operaciones']}'),
+                                        ),
+                                        DataCell(
+                                          Text('${rowData['monto_prestamo']}'),
+                                        ),
+                                        DataCell(
+                                          Text('${rowData['pago_interes']}'),
+                                        ),
+                                        DataCell(
+                                          Text('${rowData['pago']}'),
+                                        ),
+                                        DataCell(
+                                          Botoneditar(
+                                            texto: 'INE',
+                                            indiceadelanto: '${rowData['id']}',
+                                          ),
+                                        ),
+                                        // Agrega más DataCell según sea necesario
+                                      ],
+                                    );
+                                  }).toList(),
                                 ),
-                              ),
-                            ),
-                          );
-                        });
-                  } else if (snapshot.hasError) {
-                    // print(snapshot);
-                    return SizedBox(
-                      child: Padding(
-                        padding: EdgeInsets.all(
-                          displayWidth(context) * 0.1,
-                        ),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(40.0),
-                          ),
-                          child: Column(
-                            children: [
-                              const Spacer(),
-                              Expanded(
-                                child: Card(
-                                  shape: RoundedRectangleBorder(
-                                    side: BorderSide(
-                                      color:
-                                          Theme.of(context).colorScheme.outline,
-                                    ),
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(12)),
-                                  ),
-                                  shadowColor:
-                                      const Color.fromARGB(246, 0, 0, 0),
-                                  elevation: 20,
-                                  child: SizedBox(
-                                    width: 300,
+                              ],
+                            );
+                          } else {
+                            // Manejar caso en que rows es nulo o vacío
+                            return Center(
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width * 3,
                                     height: 100,
-                                    child: Center(
-                                      child: Text(
-                                        'Hubo un error en la carga de datos',
-                                        textAlign: TextAlign.justify,
-                                        style: TextStyle(
-                                            color: const Color.fromARGB(
-                                                255, 0, 0, 0),
-                                            fontSize:
-                                                displayWidth(context) * 0.05),
+                                    child: const Text(
+                                      "Prestamos",
+                                      style: TextStyle(
+                                        color: Colors.blue,
+                                        fontSize: 40,
                                       ),
+                                      textAlign: TextAlign
+                                          .left, // Set the text alignment to the left
                                     ),
                                   ),
-                                ),
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width * 3,
+                                    height: 100,
+                                    child: const Text(
+                                      "No se encontraron datos.",
+                                      style: TextStyle(
+                                        color: Color.fromARGB(255, 0, 0, 1),
+                                      ),
+                                      textAlign: TextAlign
+                                          .left, // Set the text alignment to the left
+                                    ),
+                                  ),
+                                  const Text('No se encontraron datos.'),
+                                ],
                               ),
-                              const Spacer(),
+                            );
+                          }
+                        } else {
+                          // Manejar caso de éxito falso
+                          return const Center(
+                              child: Text('Error en la solicitud'));
+                        }
+                      },
+                      loading: () => Center(
+                          child: Padding(
+                        padding: const EdgeInsets.all(40.0),
+                        child: SizedBox(
+                          width: displayWidth(context) * 0.8,
+                          child: const Column(
+                            children: [
+                              Cargando(),
                             ],
                           ),
                         ),
-                      ),
+                      )),
+                      error: (error, stackTrace) {
+                        // Manejar el error de la solicitud
+                        return Center(child: Text('Error: $error'));
+                      },
                     );
-                    // return Text(snapshot.error.toString());
-                  } else if (snapshot.hasData &&
-                      snapshot.data!['mensaje'] != null) {
-                    return SizedBox(
-                      child: Padding(
-                        padding: EdgeInsets.all(
-                          displayWidth(context) * 0.1,
-                        ),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(40.0),
-                          ),
-                          child: Column(
-                            children: [
-                              const Spacer(),
-                              Expanded(
-                                child: Card(
-                                  shape: RoundedRectangleBorder(
-                                    side: BorderSide(
-                                      color:
-                                          Theme.of(context).colorScheme.outline,
-                                    ),
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(12)),
-                                  ),
-                                  shadowColor:
-                                      const Color.fromARGB(246, 0, 0, 0),
-                                  elevation: 20,
-                                  child: SizedBox(
-                                    width: 300,
-                                    height: 100,
-                                    child: Center(
-                                      child: Text(
-                                        snapshot.data!['mensaje'],
-                                        textAlign: TextAlign.justify,
-                                        style: TextStyle(
-                                            color: const Color.fromARGB(
-                                                255, 0, 0, 0),
-                                            fontSize:
-                                                displayWidth(context) * 0.05),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const Spacer(),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                    // return Text(snapshot.error.toString());
-                  }
-                  // By default show a loading spinner.
-                  return SizedBox(
-                    width: displayWidth(context) * 0.5,
-                    child: const Center(
-                      child: Cargando(),
-                    ),
-                  );
-                },
-              ),
+                  }),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
       bottomNavigationBar: bottomNachBar(context, 0),

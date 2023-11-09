@@ -52,13 +52,16 @@ class ActualizaEmpleadoScreenState
   @override
   Widget build(BuildContext context) {
     final customDialogManager = CustomDialogManager(context);
+    final String argumento1;
     List<dynamic> argumentos = [''];
-    final argumentosw =
-        ModalRoute.of(context)?.settings.arguments as List<dynamic>;
+    final argumentosw = ModalRoute.of(context)?.settings.arguments;
+    if (argumentosw is List<dynamic>) {
+      argumento1 = argumentosw[0] as String;
+    } else {
+      argumento1 = 'home';
+    }
 
     final navegador = NavegadorDeRuta(context, argumentos);
-
-    final String argumento1 = argumentosw[0] as String;
 
     // var datos = getdatos();
     telefonof = FocusNode();

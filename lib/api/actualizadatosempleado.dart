@@ -30,77 +30,79 @@ class EnviaDatosEmpleadoClass {
     };
 
     if (nombrese.isNotEmpty) {
-      postDatas["nombres"] = "$nombrese";
+      postDatas["nombres"] = nombrese;
     } else {
       postDatas["nombres"] = null;
     }
 
     if (apellidoPaternoe.isNotEmpty) {
-      postDatas["appellidoPaterno"] = "$apellidoPaternoe";
+      postDatas["appellidoPaterno"] = apellidoPaternoe;
     } else {
       postDatas["appellidoPaterno"] = null;
     }
 
     if (apellidoMaternoe.isNotEmpty) {
-      postDatas["appellidoMaterno"] = "$apellidoMaternoe";
+      postDatas["appellidoMaterno"] = apellidoMaternoe;
     } else {
       postDatas["appellidoMaterno"] = null;
     }
 
     if (direccionCp.isNotEmpty) {
-      postDatas["direccionCp"] = "$direccionCp";
+      postDatas["direccionCp"] = direccionCp;
     } else {
       postDatas["direccionCp"] = null;
     }
 
     if (direccionCalle.isNotEmpty) {
-      postDatas["direccionCalle"] = "$direccionCalle";
+      postDatas["direccionCalle"] = direccionCalle;
     } else {
       postDatas["direccionCalle"] = null;
     }
 
     if (direccionInt.isNotEmpty) {
-      postDatas["direccionInt"] = "$direccionInt";
+      postDatas["direccionInt"] = direccionInt;
     } else {
       postDatas["direccionInt"] = null;
     }
 
     if (direccionExt.isNotEmpty) {
-      postDatas["direccionExt"] = "$direccionExt";
+      postDatas["direccionExt"] = direccionExt;
     } else {
       postDatas["direccionExt"] = null;
     }
 
     if (curpe.isNotEmpty) {
-      postDatas["curp"] = "$curpe";
+      postDatas["curp"] = curpe;
     } else {
       postDatas["curp"] = null;
     }
 
     if (telefono.isNotEmpty) {
-      postDatas["telefono"] = "$telefono";
+      postDatas["telefono"] = telefono;
     } else {
       postDatas["telefono"] = null;
     }
     if (telefono.isNotEmpty) {
-      postDatas["direccionMunicipio"] = "$direccionMunicipio";
+      postDatas["direccionMunicipio"] = direccionMunicipio;
     } else {
       postDatas["direccionMunicipio"] = null;
     }
     if (telefono.isNotEmpty) {
-      postDatas["direccionColonia"] = "$direccionColonia";
+      postDatas["direccionColonia"] = direccionColonia;
     } else {
       postDatas["direccionColonia"] = null;
     }
     if (email.isNotEmpty) {
-      postDatas["email"] = "$email";
+      postDatas["email"] = email;
     } else {
       postDatas["email"] = null;
     }
     if (email.isNotEmpty && telefono.isNotEmpty) {
       String jsonRepresentation = jsonEncode(postDatas);
 
-      print(jsonRepresentation);
+      if (kDebugMode) {
+        print(jsonRepresentation);
+      }
 
       final dynamic dataEnviaFirma = await fetchPostData(
           modo, completeUrldev, baseUrl, endpointactualiza, postDatas);

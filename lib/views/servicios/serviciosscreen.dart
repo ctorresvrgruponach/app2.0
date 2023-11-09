@@ -1,5 +1,4 @@
 import '../../libs/lib.dart';
-import '../../ui/barra_abajo.dart';
 
 class ServiciosScreen extends StatefulWidget {
   const ServiciosScreen({Key? key}) : super(key: key);
@@ -188,7 +187,7 @@ class _ServiciosScreenState extends State<ServiciosScreen> {
                                                               child: Padding(
                                                                 padding:
                                                                     const EdgeInsets
-                                                                            .only(
+                                                                        .only(
                                                                         top:
                                                                             12.0),
                                                                 child: Text(
@@ -199,7 +198,7 @@ class _ServiciosScreenState extends State<ServiciosScreen> {
                                                                         displayWidth(context) *
                                                                             0.05,
                                                                     color: const Color
-                                                                            .fromARGB(
+                                                                        .fromARGB(
                                                                         255,
                                                                         255,
                                                                         255,
@@ -211,7 +210,7 @@ class _ServiciosScreenState extends State<ServiciosScreen> {
                                                             Padding(
                                                               padding:
                                                                   const EdgeInsets
-                                                                          .only(
+                                                                      .only(
                                                                       bottom:
                                                                           12.0),
                                                               child: Text(
@@ -224,7 +223,7 @@ class _ServiciosScreenState extends State<ServiciosScreen> {
                                                                               context) *
                                                                           0.03,
                                                                   color: const Color
-                                                                          .fromARGB(
+                                                                      .fromARGB(
                                                                       255,
                                                                       255,
                                                                       255,
@@ -269,7 +268,7 @@ class _ServiciosScreenState extends State<ServiciosScreen> {
                                                 ),
                                                 Padding(
                                                   padding: const EdgeInsets
-                                                          .symmetric(
+                                                      .symmetric(
                                                       horizontal: 2,
                                                       vertical: 3),
                                                   child: Text(
@@ -291,7 +290,7 @@ class _ServiciosScreenState extends State<ServiciosScreen> {
                                                 ),
                                                 Padding(
                                                   padding: const EdgeInsets
-                                                          .symmetric(
+                                                      .symmetric(
                                                       horizontal: 1,
                                                       vertical: 20),
                                                   child: Text(

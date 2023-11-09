@@ -1,9 +1,8 @@
-import 'package:com.gruponach.nach_empleado/views/firma/signaturepage.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:signature/signature.dart';
 
+import '../../config/vistas.dart';
 import '../../ui/barra_abajo.dart';
 import '../../ui/lieneacentro.dart';
 
@@ -117,12 +116,19 @@ class _FirmaState extends State<Firma> {
                 if (controller!.isNotEmpty) {
                   final signature = await exportSignature();
 
-                  await Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: ((context) =>
-                          ReviewSignaturePage(signature: signature!)),
-                    ),
-                  );
+                  if (signature != null) {
+                    // ignore: use_build_context_synchronously
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) =>
+                          ReviewSignaturePage(signature: signature),
+                    ));
+                  }
+                  // await Navigator.of(context).push(
+                  //   MaterialPageRoute(
+                  //     builder: ((context) =>
+                  //         ReviewSignaturePage(signature: signature!)),
+                  //   ),
+                  // );
 
                   controller!.clear();
                 }
