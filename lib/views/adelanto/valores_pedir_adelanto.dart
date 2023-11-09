@@ -1,6 +1,7 @@
 import '../../api/apiadelanto.dart';
+import '../../api/firmaapi.dart';
+import '../../api/pediradelantoapi.dart';
 import '../../libs/lib.dart';
-import '../../ui/barra_abajo.dart';
 import '../../ui/botonfiles.dart';
 
 String? html;
@@ -455,43 +456,6 @@ class ValoresPedirAdelantoScreenState
                               children: [
                                 Column(
                                   children: [
-                                    //   Boton(
-                                    //     idtexto: '1',
-                                    //     ishiden: ishiden,
-                                    //     texto: 'Caratula adelanto',
-                                    //     idopselect: idopselect.toString(),
-                                    //   ),
-                                    //   Boton(
-                                    //     idtexto: '2',
-                                    //     ishiden: ishiden,
-                                    //     texto: 'Pagare adelanto',
-                                    //     idopselect: idopselect.toString(),
-                                    //   ),
-                                    //   Boton(
-                                    //     idtexto: '3',
-                                    //     ishiden: ishiden,
-                                    //     texto: 'Contrato adelanto',
-                                    //     idopselect: idopselect.toString(),
-                                    //   ),
-                                    //   Boton(
-                                    //     idtexto: '4',
-                                    //     ishiden: ishiden,
-                                    //     texto: 'Tabla amortizacion adelanto',
-                                    //     idopselect: idopselect.toString(),
-                                    //   ),
-                                    //   Boton(
-                                    //     idtexto: '5',
-                                    //     ishiden: ishiden,
-                                    //     texto: 'Consulta buro adelanto',
-                                    //     idopselect: idopselect.toString(),
-                                    //   ),
-                                    //   Boton(
-                                    //     idtexto: '6',
-                                    //     ishiden: ishiden,
-                                    //     texto: 'Solicitud adelanto',
-                                    //     idopselect: idopselect.toString(),
-                                    //   ),
-                                    // ignore: unnecessary_new
                                     Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: ElevatedButton(
@@ -520,20 +484,6 @@ class ValoresPedirAdelantoScreenState
                                             const Text("Ver contrato y anexos"),
                                       ),
                                     ),
-
-                                    //Visibility(
-                                    //  visible: hidendobleCurp,
-                                    //  child: BotonGC(
-                                    //    monto: monto,
-                                    //    tdescontar: tdescontar,
-                                    //    texto: 'CURP',
-                                    //    idopselect: idopselect.toString(),
-                                    //    ishiden: ishiden,
-                                    //    archivo: firma.toString(),
-                                    //    nombre: nombrecompleto.toString(),
-                                    //    correo: email.toString(),
-                                    //  ),
-                                    //),
                                     const Botonfile(
                                       texto: 'INE',
                                     ),
@@ -543,33 +493,16 @@ class ValoresPedirAdelantoScreenState
                                     const Botonfile(
                                       texto: 'CURP',
                                     ),
-                                    ////
-                                    // Visibility(
-                                    // visible: hidendobleIne,
-                                    // child: BotonGC(
-                                    //   monto: 1,
-                                    //  tdescontar: 1,
-                                    //   texto: 'INE',
-                                    //   idopselect: 1,
-                                    //   ishiden: ishiden,
-                                    //   archivo: '',
-                                    //   nombre: '',
-                                    //   correo: '',
-                                    // ),
-                                    // ),
-
-                                    // Visibility(
-                                    //   visible: ishiden,
-                                    //   child: BotonFinalizar(
-                                    //     texto: 'Aceptar Adelanto',
-                                    //     ishiden: ishiden,
-                                    //     idopselect: idopselect.toString(),
-                                    //     montoSolicitar: monto.text,
-                                    //     totalDescontar: tdescontar.text,
-                                    //     correo: emailt.text,
-                                    //     comision: comision.text,
-                                    //   ),
-                                    // )
+                                    Botonc(
+                                      texto: 'Aceptar Adelanto',
+                                      onPressed: () async {
+                                        final instanciaEnviaAdelanto =
+                                            EnviaAdelantoClass();
+                                        final resultado =
+                                            await instanciaEnviaAdelanto
+                                                .enviaadelanto();
+                                      },
+                                    ),
                                   ],
                                 ),
                               ],

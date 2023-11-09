@@ -1,28 +1,76 @@
 import 'dart:io';
-
+import 'package:com.gruponach.nach_empleado/helpers/guardarvars.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:path/path.dart';
+import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:flutter_pdfview/flutter_pdfview.dart';
 
-import '../../libs/lib.dart';
+class PdfViewerPage extends StatefulWidget {
+  const PdfViewerPage({Key? key}) : super(key: key);
 
-final pdfUrlProvider = FutureProvider<String>((ref) async {
-  final savedPdfUrl = await SharedPreferencesHelper.getdatos('urlPdfVisor');
-  return savedPdfUrl;
-});
-
-class PdfViewerPage extends ConsumerStatefulWidget {
-  const PdfViewerPage({super.key});
   @override
   PdfViewerPageState createState() => PdfViewerPageState();
 }
 
-class PdfViewerPageState extends ConsumerState<PdfViewerPage> {
+class PdfViewerPageState extends State<PdfViewerPage> {
+  String? pdfUrl;
+  File? pdfFile; // Usar late para indicar que será inicializada antes de su uso
+
   @override
+  void initState() {
+    super.initState();
+    loadPdfFile();
+  }
+
+  Future<void> loadPdfFile() async {
+    final savedPdfUrl = await SharedPreferencesHelper.getdatos('urlPdfVisor');
+
+    setState(() {
+      pdfUrl = savedPdfUrl;
+    });
+
+    try {
+      final response = await http.get(Uri.parse(savedPdfUrl));
+      final bytes = response.bodyBytes;
+      final filename = p.basename(savedPdfUrl);
+      final dir = await getApplicationDocumentsDirectory();
+      pdfFile = File('${dir.path}/$filename');
+      await pdfFile?.writeAsBytes(bytes, flush: true);
+      setState(() {});
+    } catch (e) {
+      // Manejar errores
+    }
+  }
+
+  Future<void> savePdfToFile(BuildContext context) async {
+    if (pdfFile == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('El PDF no se ha cargado correctamente.'),
+          duration: Duration(seconds: 3),
+        ),
+      );
+      return;
+    }
+
+    final filename = p.basename(pdfUrl!);
+    final directory = await getApplicationDocumentsDirectory();
+    final savePath = p.join(directory.path, filename);
+
+    await pdfFile?.copy(savePath);
+
+    // ignore: use_build_context_synchronously
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('PDF guardado en $savePath'),
+        duration: const Duration(seconds: 3),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final pdfUrlAsyncValue = ref.watch(pdfUrlProvider);
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 5, 50, 91),
@@ -30,49 +78,20 @@ class PdfViewerPageState extends ConsumerState<PdfViewerPage> {
           "Flutter PDF Viewer",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-      ),
-      body: pdfUrlAsyncValue.when(
-        data: (pdfUrl) {
-          return FutureBuilder<File?>(
-            future: loadNetwork(pdfUrl),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                final file = snapshot.data;
-                if (file != null) {
-                  return PDFView(
-                    filePath: file.path,
-                  );
-                } else {
-                  return const Text("Error loading PDF");
-                }
-              } else {
-                return const Center(child: Cargando());
-              }
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.save),
+            onPressed: () {
+              savePdfToFile(context);
             },
-          );
-        },
-        loading: () {
-          return const Center(child: CircularProgressIndicator());
-        },
-        error: (error, stackTrace) {
-          return Text("Error: $error");
-        },
+          ),
+        ],
       ),
+      body: pdfFile != null
+          ? PDFView(
+              filePath: pdfFile?.path,
+            )
+          : const Center(child: CircularProgressIndicator()),
     );
-  }
-
-  Future<File?> loadNetwork(String pdfUrl) async {
-    try {
-      final savedPdfUrl = await SharedPreferencesHelper.getdatos('urlPdfVisor');
-      final response = await http.get(Uri.parse(savedPdfUrl));
-      final bytes = response.bodyBytes;
-      final filename = basename(pdfUrl);
-      final dir = await getApplicationDocumentsDirectory();
-      final file = File('${dir.path}/$filename');
-      await file.writeAsBytes(bytes, flush: true);
-      return file;
-    } catch (e) {
-      return null;
-    }
   }
 }

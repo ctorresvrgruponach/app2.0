@@ -52,16 +52,21 @@ class ActualizaEmpleadoScreenState
   @override
   Widget build(BuildContext context) {
     final customDialogManager = CustomDialogManager(context);
-    final navegador = NavegadorDeRuta(context);
+    final String argumento1;
+    List<dynamic> argumentos = [''];
+    final argumentosw = ModalRoute.of(context)?.settings.arguments;
+    if (argumentosw is List<dynamic>) {
+      argumento1 = argumentosw[0] as String;
+    } else {
+      argumento1 = 'home';
+    }
+
+    final navegador = NavegadorDeRuta(context, argumentos);
+
     // var datos = getdatos();
     telefonof = FocusNode();
     emailf = FocusNode();
     return Scaffold(
-      //  appBar: AppBar(
-      //    title: const Text('portal empleado nach'),
-      //    backgroundColor: const Color.fromARGB(255, 5, 23, 183),
-      //  ),
-      //drawer: const MenuLateral(),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Column(
@@ -1209,8 +1214,8 @@ class ActualizaEmpleadoScreenState
                                                   //         context,
                                                   //         'valores_pedir_adelanto',
                                                   //         (route) => false);
-                                                  await navegador.algunlugar(
-                                                      'valores_pedir_adelanto');
+                                                  await navegador
+                                                      .algunlugar(argumento1);
                                                 }
 
                                                 // print(resultado['success']);

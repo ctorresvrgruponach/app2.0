@@ -23,6 +23,7 @@ class ImageNotifier extends StateNotifier<File?> {
 
   Future<void> pickImage(
       String tipo, String texto, BuildContext context) async {
+    final imagenpdf = Imagenpdf(context);
     // Verifica y solicita los permisos de cámara y galería
     if (tipo == 'camara') {
       var cameraStatus = await Permission.camera.status;
@@ -76,7 +77,7 @@ class ImageNotifier extends StateNotifier<File?> {
       final compressedImage = await compressImage();
       final base64String = base64Encode(compressedImage);
 
-      await devolverimagen(base64String, dir, texto, context);
+      await imagenpdf.devolverimagen(base64String, dir, texto);
     } else {
       final XFile? photo1 = await picker.pickImage(source: ImageSource.gallery);
 
@@ -87,40 +88,13 @@ class ImageNotifier extends StateNotifier<File?> {
           final dir = await path_provider.getTemporaryDirectory();
           var bytes = File(photo1.path).readAsBytesSync();
 
-          await devolverimagen(base64Encode(bytes), dir, texto, context);
+          await imagenpdf.devolverimagen(base64Encode(bytes), dir, texto);
         } else {
           // Handle the case when a non-image file is selected.
           // print('El archivo seleccionado no es una imagen.');
         }
       }
     }
-  }
-
-  Future<String> devolverimagen(
-      String base64String, Directory dir, String texto, context) async {
-    final now = DateTime.now();
-    String formatter = DateFormat('d/MM/y').format(now);
-    String htmlcotejado = texto == 'CURP' ? '' : formatText(formatter);
-    var htmlcode2 = texto == 'INE'
-        ? """<img src="data:image/png;base64,$base64String" alt=""  width="500" height="600"/><br/>"""
-        : '';
-
-    var htmlcode =
-        """<img src="data:image/png;base64,$base64String" alt=""  width="500" height="600"/>$htmlcode2 $htmlcotejado""";
-
-    var targetFileNames3 = "archivo_pdf_$texto";
-    await FlutterHtmlToPdf.convertFromHtmlContent(
-        htmlcode, dir.path, targetFileNames3);
-    final bytes = File('${dir.path}/$targetFileNames3.pdf').readAsBytesSync();
-    String pdfbase642 = base64Encode(bytes);
-    Clipboard.setData(ClipboardData(text: pdfbase642));
-    SharedPreferencesHelper.setdatos(texto, pdfbase642);
-    Navigator.pop(context);
-
-    if (kDebugMode) {
-      print(pdfbase642);
-    }
-    return pdfbase642;
   }
 }
 
@@ -184,6 +158,39 @@ class BotonfileState extends ConsumerState<Botonfile> {
       },
       child: Text(' ${widget.texto}'),
     );
+  }
+}
+
+class Imagenpdf {
+  final BuildContext context;
+
+  Imagenpdf(this.context);
+  Future<String> devolverimagen(
+      String base64String, Directory dir, String texto) async {
+    final now = DateTime.now();
+    String formatter = DateFormat('d/MM/y').format(now);
+    String htmlcotejado = texto == 'CURP' ? '' : formatText(formatter);
+    var htmlcode2 = texto == 'INE'
+        ? """<img src="data:image/png;base64,$base64String" alt=""  width="500" height="600"/><br/>"""
+        : '';
+
+    var htmlcode =
+        """<img src="data:image/png;base64,$base64String" alt=""  width="500" height="600"/>$htmlcode2 $htmlcotejado""";
+
+    var targetFileNames3 = "archivo_pdf_$texto";
+    await FlutterHtmlToPdf.convertFromHtmlContent(
+        htmlcode, dir.path, targetFileNames3);
+    final bytes = File('${dir.path}/$targetFileNames3.pdf').readAsBytesSync();
+    String pdfbase642 = base64Encode(bytes);
+    Clipboard.setData(ClipboardData(text: pdfbase642));
+    SharedPreferencesHelper.setdatos(texto, pdfbase642);
+    // ignore: use_build_context_synchronously
+    Navigator.pop(context);
+
+    if (kDebugMode) {
+      print(pdfbase642);
+    }
+    return pdfbase642;
   }
 }
 
@@ -325,6 +332,55 @@ class CustomAlertDialogBotonState
           ),
         ),
       ],
+    );
+  }
+}
+
+class Botonc extends ConsumerStatefulWidget {
+  final String texto;
+  final void Function()? onPressed;
+
+  const Botonc({
+    Key? key,
+    required this.texto,
+    required this.onPressed,
+  }) : super(key: key);
+
+  @override
+  BotoncState createState() => BotoncState();
+}
+
+class BotoncState extends ConsumerState<Botonc> {
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      setState(() {
+        filterColor = true;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Color.fromARGB(filterColor ? 255 : 50, 5, 50, 91),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(displayWidth(context) * 0.02),
+        ),
+      ),
+      onPressed: () {
+        // Llamar al método onPressed cuando se presiona el botón
+        if (widget.onPressed != null) {
+          widget.onPressed!();
+        }
+        // Cambiar el estado para actualizar el color
+        setState(() {
+          filterColor = true;
+        });
+      },
+      child: Text(' ${widget.texto}'),
     );
   }
 }

@@ -9,10 +9,9 @@ import '../../helpers/somelugar.dart';
 import '../../ui/alerts.dart';
 
 class ReviewSignaturePage extends StatelessWidget {
-  final Uint8List signature;
+  final Uint8List? signature;
 
-  const ReviewSignaturePage({Key? key, required this.signature})
-      : super(key: key);
+  const ReviewSignaturePage({Key? key, this.signature}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -59,15 +58,16 @@ class ReviewSignaturePage extends StatelessWidget {
           title: const Text('Guardar Firma'),
         ),
         body: Center(
-          child: Image.memory(signature),
+          child: Image.memory(signature!),
         ));
   }
 
   Future? saveSignature(BuildContext context) async {
     // final status = await Permission.storage.status;
-    String base64String = base64.encode(signature);
+    String base64String = base64.encode(signature!);
     final customDialogManager = CustomDialogManager(context);
-    final navegador = NavegadorDeRuta(context);
+    List<dynamic> argumentos = ['home'];
+    final navegador = NavegadorDeRuta(context, argumentos);
 
     //Clipboard.setData(ClipboardData(text: base64String));
     SharedPreferencesHelper.setdatos("imagen_emplaedo", base64String);
@@ -81,8 +81,12 @@ class ReviewSignaturePage extends StatelessWidget {
         title: resultado['mensaje'],
         color: const Color.fromARGB(255, 98, 54, 244),
       );
-
-      await navegador.algunlugar('home');
+      final firma = await SharedPreferencesHelper.getdatos('flag_firma');
+      if (int.parse(firma) == 0) {
+        await navegador.algunlugar('actualizaempleado');
+      } else {
+        await navegador.algunlugar('home');
+      }
     } else {
       await customDialogManager.showCustomDialog(
         icon: Icons.airlines_rounded,

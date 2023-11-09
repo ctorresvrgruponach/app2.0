@@ -134,7 +134,7 @@ class LoginState extends ConsumerState<Login> {
         SharedPreferencesHelper.setdatos('token', '');
         SharedPreferencesHelper.setdatos('empleadoId', '');
         SharedPreferencesHelper.setdatos('imss', '');
-        final customDialogManager = CustomDialogManager(context);
+
         await customDialogManager.showCustomDialog(
             icon: Icons.warning,
             title: 'Login incorrecto',
