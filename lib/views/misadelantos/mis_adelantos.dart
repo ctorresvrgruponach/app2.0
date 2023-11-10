@@ -41,69 +41,79 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                   child: const Text(
                                     "Adelanto de nómina",
                                     style: TextStyle(
-                                      color: Colors.blue,
+                                      color: Color.fromARGB(255, 0, 27, 49),
                                       fontSize: 40,
                                     ),
                                     textAlign: TextAlign
                                         .left, // Set the text alignment to the left
                                   ),
                                 ),
-                                DataTable(
-                                  columns: const [
-                                    DataColumn(
-                                      label: Text('id'),
-                                    ),
-                                    DataColumn(
-                                      label: Text('no_empleado'),
-                                    ),
-                                    DataColumn(
-                                      label: Text('nombre_completo'),
-                                    ),
-                                    DataColumn(
-                                      label: Text('operaciones'),
-                                    ),
-                                    DataColumn(
-                                      label: Text('descuento'),
-                                    ),
-                                    DataColumn(
-                                      label: Text('total_descuento'),
-                                    ),
-                                    DataColumn(
-                                      label: Text('editar'),
-                                    ),
-                                    // Agrega más DataColumn según sea necesario
-                                  ],
-                                  rows: rows.map<DataRow>((rowData) {
-                                    return DataRow(
-                                      cells: [
-                                        DataCell(
-                                          Text('${rowData['id']}'),
-                                        ),
-                                        DataCell(
-                                          Text('${rowData['no_empleado']}'),
-                                        ),
-                                        DataCell(
-                                          Text('${rowData['nombre_completo']}'),
-                                        ),
-                                        DataCell(
-                                          Text('${rowData['operaciones']}'),
-                                        ),
-                                        DataCell(
-                                          Text('${rowData['descuento']}'),
-                                        ),
-                                        DataCell(
-                                          Text('${rowData['total_descuento']}'),
-                                        ),
-                                        DataCell(
-                                          Botoneditar(
-                                            texto: 'INE',
-                                            indiceadelanto: '${rowData['id']}',
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      top: 1.0,
+                                      bottom: 1.0,
+                                      left: 10.0,
+                                      right: 10.0),
+                                  child: DataTable(
+                                    columns: const [
+                                      DataColumn(
+                                        label: Text('id'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('no_empleado'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('nombre_completo'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('operaciones'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('descuento'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('total_descuento'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('editar'),
+                                      ),
+                                      // Agrega más DataColumn según sea necesario
+                                    ],
+                                    rows: rows.map<DataRow>((rowData) {
+                                      return DataRow(
+                                        cells: [
+                                          DataCell(
+                                            Text('${rowData['id']}'),
                                           ),
-                                        ),
-                                        // Agrega más DataCell según sea necesario
-                                      ],
-                                    );
-                                  }).toList(),
+                                          DataCell(
+                                            Text('${rowData['no_empleado']}'),
+                                          ),
+                                          DataCell(
+                                            Text(
+                                                '${rowData['nombre_completo']}'),
+                                          ),
+                                          DataCell(
+                                            Text('${rowData['operaciones']}'),
+                                          ),
+                                          DataCell(
+                                            Text('${rowData['descuento']}'),
+                                          ),
+                                          DataCell(
+                                            Text(
+                                                '${rowData['total_descuento']}'),
+                                          ),
+                                          DataCell(
+                                            Botoneditar(
+                                              texto: 'INE',
+                                              indiceadelanto:
+                                                  '${rowData['id']}',
+                                            ),
+                                          ),
+                                          // Agrega más DataCell según sea necesario
+                                        ],
+                                      );
+                                    }).toList(),
+                                  ),
                                 ),
                               ],
                             );
@@ -119,7 +129,7 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                     child: const Text(
                                       "Adelanto de nómina",
                                       style: TextStyle(
-                                        color: Colors.blue,
+                                        color: Color.fromARGB(255, 0, 39, 71),
                                         fontSize: 40,
                                       ),
                                       textAlign: TextAlign
@@ -192,75 +202,81 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                   child: const Text(
                                     "Prestamos",
                                     style: TextStyle(
-                                      color: Colors.blue,
+                                      color: Color.fromARGB(255, 0, 36, 66),
                                       fontSize: 40,
                                     ),
                                     textAlign: TextAlign
                                         .left, // Set the text alignment to the left
                                   ),
                                 ),
-                                DataTable(
-                                  columns: const [
-                                    DataColumn(
-                                      label: Text('id'),
-                                    ),
-                                    DataColumn(
-                                      label: Text('no_empleado'),
-                                    ),
-                                    DataColumn(
-                                      label: Text('nombre_completo'),
-                                    ),
-                                    DataColumn(
-                                      label: Text('operaciones'),
-                                    ),
-                                    DataColumn(
-                                      label: Text('monto_prestamo'),
-                                    ),
-                                    DataColumn(
-                                      label: Text('pago_interes'),
-                                    ),
-                                    DataColumn(
-                                      label: Text('pago'),
-                                    ),
-                                    DataColumn(
-                                      label: Text('editar'),
-                                    ),
-                                    // Agrega más DataColumn según sea necesario
-                                  ],
-                                  rows: rows.map<DataRow>((rowData) {
-                                    return DataRow(
-                                      cells: [
-                                        DataCell(
-                                          Text('${rowData['id']}'),
-                                        ),
-                                        DataCell(
-                                          Text('${rowData['no_empleado']}'),
-                                        ),
-                                        DataCell(
-                                          Text('${rowData['nombre_completo']}'),
-                                        ),
-                                        DataCell(
-                                          Text('${rowData['operaciones']}'),
-                                        ),
-                                        DataCell(
-                                          Text('${rowData['monto_prestamo']}'),
-                                        ),
-                                        DataCell(
-                                          Text('${rowData['pago_interes']}'),
-                                        ),
-                                        DataCell(
-                                          Text('${rowData['pago']}'),
-                                        ),
-                                        DataCell(
-                                          Botoneditar(
-                                            texto: 'INE',
-                                            indiceadelanto: '${rowData['id']}',
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: DataTable(
+                                    columns: const [
+                                      DataColumn(
+                                        label: Text('id'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('no_empleado'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('nombre_completo'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('operaciones'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('monto_prestamo'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('pago_interes'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('pago'),
+                                      ),
+                                      DataColumn(
+                                        label: Text('editar'),
+                                      ),
+                                      // Agrega más DataColumn según sea necesario
+                                    ],
+                                    rows: rows.map<DataRow>((rowData) {
+                                      return DataRow(
+                                        cells: [
+                                          DataCell(
+                                            Text('${rowData['id']}'),
                                           ),
-                                        ),
-                                        // Agrega más DataCell según sea necesario
-                                      ],
-                                    );
-                                  }).toList(),
+                                          DataCell(
+                                            Text('${rowData['no_empleado']}'),
+                                          ),
+                                          DataCell(
+                                            Text(
+                                                '${rowData['nombre_completo']}'),
+                                          ),
+                                          DataCell(
+                                            Text('${rowData['operaciones']}'),
+                                          ),
+                                          DataCell(
+                                            Text(
+                                                '${rowData['monto_prestamo']}'),
+                                          ),
+                                          DataCell(
+                                            Text('${rowData['pago_interes']}'),
+                                          ),
+                                          DataCell(
+                                            Text('${rowData['pago']}'),
+                                          ),
+                                          DataCell(
+                                            Botoneditar(
+                                              texto: 'INE',
+                                              indiceadelanto:
+                                                  '${rowData['id']}',
+                                            ),
+                                          ),
+                                          // Agrega más DataCell según sea necesario
+                                        ],
+                                      );
+                                    }).toList(),
+                                  ),
                                 ),
                               ],
                             );
@@ -276,7 +292,7 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                     child: const Text(
                                       "Prestamos",
                                       style: TextStyle(
-                                        color: Colors.blue,
+                                        color: Color.fromARGB(255, 1, 55, 98),
                                         fontSize: 40,
                                       ),
                                       textAlign: TextAlign
