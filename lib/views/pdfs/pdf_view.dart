@@ -75,9 +75,9 @@ class PdfViewerPageState extends State<PdfViewerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 5, 50, 91),
+        backgroundColor: const Color.fromARGB(255, 2, 9, 72),
         title: const Text(
-          "Flutter PDF Viewer",
+          "Vista Previa",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: [

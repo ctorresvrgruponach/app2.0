@@ -65,6 +65,7 @@ dependencies:
   xml: ^6.2.2
   webview_flutter: ^4.4.2
   pdf_manipulator: ^0.5.9
+  flutter_html: 
 
 dev_dependencies:
   flutter_test:
