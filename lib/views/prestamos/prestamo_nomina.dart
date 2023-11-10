@@ -49,7 +49,7 @@ class Prestamo extends ConsumerStatefulWidget {
 class PrestamoState extends ConsumerState<Prestamo> {
   @override
   Widget build(BuildContext context) {
-    final navegador = NavegadorDeRuta(context);
+    // final navegador = NavegadorDeRuta(context);
 
     //TODOS LOS VALORES CAPTURADOS SE MANDN AL ENDPOIN
      Future<void> somelugar() async {

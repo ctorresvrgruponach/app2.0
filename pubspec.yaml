@@ -62,7 +62,7 @@ dependencies:
   intl: ^0.18.1
   auto_route: ^7.8.4
   path:
-  xml: ^6.2.2
+  # xml: ^6.2.2
   webview_flutter: ^4.4.2
   pdf_manipulator: ^0.5.9
   flutter_html: 
