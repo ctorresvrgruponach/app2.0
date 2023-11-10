@@ -1,6 +1,7 @@
 // app_routes.dart
 
 import '../config/vistas.dart';
+import '../views/prestamos/prestamo_nomina.dart';
 
 class AppRoutes {
   static const String inicio = '/';
@@ -16,6 +17,9 @@ class AppRoutes {
   static const String recibos = 'recibos';
   static const String valoresPedirAdelanto = 'valores_pedir_adelanto';
   static const String pdf = 'pdf';
+
+  //Adelantos
+  static const String prestamo = 'prestamo';
 
   // Agrega la definición de initialRoute
   static const String initialRoute = inicio;
@@ -35,5 +39,8 @@ class AppRoutes {
     recibos: (context) => const RecibosScreen(),
     valoresPedirAdelanto: (context) => const ValoresPedirAdelantoScreen(),
     pdf: (context) => const PdfViewerPage(),
+
+    // Prestamos
+    prestamo: (context) => const Prestamo(),
   };
 }

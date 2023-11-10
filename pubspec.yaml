@@ -61,6 +61,8 @@ dependencies:
   http: ^0.13.6
   intl: ^0.18.1
   auto_route: ^7.8.4
+  dropdown_button2: ^2.3.9
+  animated_custom_dropdown: ^2.0.0
 
 dev_dependencies:
   flutter_test:
