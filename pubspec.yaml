@@ -66,6 +66,8 @@ dependencies:
   webview_flutter: ^4.4.2
   pdf_manipulator: ^0.5.9
   flutter_html: 
+  dropdown_button2: ^2.3.9
+  animated_custom_dropdown: ^2.0.0
 
 dev_dependencies:
   flutter_test:

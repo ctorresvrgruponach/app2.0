@@ -1,5 +1,6 @@
-import '../../libs/lib.dart';
+import 'package:com.gruponach.nach_empleado/views/prestamos/solicita_prestamo.dart';
 
+import '../../libs/lib.dart';
 class IdOperacionNotifier extends StateNotifier<String> {
   IdOperacionNotifier() : super('');
 
@@ -8,22 +9,22 @@ class IdOperacionNotifier extends StateNotifier<String> {
   }
 }
 
-final idOperacionProvider =
-    StateNotifierProvider<IdOperacionNotifier, String>((ref) {
+final prestamosNomina = StateNotifierProvider<IdOperacionNotifier, String>((ref) {
   return IdOperacionNotifier();
 });
+final operacionesPrestamo = FutureProvider.autoDispose<Map<String, dynamic>>((ref) async {
 
-final postOperacionesProviders =
-    FutureProvider.autoDispose<Map<String, dynamic>>((ref) async {
-  final token = await SharedPreferencesHelper.getdatos('token');
+  final token      = await SharedPreferencesHelper.getdatos('token');
   final empleadoId = await SharedPreferencesHelper.getdatos('empleado');
-  final postDatas = {
+  // print(empleadoId);
+  // print(token);
+  final postDatas  = {
     "idEmpleado": empleadoId,
     "token": token,
   };
 
   final dynamic dataOperaciones = await fetchPostData(
-      modo, completeUrldev, baseUrl, endpointOperaciones, postDatas);
+      modo, completeUrldev, baseUrl, prestamo, postDatas);
 
   if (dataOperaciones is Map<String, dynamic> &&
       dataOperaciones["success"] != null) {
@@ -40,39 +41,38 @@ final postOperacionesProviders =
   return dataOperaciones;
 });
 
-class AdelantoScreen extends ConsumerStatefulWidget {
-  const AdelantoScreen({super.key});
+class Prestamo extends ConsumerStatefulWidget {
+  const Prestamo({super.key});
   @override
-  AdelantoScreenState createState() => AdelantoScreenState();
+  PrestamoState createState() => PrestamoState();
 }
-
-class AdelantoScreenState extends ConsumerState<AdelantoScreen> {
+class PrestamoState extends ConsumerState<Prestamo> {
   @override
   Widget build(BuildContext context) {
-    final customDialogManager = CustomDialogManager(context);
-    List<dynamic> argumentos = ['valores_pedir_adelanto'];
-    final navegador = NavegadorDeRuta(context, argumentos);
+    final navegador = NavegadorDeRuta(context);
 
-    Future<void> somelugar() async {
-      final mensaje = await SharedPreferencesHelper.getdatos('circuloacepta');
+    //TODOS LOS VALORES CAPTURADOS SE MANDN AL ENDPOIN
+     Future<void> somelugar() async {
 
-      if (mensaje.toString() == '') {
-        SharedPreferencesHelper.setdatos("circuloacepta", "Aceptado");
-        await customDialogManager.showCustomDialog(
-          icon: Icons.airlines_rounded,
-          message: 'Se consultará círculo de crédito',
-          title: 'Se consultará círculo de crédito',
-          color: const Color.fromARGB(255, 244, 54, 54),
-        );
-      }
-      await navegador.algunlugar('actualizaempleado');
+            Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) {
+            return SolicitaPrestamo(); // Reemplaza con el widget de tu página de solicitud de préstamo
+          },
+         ),
+       );
+      // await navegador.algunlugar('actualizaempleado');
+
+      // Navigator.pushNamedAndRemoveUntil(
+      //     context, 'solicita_prestamo', (route) => false);
     }
-
     return Scaffold(
       appBar: AppBar(
-          title: const Text("Adelanto de nómina"),
+          title: const Text("Prestamo de nómina"),
           centerTitle: true,
-          backgroundColor: const Color.fromARGB(255, 2, 9, 72)),
+          backgroundColor: Colors.black),
+          // backgroundColor: const Color.fromARGB(255, 2, 9, 72)),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
@@ -84,7 +84,7 @@ class AdelantoScreenState extends ConsumerState<AdelantoScreen> {
                     width: displayWidth(context) * 1,
 
                     child: FutureBuilder<Map<String, dynamic>>(
-                      future: ref.watch(postOperacionesProviders.future),
+                      future: ref.watch(operacionesPrestamo.future),
                       builder: (context, snapshot) {
                         if (snapshot.hasData &&
                             snapshot.data!['operaciones'] != null) {
@@ -124,52 +124,29 @@ class AdelantoScreenState extends ConsumerState<AdelantoScreen> {
                                                       style: ElevatedButton
                                                           .styleFrom(
                                                         backgroundColor:
-                                                            const Color
-                                                                .fromARGB(
-                                                                255, 5, 50, 91),
+                                                            const Color.fromARGB(255, 5, 50, 91),
                                                         shape:
                                                             RoundedRectangleBorder(
                                                           borderRadius:
-                                                              BorderRadius.circular(
-                                                                  displayWidth(
-                                                                          context) *
-                                                                      0.02),
+                                                              BorderRadius.circular(displayWidth(context) * 0.02),
                                                         ), // This is what you need!
                                                       ),
                                                       onPressed: () async {
-
-                                                        print('MANDA NUEVA VISTA');
+                                                        print('POR AQUI ESTA EL PEDOO..');
+                                                        print(']Me tocaste');
                                                         SharedPreferencesHelper.setdatos(
-                                                            'idoperacionid',
-                                                            snapshot.data![
-                                                                    'operaciones']
-                                                                    [index][
-                                                                    'idOperacion']
-                                                                .toString());
-                                                        final notifier = ref.read(
-                                                            idOperacionProvider
-                                                                .notifier);
-                                                        notifier.updateIdOperacion(
-                                                            snapshot.data![
-                                                                    'operaciones']
-                                                                    [index][
-                                                                    'idOperacion']
-                                                                .toString());
-                                                        somelugar();
+                                                         'idoperacionid',
+                                                         snapshot.data!['operaciones'][index]['idOperacion'].toString());
+                                                        final notifier = ref.read(prestamosNomina.notifier);
+                                                        notifier.updateIdOperacion( snapshot.data![ 'operaciones'][index]['idOperacion'].toString());
+                                                         somelugar();
                                                       },
                                                       child: SizedBox(
-                                                        width: displayWidth(
-                                                                context) *
-                                                            0.7,
+                                                        width: displayWidth( context) * 0.7,
                                                         child: Center(
-                                                          child: Text(
-                                                            operaciones[index]
-                                                                ['operaciones'],
+                                                          child: Text(operaciones[index]['operaciones'],
                                                             style: TextStyle(
-                                                              fontSize:
-                                                                  displayWidth(
-                                                                          context) *
-                                                                      0.04,
+                                                              fontSize:displayWidth(context) * 0.04,
                                                             ),
                                                           ),
                                                         ),
@@ -218,7 +195,7 @@ class AdelantoScreenState extends ConsumerState<AdelantoScreen> {
                                           height: 100,
                                           child: Center(
                                             child: Text(
-                                              'Hubo un error en la carga de datos',
+                                              'Hubo un error en los datos',
                                               textAlign: TextAlign.justify,
                                               style: TextStyle(
                                                   color: const Color.fromARGB(
@@ -304,5 +281,7 @@ class AdelantoScreenState extends ConsumerState<AdelantoScreen> {
         ),
       ),
     );
+
   }
+
 }

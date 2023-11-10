@@ -1,12 +1,12 @@
 import 'dart:io';
+
 // Importa la biblioteca de permisos
 import 'package:flutter/services.dart';
+import 'package:flutter_html_to_pdf/flutter_html_to_pdf.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 
 import '../../libs/lib.dart';
-import 'package:flutter_html_to_pdf/flutter_html_to_pdf.dart';
-
 import '../config/htmls.dart';
 
 bool hayDatos = true;
@@ -96,6 +96,33 @@ class ImageNotifier extends StateNotifier<File?> {
       }
     }
   }
+
+  Future<String> devolverimagen(
+      String base64String, Directory dir, String texto, context) async {
+    final now = DateTime.now();
+    String formatter = DateFormat('d/MM/y').format(now);
+    String htmlcotejado = texto == 'CURP' ? '' : formatText(formatter);
+    var htmlcode2 = texto == 'INE'
+        ? """<img src="data:image/png;base64,$base64String" alt=""  width="500" height="600"/><br/>"""
+        : '';
+
+    var htmlcode =
+        """<img src="data:image/png;base64,$base64String" alt=""  width="500" height="600"/>$htmlcode2 $htmlcotejado""";
+
+    var targetFileNames3 = "archivo_pdf_$texto";
+    await FlutterHtmlToPdf.convertFromHtmlContent(
+        htmlcode, dir.path, targetFileNames3);
+    final bytes = File('${dir.path}/$targetFileNames3.pdf').readAsBytesSync();
+    String pdfbase642 = base64Encode(bytes);
+    Clipboard.setData(ClipboardData(text: pdfbase642));
+    SharedPreferencesHelper.setdatos(texto, pdfbase642);
+    Navigator.pop(context);
+
+    if (kDebugMode) {
+      // print('ARCHIVO CARGADO BASE 64 $pdfbase642');
+    }
+    return pdfbase642;
+  }
 }
 
 bool _isImageFile(String filePath) {
@@ -150,9 +177,10 @@ class BotonfileState extends ConsumerState<Botonfile> {
         final customDialogManager = CustomDialogManagerBoton(context);
 
         await customDialogManager.showCustomDialog(
-            color: Colors.black,
-            icon: Icons.abc,
-            message: 'Da clic para subir ${widget.texto}',
+            color: Colors.white,
+            icon: Icons.camera_alt_outlined,
+            // message: 'Selecciona una opcion ${widget.texto}',
+            message: '',
             title: 'Documento ${widget.texto}',
             texto: widget.texto);
       },
@@ -279,10 +307,10 @@ class CustomAlertDialogBotonState
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(
                 12.0), // Ajusta el radio de borde según tus necesidades
-            border: Border.all(
-              color: const Color.fromARGB(255, 0, 4, 125), // Color del borde
-              width: 4.0, // Ancho del borde
-            ),
+            // border: Border.all(
+            //   color: const Color.fromARGB(255, 0, 4, 125), // Color del borde
+            //   width: 4.0, // Ancho del borde
+            // ),
           ),
           child: TextButton(
             onPressed: () {
@@ -301,16 +329,19 @@ class CustomAlertDialogBotonState
                 fontSize: 14,
               ),
             ),
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>( const Color.fromARGB(255, 5, 50, 91)), // Color de fondo
+            ),
           ),
         ),
         Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(
                 12.0), // Ajusta el radio de borde según tus necesidades
-            border: Border.all(
-              color: const Color.fromARGB(255, 0, 4, 125), // Color del borde
-              width: 4.0, // Ancho del borde
-            ),
+            // border: Border.all(
+            //   color: const Color.fromARGB(255, 0, 4, 125), // Color del borde
+            //   width: 4.0, // Ancho del borde
+            // ),
           ),
           child: TextButton(
             onPressed: () {
@@ -328,6 +359,9 @@ class CustomAlertDialogBotonState
                 // backgroundColor: Colors.amber,
                 fontSize: 14,
               ),
+            ),
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>( const Color.fromARGB(255, 5, 50, 91)), // Color de fondo
             ),
           ),
         ),

@@ -322,7 +322,7 @@ class _ServiciosScreenState extends State<ServiciosScreen> {
                   item(context, "assets/images/baby_totem.png", 'BABY TOTEM',
                       'Adelanto de nómina', 'adelanto_nomina'),
                   item(context, "assets/images/totem_max.png", 'TOTEM MAX',
-                      'Prestamo via nómina', 'servicios'),
+                      'Prestamo via nómina', 'prestamo'),
                 ],
               ),
             ),
