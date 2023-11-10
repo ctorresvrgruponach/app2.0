@@ -21,3 +21,7 @@ const String endpointMisAadelantosFiles = '/mis_adelantos_files';
 const String actualizamisarchivos = '/mis_adelantos_actualiza_files';
 const String enviarfirma = '/guarda_firma';
 const String endpointMisPrestamosFiles = '/mis_adelantos';
+const String endpointPeriodos = '/get_periodos';
+const String endpointOperacionesRecibos = '/recibos_nomina';
+const String endpointPeriodosRecibos = '/recibos_periodos';
+const String endpointRecibosBase64 = '/descarga_recibo_nomina';

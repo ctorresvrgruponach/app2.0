@@ -423,7 +423,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             BorderRadius.circular(displayWidth(context) * 0.02),
                       ), // This is what you need!
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, 'recibos');
+                    },
                     child: SizedBox(
                       width: displayWidth(context) * 0.8,
                       child: Center(

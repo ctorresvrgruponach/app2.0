@@ -13,7 +13,7 @@ export '../../views/docshtml/html_view.dart';
 export '../views/adelanto/actualizaempleado.dart';
 export '../../views/adelanto/valores_pedir_adelanto.dart';
 export '../../views/servicios/serviciosscreen.dart';
-export '../views/recibos/recibosnomina.dart';
 export '../views/firma/signaturepage.dart';
 export '../views/xmls/xml.dart';
+export '../views/recibosnomina/recibosnomina.dart';
 //export '../../views/splash_Screen.dart';

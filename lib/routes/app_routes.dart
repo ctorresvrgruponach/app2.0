@@ -34,7 +34,7 @@ class AppRoutes {
     adelantoNomina: (context) => const AdelantoScreen(),
     actualizaempleado: (context) => const ActualizaEmpleadoScreen(),
     vistaHtml: (context) => const HTMLtoWidget(),
-    recibos: (context) => const RecibosScreen(),
+    recibos: (context) => const ReciboNominaScreen(),
     valoresPedirAdelanto: (context) => const ValoresPedirAdelantoScreen(),
     pdf: (context) => const PdfViewerPage(),
     reviewSignaturePage: (context) => const ReviewSignaturePage(),
