@@ -19,6 +19,9 @@ class EnviaDatosEmpleadoClass {
         await SharedPreferencesHelper.getdatos('direccionMunicipio');
     final direccionColonia =
         await SharedPreferencesHelper.getdatos('direccionColonia');
+    final claveEstado = await SharedPreferencesHelper.getdatos('claveEstado');
+    final direccionEstado =
+        await SharedPreferencesHelper.getdatos('direccionEstado');
     final telefono = await SharedPreferencesHelper.getdatos('telefono');
     final email = await SharedPreferencesHelper.getdatos('email');
 
@@ -69,6 +72,18 @@ class EnviaDatosEmpleadoClass {
       postDatas["direccionExt"] = direccionExt;
     } else {
       postDatas["direccionExt"] = null;
+    }
+
+    if (claveEstado.isNotEmpty) {
+      postDatas["clave_estado"] = claveEstado;
+    } else {
+      postDatas["clave_estado"] = null;
+    }
+
+    if (direccionEstado.isNotEmpty) {
+      postDatas["clave_estado"] = direccionEstado;
+    } else {
+      postDatas["clave_estado"] = null;
     }
 
     if (curpe.isNotEmpty) {

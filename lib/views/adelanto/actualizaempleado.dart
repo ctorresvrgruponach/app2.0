@@ -1,6 +1,9 @@
+import 'package:com.gruponach.nach_empleado/ui/decoracioninput.dart';
+
 import '../../api/actualizadatosempleado.dart';
 import '../../api/apiadelanto.dart';
 import '../../libs/lib.dart';
+import '../docshtml/documentodeidentidad.dart';
 
 class ActualizaEmpleadoScreen extends ConsumerStatefulWidget {
   const ActualizaEmpleadoScreen({super.key});
@@ -62,6 +65,9 @@ class ActualizaEmpleadoScreenState
     }
 
     final navegador = NavegadorDeRuta(context, argumentos);
+    //InputDecoration decoration = CustomInputDecoration.getDecoration();
+    CustomTitulo customTitulo = CustomTitulo();
+    PdfGenerator pdfGenerator = PdfGenerator(context);
 
     // var datos = getdatos();
     telefonof = FocusNode();
@@ -116,6 +122,34 @@ class ActualizaEmpleadoScreenState
                         .funcioncurpna(operaciones['curp'].toString());
                     folioConsultat.text = folioConsulta.toString();
 
+                    SharedPreferencesHelper.setdatos('nombrese', nombret.text);
+                    SharedPreferencesHelper.setdatos(
+                        'apellidoPaternoe', apellidoPaternot.text);
+                    SharedPreferencesHelper.setdatos(
+                        'apellidoMaternoe', apellidoMaternot.text);
+                    SharedPreferencesHelper.setdatos('curpe', curpt.text);
+                    SharedPreferencesHelper.setdatos(
+                        'direccionCp', direccionCpt.text);
+                    SharedPreferencesHelper.setdatos(
+                        'direccionCalle', direccionCallet.text);
+                    SharedPreferencesHelper.setdatos(
+                        'direccionInt', direccionIntt.text);
+                    SharedPreferencesHelper.setdatos(
+                        'direccionExt', direccionExtt.text);
+                    SharedPreferencesHelper.setdatos(
+                        'direccionMunicipio', direccionMunicipiot.text);
+                    SharedPreferencesHelper.setdatos(
+                        'direccionColonia', direccionColoniat.text);
+                    SharedPreferencesHelper.setdatos(
+                        'claveEstado', operaciones['clave_estado'].toString());
+                    SharedPreferencesHelper.setdatos(
+                        'direccionEstado', direccionEstadot.text);
+                    SharedPreferencesHelper.setdatos(
+                        'telefono', telefonot.text);
+                    SharedPreferencesHelper.setdatos('email', emailt.text);
+                    SharedPreferencesHelper.setdatos(
+                        'rfc', operaciones['RFC'].toString());
+
                     return Card(
                       shape: RoundedRectangleBorder(
                         borderRadius:
@@ -146,7 +180,8 @@ class ActualizaEmpleadoScreenState
                                 children: [
                                   Column(
                                     children: [
-                                      textot1(context, 'Nombre(s) *'),
+                                      customTitulo.textot1(
+                                          context, 'Nombre(s) *'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
                                         height: 60,
@@ -159,44 +194,16 @@ class ActualizaEmpleadoScreenState
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 255, 255, 255)),
-                                          decoration: const InputDecoration(
-                                            filled: true,
-                                            fillColor:
-                                                Color.fromARGB(0, 0, 54, 215),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(5.0)),
-                                              borderSide: BorderSide(
-                                                width: 2, //<-- SEE HERE
-                                                color: Color.fromARGB(
-                                                    240, 190, 191, 194),
-                                              ),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                              width: 5, //<-- SEE HERE
-                                              color: Color.fromARGB(
-                                                  0, 190, 191, 194),
-                                            )),
-                                            border: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  width: 5, //<-- SEE HERE
-                                                  color: Color.fromARGB(
-                                                      240, 190, 191, 194),
-                                                ),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(5.0))),
-                                            labelStyle: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 5, 49, 91)),
-                                          ),
+                                          decoration: CustomInputDecoration
+                                              .getDecoration(),
                                         ),
                                       ),
                                     ],
                                   ),
                                   Column(
                                     children: [
-                                      textot1(context, 'Apellido Paterno'),
+                                      customTitulo.textot1(
+                                          context, 'Apellido Paterno'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
                                         height: 60,
@@ -209,37 +216,8 @@ class ActualizaEmpleadoScreenState
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 255, 255, 255)),
-                                          decoration: const InputDecoration(
-                                            filled: true,
-                                            fillColor:
-                                                Color.fromARGB(0, 0, 54, 215),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(5.0)),
-                                              borderSide: BorderSide(
-                                                width: 2, //<-- SEE HERE
-                                                color:
-                                                    Color.fromARGB(0, 5, 5, 5),
-                                              ),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                              width: 5, //<-- SEE HERE
-                                              color: Color.fromARGB(
-                                                  0, 190, 191, 194),
-                                            )),
-                                            border: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  width: 5, //<-- SEE HERE
-                                                  color: Color.fromARGB(
-                                                      240, 190, 191, 194),
-                                                ),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(5.0))),
-                                            labelStyle: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 5, 49, 91)),
-                                          ),
+                                          decoration: CustomInputDecoration
+                                              .getDecoration(),
                                         ),
                                       ),
                                     ],
@@ -254,7 +232,8 @@ class ActualizaEmpleadoScreenState
                                 children: [
                                   Column(
                                     children: [
-                                      textot1(context, 'Apellido Materno'),
+                                      customTitulo.textot1(
+                                          context, 'Apellido Materno'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
                                         height: 60,
@@ -267,44 +246,15 @@ class ActualizaEmpleadoScreenState
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 255, 255, 255)),
-                                          decoration: const InputDecoration(
-                                            filled: true,
-                                            fillColor:
-                                                Color.fromARGB(0, 0, 54, 215),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(5.0)),
-                                              borderSide: BorderSide(
-                                                width: 2, //<-- SEE HERE
-                                                color:
-                                                    Color.fromARGB(0, 5, 5, 5),
-                                              ),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                              width: 5, //<-- SEE HERE
-                                              color: Color.fromARGB(
-                                                  0, 190, 191, 194),
-                                            )),
-                                            border: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  width: 5, //<-- SEE HERE
-                                                  color: Color.fromARGB(
-                                                      240, 190, 191, 194),
-                                                ),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(5.0))),
-                                            labelStyle: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 5, 49, 91)),
-                                          ),
+                                          decoration: CustomInputDecoration
+                                              .getDecoration(),
                                         ),
                                       ),
                                     ],
                                   ),
                                   Column(
                                     children: [
-                                      textot1(
+                                      customTitulo.textot1(
                                           context, 'Folio de consulta Buro'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
@@ -315,37 +265,8 @@ class ActualizaEmpleadoScreenState
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 255, 255, 255)),
-                                          decoration: const InputDecoration(
-                                            filled: true,
-                                            fillColor:
-                                                Color.fromARGB(0, 0, 54, 215),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(5.0)),
-                                              borderSide: BorderSide(
-                                                width: 2, //<-- SEE HERE
-                                                color:
-                                                    Color.fromARGB(0, 5, 5, 5),
-                                              ),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                              width: 5, //<-- SEE HERE
-                                              color: Color.fromARGB(
-                                                  0, 190, 191, 194),
-                                            )),
-                                            border: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  width: 5, //<-- SEE HERE
-                                                  color: Color.fromARGB(
-                                                      240, 190, 191, 194),
-                                                ),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(5.0))),
-                                            labelStyle: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 5, 49, 91)),
-                                          ),
+                                          decoration: CustomInputDecoration
+                                              .getDecoration(),
                                         ),
                                       ),
                                     ],
@@ -360,7 +281,7 @@ class ActualizaEmpleadoScreenState
                                 children: [
                                   Column(
                                     children: [
-                                      textot1(context, 'CURP'),
+                                      customTitulo.textot1(context, 'CURP'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
                                         height: 60,
@@ -374,44 +295,16 @@ class ActualizaEmpleadoScreenState
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 255, 255, 255)),
-                                          decoration: const InputDecoration(
-                                            filled: true,
-                                            fillColor:
-                                                Color.fromARGB(0, 0, 54, 215),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(5.0)),
-                                              borderSide: BorderSide(
-                                                width: 2, //<-- SEE HERE
-                                                color:
-                                                    Color.fromARGB(0, 5, 5, 5),
-                                              ),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                              width: 5, //<-- SEE HERE
-                                              color: Color.fromARGB(
-                                                  0, 190, 191, 194),
-                                            )),
-                                            border: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  width: 5, //<-- SEE HERE
-                                                  color: Color.fromARGB(
-                                                      240, 190, 191, 194),
-                                                ),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(5.0))),
-                                            labelStyle: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 5, 49, 91)),
-                                          ),
+                                          decoration: CustomInputDecoration
+                                              .getDecoration(),
                                         ),
                                       ),
                                     ],
                                   ),
                                   Column(
                                     children: [
-                                      textot1(context, 'Código postal'),
+                                      customTitulo.textot1(
+                                          context, 'Código postal'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
                                         height: 60,
@@ -424,37 +317,8 @@ class ActualizaEmpleadoScreenState
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 255, 255, 255)),
-                                          decoration: const InputDecoration(
-                                            filled: true,
-                                            fillColor:
-                                                Color.fromARGB(0, 0, 54, 215),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(5.0)),
-                                              borderSide: BorderSide(
-                                                width: 2, //<-- SEE HERE
-                                                color:
-                                                    Color.fromARGB(0, 5, 5, 5),
-                                              ),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                              width: 5, //<-- SEE HERE
-                                              color: Color.fromARGB(
-                                                  0, 190, 191, 194),
-                                            )),
-                                            border: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  width: 5, //<-- SEE HERE
-                                                  color: Color.fromARGB(
-                                                      240, 190, 191, 194),
-                                                ),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(5.0))),
-                                            labelStyle: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 5, 49, 91)),
-                                          ),
+                                          decoration: CustomInputDecoration
+                                              .getDecoration(),
                                         ),
                                       ),
                                     ],
@@ -469,7 +333,7 @@ class ActualizaEmpleadoScreenState
                                 children: [
                                   Column(
                                     children: [
-                                      textot1(context, 'Calle'),
+                                      customTitulo.textot1(context, 'Calle'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
                                         height: 60,
@@ -482,44 +346,16 @@ class ActualizaEmpleadoScreenState
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 255, 255, 255)),
-                                          decoration: const InputDecoration(
-                                            filled: true,
-                                            fillColor:
-                                                Color.fromARGB(0, 0, 54, 215),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(5.0)),
-                                              borderSide: BorderSide(
-                                                width: 2, //<-- SEE HERE
-                                                color:
-                                                    Color.fromARGB(0, 5, 5, 5),
-                                              ),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                              width: 5, //<-- SEE HERE
-                                              color: Color.fromARGB(
-                                                  0, 190, 191, 194),
-                                            )),
-                                            border: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  width: 5, //<-- SEE HERE
-                                                  color: Color.fromARGB(
-                                                      240, 190, 191, 194),
-                                                ),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(5.0))),
-                                            labelStyle: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 5, 49, 91)),
-                                          ),
+                                          decoration: CustomInputDecoration
+                                              .getDecoration(),
                                         ),
                                       ),
                                     ],
                                   ),
                                   Column(
                                     children: [
-                                      textot1(context, 'Número exterior'),
+                                      customTitulo.textot1(
+                                          context, 'Número exterior'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
                                         height: 60,
@@ -532,37 +368,8 @@ class ActualizaEmpleadoScreenState
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 255, 255, 255)),
-                                          decoration: const InputDecoration(
-                                            filled: true,
-                                            fillColor:
-                                                Color.fromARGB(0, 0, 54, 215),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(5.0)),
-                                              borderSide: BorderSide(
-                                                width: 2, //<-- SEE HERE
-                                                color:
-                                                    Color.fromARGB(0, 5, 5, 5),
-                                              ),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                              width: 5, //<-- SEE HERE
-                                              color: Color.fromARGB(
-                                                  0, 190, 191, 194),
-                                            )),
-                                            border: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  width: 5, //<-- SEE HERE
-                                                  color: Color.fromARGB(
-                                                      240, 190, 191, 194),
-                                                ),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(5.0))),
-                                            labelStyle: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 5, 49, 91)),
-                                          ),
+                                          decoration: CustomInputDecoration
+                                              .getDecoration(),
                                         ),
                                       ),
                                     ],
@@ -577,7 +384,8 @@ class ActualizaEmpleadoScreenState
                                 children: [
                                   Column(
                                     children: [
-                                      textot1(context, 'Número interior'),
+                                      customTitulo.textot1(
+                                          context, 'Número interior'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
                                         height: 60,
@@ -590,44 +398,16 @@ class ActualizaEmpleadoScreenState
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 255, 255, 255)),
-                                          decoration: const InputDecoration(
-                                            filled: true,
-                                            fillColor:
-                                                Color.fromARGB(0, 0, 54, 215),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(5.0)),
-                                              borderSide: BorderSide(
-                                                width: 2, //<-- SEE HERE
-                                                color:
-                                                    Color.fromARGB(0, 5, 5, 5),
-                                              ),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                              width: 5, //<-- SEE HERE
-                                              color: Color.fromARGB(
-                                                  0, 190, 191, 194),
-                                            )),
-                                            border: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  width: 5, //<-- SEE HERE
-                                                  color: Color.fromARGB(
-                                                      240, 190, 191, 194),
-                                                ),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(5.0))),
-                                            labelStyle: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 5, 49, 91)),
-                                          ),
+                                          decoration: CustomInputDecoration
+                                              .getDecoration(),
                                         ),
                                       ),
                                     ],
                                   ),
                                   Column(
                                     children: [
-                                      textot1(context, 'Municipio'),
+                                      customTitulo.textot1(
+                                          context, 'Municipio'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
                                         height: 60,
@@ -640,37 +420,8 @@ class ActualizaEmpleadoScreenState
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 255, 255, 255)),
-                                          decoration: const InputDecoration(
-                                            filled: true,
-                                            fillColor:
-                                                Color.fromARGB(0, 0, 54, 215),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(5.0)),
-                                              borderSide: BorderSide(
-                                                width: 2, //<-- SEE HERE
-                                                color:
-                                                    Color.fromARGB(0, 5, 5, 5),
-                                              ),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                              width: 5, //<-- SEE HERE
-                                              color: Color.fromARGB(
-                                                  0, 190, 191, 194),
-                                            )),
-                                            border: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  width: 5, //<-- SEE HERE
-                                                  color: Color.fromARGB(
-                                                      240, 190, 191, 194),
-                                                ),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(5.0))),
-                                            labelStyle: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 5, 49, 91)),
-                                          ),
+                                          decoration: CustomInputDecoration
+                                              .getDecoration(),
                                         ),
                                       ),
                                     ],
@@ -685,7 +436,7 @@ class ActualizaEmpleadoScreenState
                                 children: [
                                   Column(
                                     children: [
-                                      textot1(context, 'Colonia'),
+                                      customTitulo.textot1(context, 'Colonia'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
                                         height: 60,
@@ -698,44 +449,15 @@ class ActualizaEmpleadoScreenState
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 255, 255, 255)),
-                                          decoration: const InputDecoration(
-                                            filled: true,
-                                            fillColor:
-                                                Color.fromARGB(0, 0, 54, 215),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(5.0)),
-                                              borderSide: BorderSide(
-                                                width: 2, //<-- SEE HERE
-                                                color:
-                                                    Color.fromARGB(0, 5, 5, 5),
-                                              ),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                              width: 5, //<-- SEE HERE
-                                              color: Color.fromARGB(
-                                                  0, 190, 191, 194),
-                                            )),
-                                            border: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  width: 5, //<-- SEE HERE
-                                                  color: Color.fromARGB(
-                                                      0, 190, 191, 194),
-                                                ),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(5.0))),
-                                            labelStyle: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 5, 49, 91)),
-                                          ),
+                                          decoration: CustomInputDecoration
+                                              .getDecoration(),
                                         ),
                                       ),
                                     ],
                                   ),
                                   Column(
                                     children: [
-                                      textot1(context, 'Estado'),
+                                      customTitulo.textot1(context, 'Estado'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
                                         height: 60,
@@ -748,37 +470,8 @@ class ActualizaEmpleadoScreenState
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 255, 255, 255)),
-                                          decoration: const InputDecoration(
-                                            filled: true,
-                                            fillColor:
-                                                Color.fromARGB(0, 0, 54, 215),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(5.0)),
-                                              borderSide: BorderSide(
-                                                width: 2, //<-- SEE HERE
-                                                color:
-                                                    Color.fromARGB(0, 5, 5, 5),
-                                              ),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                              width: 5, //<-- SEE HERE
-                                              color: Color.fromARGB(
-                                                  0, 190, 191, 194),
-                                            )),
-                                            border: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  width: 5, //<-- SEE HERE
-                                                  color: Color.fromARGB(
-                                                      0, 190, 191, 194),
-                                                ),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(5.0))),
-                                            labelStyle: TextStyle(
-                                                color: Color.fromARGB(
-                                                    0, 5, 49, 91)),
-                                          ),
+                                          decoration: CustomInputDecoration
+                                              .getDecoration(),
                                         ),
                                       ),
                                     ],
@@ -793,7 +486,8 @@ class ActualizaEmpleadoScreenState
                                 children: [
                                   Column(
                                     children: [
-                                      textot1(context, 'Lugar de nacimiento'),
+                                      customTitulo.textot1(
+                                          context, 'Lugar de nacimiento'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
                                         height: 60,
@@ -803,44 +497,16 @@ class ActualizaEmpleadoScreenState
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 255, 255, 255)),
-                                          decoration: const InputDecoration(
-                                            filled: true,
-                                            fillColor:
-                                                Color.fromARGB(0, 0, 54, 215),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(5.0)),
-                                              borderSide: BorderSide(
-                                                width: 2, //<-- SEE HERE
-                                                color:
-                                                    Color.fromARGB(0, 5, 5, 5),
-                                              ),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                              width: 5, //<-- SEE HERE
-                                              color: Color.fromARGB(
-                                                  0, 190, 191, 194),
-                                            )),
-                                            border: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  width: 5, //<-- SEE HERE
-                                                  color: Color.fromARGB(
-                                                      0, 190, 191, 194),
-                                                ),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(5.0))),
-                                            labelStyle: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 5, 49, 91)),
-                                          ),
+                                          decoration: CustomInputDecoration
+                                              .getDecoration(),
                                         ),
                                       ),
                                     ],
                                   ),
                                   Column(
                                     children: [
-                                      textot1(context, 'Fecha de nacimiento'),
+                                      customTitulo.textot1(
+                                          context, 'Fecha de nacimiento'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
                                         height: 60,
@@ -850,37 +516,8 @@ class ActualizaEmpleadoScreenState
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 255, 255, 255)),
-                                          decoration: const InputDecoration(
-                                            filled: true,
-                                            fillColor:
-                                                Color.fromARGB(0, 0, 54, 215),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(5.0)),
-                                              borderSide: BorderSide(
-                                                width: 2, //<-- SEE HERE
-                                                color:
-                                                    Color.fromARGB(0, 5, 5, 5),
-                                              ),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                              width: 5, //<-- SEE HERE
-                                              color: Color.fromARGB(
-                                                  0, 190, 191, 194),
-                                            )),
-                                            border: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  width: 5, //<-- SEE HERE
-                                                  color: Color.fromARGB(
-                                                      0, 190, 191, 194),
-                                                ),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(5.0))),
-                                            labelStyle: TextStyle(
-                                                color: Color.fromARGB(
-                                                    0, 5, 49, 91)),
-                                          ),
+                                          decoration: CustomInputDecoration
+                                              .getDecoration(),
                                         ),
                                       ),
                                     ],
@@ -895,7 +532,8 @@ class ActualizaEmpleadoScreenState
                                 children: [
                                   Column(
                                     children: [
-                                      textot1(context, 'Nacionalidad'),
+                                      customTitulo.textot1(
+                                          context, 'Nacionalidad'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
                                         height: 60,
@@ -905,44 +543,15 @@ class ActualizaEmpleadoScreenState
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 255, 255, 255)),
-                                          decoration: const InputDecoration(
-                                            filled: true,
-                                            fillColor:
-                                                Color.fromARGB(0, 0, 54, 215),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(5.0)),
-                                              borderSide: BorderSide(
-                                                width: 2, //<-- SEE HERE
-                                                color:
-                                                    Color.fromARGB(0, 5, 5, 5),
-                                              ),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                              width: 5, //<-- SEE HERE
-                                              color: Color.fromARGB(
-                                                  0, 190, 191, 194),
-                                            )),
-                                            border: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  width: 5, //<-- SEE HERE
-                                                  color: Color.fromARGB(
-                                                      0, 190, 191, 194),
-                                                ),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(5.0))),
-                                            labelStyle: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 5, 49, 91)),
-                                          ),
+                                          decoration: CustomInputDecoration
+                                              .getDecoration(),
                                         ),
                                       ),
                                     ],
                                   ),
                                   Column(
                                     children: [
-                                      textot1(context, 'Género'),
+                                      customTitulo.textot1(context, 'Género'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
                                         height: 60,
@@ -952,37 +561,8 @@ class ActualizaEmpleadoScreenState
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 255, 255, 255)),
-                                          decoration: const InputDecoration(
-                                            filled: true,
-                                            fillColor:
-                                                Color.fromARGB(0, 0, 54, 215),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(5.0)),
-                                              borderSide: BorderSide(
-                                                width: 2, //<-- SEE HERE
-                                                color:
-                                                    Color.fromARGB(0, 5, 5, 5),
-                                              ),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                              width: 5, //<-- SEE HERE
-                                              color: Color.fromARGB(
-                                                  0, 190, 191, 194),
-                                            )),
-                                            border: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  width: 5, //<-- SEE HERE
-                                                  color: Color.fromARGB(
-                                                      0, 190, 191, 194),
-                                                ),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(5.0))),
-                                            labelStyle: TextStyle(
-                                                color: Color.fromARGB(
-                                                    0, 5, 49, 91)),
-                                          ),
+                                          decoration: CustomInputDecoration
+                                              .getDecoration(),
                                         ),
                                       ),
                                     ],
@@ -997,7 +577,7 @@ class ActualizaEmpleadoScreenState
                                 children: [
                                   Column(
                                     children: [
-                                      textot1(context, 'Email'),
+                                      customTitulo.textot1(context, 'Email'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
                                         height: 60,
@@ -1011,45 +591,15 @@ class ActualizaEmpleadoScreenState
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 255, 255, 255)),
-                                          decoration: InputDecoration(
-                                            filled: true,
-                                            fillColor: const Color.fromARGB(
-                                                0, 0, 54, 215),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius:
-                                                  const BorderRadius.all(
-                                                      Radius.circular(5.0)),
-                                              borderSide: BorderSide(
-                                                width: 2, //<-- SEE HERE
-                                                color: Color.fromARGB(
-                                                    textomarcoemail, 255, 0, 0),
-                                              ),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                              width: 5, //<-- SEE HERE
-                                              color: Color.fromARGB(
-                                                  textomarcoemail, 251, 16, 4),
-                                            )),
-                                            border: const OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  width: 5, //<-- SEE HERE
-                                                  color: Color.fromARGB(
-                                                      0, 190, 191, 194),
-                                                ),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(5.0))),
-                                            labelStyle: const TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 5, 49, 91)),
-                                          ),
+                                          decoration: CustomInputDecoration
+                                              .getDecoration(),
                                         ),
                                       ),
                                     ],
                                   ),
                                   Column(
                                     children: [
-                                      textot1(context, 'País'),
+                                      customTitulo.textot1(context, 'País'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
                                         height: 60,
@@ -1059,37 +609,8 @@ class ActualizaEmpleadoScreenState
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 255, 255, 255)),
-                                          decoration: const InputDecoration(
-                                            filled: true,
-                                            fillColor:
-                                                Color.fromARGB(0, 0, 54, 215),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(5.0)),
-                                              borderSide: BorderSide(
-                                                width: 2, //<-- SEE HERE
-                                                color: Color.fromARGB(
-                                                    0, 247, 0, 0),
-                                              ),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                              width: 5, //<-- SEE HERE
-                                              color: Color.fromARGB(
-                                                  0, 190, 191, 194),
-                                            )),
-                                            border: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  width: 5, //<-- SEE HERE
-                                                  color: Color.fromARGB(
-                                                      0, 190, 191, 194),
-                                                ),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(5.0))),
-                                            labelStyle: TextStyle(
-                                                color: Color.fromARGB(
-                                                    0, 5, 49, 91)),
-                                          ),
+                                          decoration: CustomInputDecoration
+                                              .getDecoration(),
                                         ),
                                       ),
                                     ],
@@ -1104,7 +625,7 @@ class ActualizaEmpleadoScreenState
                                 children: [
                                   Column(
                                     children: [
-                                      textot1(context, 'Teléfono'),
+                                      customTitulo.textot1(context, 'Teléfono'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
                                         height: 60,
@@ -1120,37 +641,8 @@ class ActualizaEmpleadoScreenState
                                           style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 255, 255, 255)),
-                                          decoration: const InputDecoration(
-                                            filled: true,
-                                            fillColor:
-                                                Color.fromARGB(0, 229, 4, 4),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(5.0)),
-                                              borderSide: BorderSide(
-                                                width: 2, //<-- SEE HERE
-                                                color: Color.fromARGB(
-                                                    0, 254, 0, 0),
-                                              ),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                              width: 5, //<-- SEE HERE
-                                              color:
-                                                  Color.fromARGB(0, 254, 0, 0),
-                                            )),
-                                            border: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                  width: 5, //<-- SEE HERE
-                                                  color: Color.fromARGB(
-                                                      0, 190, 191, 194),
-                                                ),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(5.0))),
-                                            labelStyle: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 5, 49, 91)),
-                                          ),
+                                          decoration: CustomInputDecoration
+                                              .getDecoration(),
                                         ),
                                       ),
                                     ],
@@ -1169,26 +661,29 @@ class ActualizaEmpleadoScreenState
                                   children: [
                                     Column(
                                       children: [
-                                        Visibility(
-                                          child: Padding(
-                                            padding: EdgeInsets.only(
-                                                top: displayWidth(context) *
-                                                    0.02),
-                                            child: ElevatedButton(
-                                              // onPressed: ,
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor:
-                                                    const Color.fromARGB(
-                                                        255, 123, 124, 124),
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          displayWidth(
-                                                                  context) *
-                                                              0.02),
-                                                ), // This is what you need!
-                                              ),
-                                              onPressed: () async {
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                              top:
+                                                  displayWidth(context) * 0.02),
+                                          child: ElevatedButton(
+                                            // onPressed: ,
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor:
+                                                  const Color.fromARGB(
+                                                      255, 123, 124, 124),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        displayWidth(context) *
+                                                            0.02),
+                                              ), // This is what you need!
+                                            ),
+                                            onPressed: () async {
+                                              final resulta =
+                                                  pdfGenerator.generatePdf();
+                                              if (await resulta) {
+                                                // await navegador
+                                                //     .algunlugar(argumento1);
                                                 final enviaDatosEmpleado =
                                                     EnviaDatosEmpleadoClass();
                                                 final resultado =
@@ -1209,30 +704,31 @@ class ActualizaEmpleadoScreenState
                                                 }
 
                                                 if (resultado.isNotEmpty) {
-                                                  // Navigator
-                                                  //     .pushNamedAndRemoveUntil(
-                                                  //         context,
-                                                  //         'valores_pedir_adelanto',
-                                                  //         (route) => false);
+                                                  // ignore: use_build_context_synchronously
+                                                  Navigator
+                                                      .pushNamedAndRemoveUntil(
+                                                          context,
+                                                          'valores_pedir_adelanto',
+                                                          (route) => false);
                                                   await navegador
                                                       .algunlugar(argumento1);
                                                 }
 
-                                                // print(resultado['success']);
-                                              },
-                                              child: SizedBox(
-                                                width:
-                                                    displayWidth(context) * 0.6,
-                                                child: Center(
-                                                  child: Text(
-                                                      'Acepto que los datos son correctos',
-                                                      style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: displayWidth(
-                                                                context) *
-                                                            0.04,
-                                                      )),
-                                                ),
+                                                // // print(resultado['success']);
+                                              }
+                                            },
+                                            child: SizedBox(
+                                              width:
+                                                  displayWidth(context) * 0.6,
+                                              child: Center(
+                                                child: Text(
+                                                    'Acepto que los datos son correctos',
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: displayWidth(
+                                                              context) *
+                                                          0.04,
+                                                    )),
                                               ),
                                             ),
                                           ),
@@ -1266,38 +762,6 @@ class ActualizaEmpleadoScreenState
       bottomNavigationBar: bottomNachBar(context, 1),
     );
   }
-}
-
-//void datos(codigoPostal) {
-//  final GetCopo auth = GetCopo();
-//  auth.getCopo(codigoPostal);
-//}
-
-textoFijo(context, texto) {
-  return Padding(
-    padding: EdgeInsets.all(displayWidth(context) * 0.02),
-    child: SizedBox(
-      child: Text(
-        texto,
-        style: TextStyle(fontSize: displayWidth(context) * 0.05),
-      ),
-    ),
-  );
-}
-
-textot1(BuildContext context, String? texto) {
-  return SizedBox(
-    width: displayWidth(context) * 0.4,
-    child: Padding(
-      padding: EdgeInsets.all(displayWidth(context) * 0.03),
-      child: Text(
-        '$texto',
-        style: const TextStyle(
-          color: Color.fromARGB(255, 255, 255, 255),
-        ),
-      ),
-    ),
-  );
 }
 
 extension EmailValidator on String {

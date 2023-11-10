@@ -1,10 +1,9 @@
 import 'dart:io';
-import 'package:com.gruponach.nach_empleado/helpers/guardarvars.dart';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
+
+import '../../libs/lib.dart';
 
 class PdfViewerPage extends StatefulWidget {
   const PdfViewerPage({Key? key}) : super(key: key);
@@ -25,6 +24,9 @@ class PdfViewerPageState extends State<PdfViewerPage> {
 
   Future<void> loadPdfFile() async {
     final savedPdfUrl = await SharedPreferencesHelper.getdatos('urlPdfVisor');
+    if (kDebugMode) {
+      print(savedPdfUrl);
+    }
 
     setState(() {
       pdfUrl = savedPdfUrl;

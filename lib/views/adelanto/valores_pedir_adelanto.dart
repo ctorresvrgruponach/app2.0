@@ -1,8 +1,6 @@
 import '../../api/apiadelanto.dart';
-import '../../api/firmaapi.dart';
 import '../../api/pediradelantoapi.dart';
 import '../../libs/lib.dart';
-import '../../ui/botonfiles.dart';
 
 String? html;
 bool readmonto = false;
@@ -92,6 +90,8 @@ class ValoresPedirAdelantoScreenState
                     final operaciones = snapshot.data!['informacion_adelanto'];
                     sueldoMensual.text =
                         operaciones['salario_mensual'].toString();
+
+                    correo.text = operaciones['email'].toString();
                     String periodosPagos;
 
                     if (operaciones["tipo_nomina"] == 'Semanal') {
@@ -109,6 +109,7 @@ class ValoresPedirAdelantoScreenState
                     }
                     SharedPreferencesHelper.setdatos(
                         "periodosPagos", periodosPagos);
+                    final customDialogManager = CustomDialogManager(context);
 
                     return Card(
                       child: Container(
@@ -501,6 +502,14 @@ class ValoresPedirAdelantoScreenState
                                         final resultado =
                                             await instanciaEnviaAdelanto
                                                 .enviaadelanto();
+                                        await customDialogManager
+                                            .showCustomDialog(
+                                          icon: Icons.airlines_rounded,
+                                          message: resultado['mensaje'],
+                                          title: resultado['mensaje'],
+                                          color: const Color.fromARGB(
+                                              255, 244, 54, 54),
+                                        );
                                       },
                                     ),
                                   ],

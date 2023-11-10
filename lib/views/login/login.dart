@@ -22,9 +22,12 @@ class LoginState extends ConsumerState<Login> {
   }
 
   Future<void> somelugar(int firma) async {
-    if (firma == 0) {
+    final firmas = await SharedPreferencesHelper.getdatos('imagen_emplaedo');
+    if (firma == 0 || firmas.isEmpty) {
+      // ignore: use_build_context_synchronously
       Navigator.pushNamedAndRemoveUntil(context, 'firma', (route) => false);
     } else {
+      // ignore: use_build_context_synchronously
       Navigator.pushNamedAndRemoveUntil(context, 'home', (route) => false);
     }
   }
