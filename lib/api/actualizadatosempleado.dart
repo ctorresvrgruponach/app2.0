@@ -81,9 +81,9 @@ class EnviaDatosEmpleadoClass {
     }
 
     if (direccionEstado.isNotEmpty) {
-      postDatas["clave_estado"] = direccionEstado;
+      postDatas["direccionEstado"] = direccionEstado;
     } else {
-      postDatas["clave_estado"] = null;
+      postDatas["direccionEstado"] = null;
     }
 
     if (curpe.isNotEmpty) {
