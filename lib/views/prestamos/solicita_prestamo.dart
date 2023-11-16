@@ -34,7 +34,7 @@ class SolicitaPrestamo extends ConsumerStatefulWidget {
 class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
   void _sendData() {
     setState(() {
-      _button = true;
+      button = true;
       _inputs = true;
       _ocultabtn = false;
     });
@@ -46,9 +46,9 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
   //   // Aquí podrías agregar lógica adicional si es necesario
   // }
 
-  final TextEditingController _montoinput = TextEditingController();
-  final TextEditingController _plazos = TextEditingController();
-  final TextEditingController _comisionapertura = TextEditingController();
+  final TextEditingController montosolicitado = TextEditingController();
+  final TextEditingController plazoseleccionado = TextEditingController();
+  // final TextEditingController _comisionapertura = TextEditingController();
   // TextEditingController       _pagoPrestamo     = TextEditingController();
   // late TextEditingController  _pagoprestamo;
   // late TextEditingController  _tasaconiva;
@@ -56,7 +56,7 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
   // final List<TextEditingController> _montoaval        = [];
   int? selectedValue; //
   String? idEmpleadoSeleccionado;
-  bool _button = false;
+  bool button = false;
   bool _inputs = false;
   bool _ocultabtn = true;
   bool showForm = false;
@@ -103,18 +103,18 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
 
   @override
   Widget build(BuildContext context) {
-    final _montoinput = ref.read(montoinputControllerProvider);
-    final _plazos = ref.read(plazosControllerProvider);
+    final montosolicitado = ref.read(montoinputControllerProvider);
+    final plazoseleccionado = ref.read(plazosControllerProvider);
 
     fetchData() async {
       final token = await SharedPreferencesHelper.getdatos('token');
       final idEmpleado = await SharedPreferencesHelper.getdatos('empleado');
       final idOperacionid =
           await SharedPreferencesHelper.getdatos('idoperacionid');
-      final _montoinput = ref.watch(montoinputControllerProvider);
-      final _plazos = ref.watch(plazosControllerProvider);
-      montoinput = _montoinput.text;
-      plazos = _plazos.text;
+      final montosolicitado = ref.watch(montoinputControllerProvider);
+      final plazoseleccionado = ref.watch(plazosControllerProvider);
+      montoinput = montosolicitado.text;
+      plazos = plazoseleccionado.text;
 
       final postDatas = {
         "idEmpleado": idEmpleado,
@@ -124,13 +124,13 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
         "token": token,
       };
 
-      final data = await fetchPostData(
-        modo,
-        completeUrldev,
-        baseUrl,
-        calculaPrestamo,
-        postDatas,
-      );
+      // final data = await fetchPostData(
+      //   modo,
+      //   completeUrldev,
+      //   baseUrl,
+      //   calculaPrestamo,
+      //   postDatas,
+      // );
       final response = await fetchPostData(
           modo, completeUrldev, baseUrl, calculaPrestamo, postDatas);
       if (response['estatus'] == 200) {
@@ -141,7 +141,7 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
       }
     }
 
-    final calculoresponse = ref.watch(calcularPrestamos);
+    // final calculoresponse = ref.watch(calcularPrestamos);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Solicitar Prestamo'),
@@ -171,14 +171,14 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                 // print('object');
                 if (snapshot.hasData && snapshot.data!['empleado'] != null) {
                   if (kDebugMode) {}
-                  final avales = snapshot.data!['avales'];
-                  final montoMaximo = snapshot.data!['monto_maximo'];
-                  final montoXAval = snapshot.data!['monto_x_aval'];
+                  final avales          = snapshot.data!['avales'];
+                  final montoMaximo     = snapshot.data!['monto_maximo'];
+                  // final montoXAval      = snapshot.data!['monto_x_aval'];
                   final plazosRestantes = snapshot.data!['plazos_restantes'];
-                  final montoingresado = _montoinput.text;
+                  // final montoingresado  = montosolicitado.text;
 
                   void validaMonto() {
-                    final String amountText = _montoinput.text;
+                    final String amountText = montosolicitado.text;
                     if (amountText.isEmpty) {
                       return;
                     }
@@ -195,12 +195,12 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                               color: Colors.red);
                         },
                       );
-                      _montoinput.clear();
+                      montosolicitado.clear();
                     }
                   }
 
                   void validaPlazos() {
-                    final String amountText = _plazos.text;
+                    final String amountText = plazoseleccionado.text;
                     if (amountText.isEmpty) {
                       return;
                     }
@@ -217,7 +217,7 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                               color: Colors.amber);
                         },
                       );
-                      _plazos.clear();
+                      plazoseleccionado.clear();
                     }
                   }
 
@@ -239,7 +239,7 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                                         child: Hero(
                                             tag: 'alert',
                                             child: TextFormField(
-                                              controller: _montoinput,
+                                              controller: montosolicitado,
                                               keyboardType:
                                                   TextInputType.number,
                                               inputFormatters: <TextInputFormatter>[
@@ -293,7 +293,7 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                                                 RegExp(
                                                     r'[0-9]')), // Permite solo dígitos numéricos
                                           ],
-                                          controller: _plazos,
+                                          controller: plazoseleccionado,
                                           decoration:
                                               InputDecorationBuilder.finalinput(
                                                   hintText:
@@ -328,7 +328,7 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                                                 });
                                                 fetchData().then((response) {
                                                   final montoingresado =
-                                                      _montoinput.text;
+                                                      montosolicitado.text;
                                                   final montofinal =
                                                       double.parse(
                                                           montoingresado);
@@ -340,8 +340,8 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                                                           montoXAval;
                                                   int resultadoRedondeado =
                                                       resultadoDivision.ceil();
-                                                  final montoIngresado =
-                                                      _montoinput.text;
+                                                  // final montoIngresado =
+                                                  //     montosolicitado.text;
                                                   final comisionapertura =
                                                       response['resumen']
                                                           ['comision'];
@@ -633,6 +633,7 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                     // },
                     onChanged: (value) {
                       // Check if the selected value is not empty or null
+                      // ignore: unnecessary_null_comparison
                       if (value != null && value.toString().isNotEmpty) {
                         int selectedId = avales.firstWhere((element) =>
                             element['nombre_completo'] == value)['id_empleado'];
@@ -733,8 +734,8 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    _montoinput.text = '';
-                    _plazos.text = '';
+                    montosolicitado.text = '';
+                    plazoseleccionado.text = '';
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
@@ -791,14 +792,14 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                             });
                             // final idEmpleado    =  SharedPreferencesHelper.getdatos('empleado');
                             // final ine           =  SharedPreferencesHelper.getdatos('Identificación (INE)');
-                            final comprobante =
-                                SharedPreferencesHelper.getdatos(
-                                    'Comprobante (DOMICILIO)');
-                            final _montoinput =
+                            // final comprobante =
+                            //     SharedPreferencesHelper.getdatos(
+                            //         'Comprobante (DOMICILIO)');
+                            final montosolicitado =
                                 ref.watch(montoinputControllerProvider);
-                            final _plazos = ref.watch(plazosControllerProvider);
-                            montoinput = _montoinput.text;
-                            plazos = _plazos.text;
+                            final plazoseleccionado = ref.watch(plazosControllerProvider);
+                            montoinput = montosolicitado.text;
+                            plazos = plazoseleccionado.text;
                             SharedPreferencesHelper.setdatos(
                                 'monto', '$montoinput'); //monto
                             SharedPreferencesHelper.setdatos(
@@ -809,9 +810,9 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                                 'comision', '$comision'); //comision
                             SharedPreferencesHelper.setdatos(
                                 'avales', '$avales'); //avales
-                            //  setState(() {
-                            //    btnsolicitaPrestamo = true;
-                            //  });
+                             setState(() {
+                               btnsolicitaPrestamo = true;
+                             });
                             final respuesta =
                                 await enviarPrestamo.confirmaprestamo();
                             if (respuesta['estatus'] == 200) {
