@@ -183,7 +183,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             child: Padding(
                                                               padding:
                                                                   const EdgeInsets
-                                                                          .only(
+                                                                      .only(
                                                                       top:
                                                                           12.0),
                                                               child: Text(
@@ -195,7 +195,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                               context) *
                                                                           0.05,
                                                                   color: const Color
-                                                                          .fromARGB(
+                                                                      .fromARGB(
                                                                       255,
                                                                       5,
                                                                       50,
@@ -207,7 +207,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           Padding(
                                                             padding:
                                                                 const EdgeInsets
-                                                                        .only(
+                                                                    .only(
                                                                     bottom:
                                                                         12.0),
                                                             child: Text(
@@ -219,7 +219,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                             context) *
                                                                         0.03,
                                                                 color: const Color
-                                                                        .fromARGB(
+                                                                    .fromARGB(
                                                                     255,
                                                                     5,
                                                                     50,
@@ -462,7 +462,9 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
-        bottomNavigationBar: bottomNachBar(context, 2),
+        bottomNavigationBar: MyBottomNavigationBar(
+          selectedIndex: 2,
+        ),
       ),
     );
   }

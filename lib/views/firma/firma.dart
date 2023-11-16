@@ -45,7 +45,9 @@ class _FirmaState extends State<Firma> {
           buttonWidgets(context)!,
         ],
       ),
-      bottomNavigationBar: bottomNachBar(context, 3),
+      bottomNavigationBar: MyBottomNavigationBar(
+        selectedIndex: 3,
+      ),
     );
   }
 

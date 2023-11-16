@@ -123,3 +123,34 @@ final postMisPrestamosdetalleProviders =
 
   return dataAdelantosdetalle;
 });
+
+final postMisNotificacionesdetalleProviders =
+    FutureProvider.autoDispose<Map<String, dynamic>>((ref) async {
+  final token = await SharedPreferencesHelper.getdatos('token');
+  final empleadoId = await SharedPreferencesHelper.getdatos('empleado');
+
+  final postDatas = {
+    "idEmpleado": empleadoId,
+    "token": token,
+  };
+
+  final dynamic datanotificaciones = await fetchPostData(
+      modo, completeUrldev, baseUrl, endpointMisNotificaciones, postDatas);
+
+  if (datanotificaciones is Map<String, dynamic> &&
+      datanotificaciones["success"] != null) {
+    if (datanotificaciones["success"]) {
+      // Hacer algo si "success" es true.
+    } else {
+      // Hacer algo si "success" es false.
+    }
+  } else {
+    if (kDebugMode) {
+      print(
+          'Error: dataAdelantos no es un mapa válido o "success" no está presente.');
+    }
+    // Manejar el caso en el que dataAdelantos no es un mapa válido o cuando "success" no está presente.
+  }
+
+  return datanotificaciones;
+});

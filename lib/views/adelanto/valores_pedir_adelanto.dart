@@ -535,7 +535,9 @@ class ValoresPedirAdelantoScreenState
             ],
           ),
         ),
-        bottomNavigationBar: bottomNachBar(context, 1),
+        bottomNavigationBar: MyBottomNavigationBar(
+          selectedIndex: 1,
+        ),
       ),
     );
   }
