@@ -1,5 +1,3 @@
-import 'package:com.gruponach.nach_empleado/views/prestamos/solicita_prestamo.dart';
-
 import '../../libs/lib.dart';
 class IdOperacionNotifier extends StateNotifier<String> {
   IdOperacionNotifier() : super('');
@@ -49,20 +47,22 @@ class Prestamo extends ConsumerStatefulWidget {
 class PrestamoState extends ConsumerState<Prestamo> {
   @override
   Widget build(BuildContext context) {
-    // final navegador = NavegadorDeRuta(context);
+
+    List<dynamic> argumentos = ['solicita_prestamo'];
+    final navegador = NavegadorDeRuta(context, argumentos);
 
     //TODOS LOS VALORES CAPTURADOS SE MANDN AL ENDPOIN
      Future<void> somelugar() async {
 
-            Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) {
-            return SolicitaPrestamo(); // Reemplaza con el widget de tu página de solicitud de préstamo
-          },
-         ),
-       );
-      // await navegador.algunlugar('actualizaempleado');
+      //       Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) {
+      //       return SolicitaPrestamo(); // Reemplaza con el widget de tu página de solicitud de préstamo
+      //     },
+      //    ),
+      //  );
+       await navegador.algunlugar('actualizaempleado');
 
       // Navigator.pushNamedAndRemoveUntil(
       //     context, 'solicita_prestamo', (route) => false);
@@ -71,7 +71,7 @@ class PrestamoState extends ConsumerState<Prestamo> {
       appBar: AppBar(
           title: const Text("Prestamo de nómina"),
           centerTitle: true,
-          backgroundColor: Colors.black),
+          backgroundColor: const Color.fromARGB(255, 5, 50, 91)),
           // backgroundColor: const Color.fromARGB(255, 2, 9, 72)),
       body: SingleChildScrollView(
         child: Column(
@@ -132,8 +132,6 @@ class PrestamoState extends ConsumerState<Prestamo> {
                                                         ), // This is what you need!
                                                       ),
                                                       onPressed: () async {
-                                                        print('POR AQUI ESTA EL PEDOO..');
-                                                        print(']Me tocaste');
                                                         SharedPreferencesHelper.setdatos(
                                                          'idoperacionid',
                                                          snapshot.data!['operaciones'][index]['idOperacion'].toString());

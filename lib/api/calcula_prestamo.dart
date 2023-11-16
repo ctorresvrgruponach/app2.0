@@ -30,49 +30,14 @@ final calcularPrestamo =
     "plazos": _plazos,
     "token": token,
   };
-// print(postDatas);
-// print('HOLA');
-  final dynamic calculo = await fetchPostData(
-      modo, completeUrldev, baseUrl, calculaPrestamo, postDatas);
-  //  print(calculo);
-  print('sdfghjk $calculo');
 
-  // if (calculo is Map<String, dynamic> && calculo["estatus"] == 200 ) {
-  //   if (calculo["estatus"] == '') {
-  //      print('ENTRA');
-  //     print('TU RESPUESTA MY LOVE');
-  //   } else {}
-  // } else {
-  //   if (kDebugMode) {
-  //     print(
-  //         'Error: dataAdelantos no es un mapa válido o "success" no está presente.');
-  //   }
-  //   // Manejar el caso en el que dataAdelantos no es un mapa válido o cuando "success" no está presente.
-  // }
-  if (calculo.statusCode == 200) {
-    print('ENTRAAA');
+  final dynamic calculo = await fetchPostData( modo, completeUrldev, baseUrl, calculaPrestamo, postDatas); // Manejar el caso en el que dataAdelantos no es un mapa válido o cuando "success" no está presente.
+   if (calculo.statusCode == 200) {
 
-    return calculo.body;
-  } else {
-    throw Exception('Error al cargar los datos');
-  }
-
-//   if (calculo is Map<String, dynamic> && calculo.containsKey("estatus")) {
-//   if (calculo["estatus"] == 200) {
-//     print('ENTRA');
-//     // print('TU RESPUESTA MY LOVE');
-//   } else {
-//     // Manejar otros casos para diferentes valores de "estatus" si es necesario.
-//   }
-// } else {
-//   if (kDebugMode) {
-//     print(
-//         'Error: "calculo" no es un mapa válido o el campo "estatus" no está presente.');
-//   }
-//   // Manejar el caso en el que "calculo" no es un mapa válido o cuando el campo "estatus" no está presente.
-// }
-
-  // return calculo;
+      return calculo.body;
+    } else {
+      throw Exception('Error al cargar los datos');
+    }
 });
 final montoinputControllerProvider = Provider<TextEditingController>((ref) {
   final controller = TextEditingController();

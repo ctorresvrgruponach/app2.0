@@ -691,16 +691,16 @@ class ActualizaEmpleadoScreenState
                                                         .enviaDatos();
                                                 if (resultado['success'] ==
                                                     false) {
-                                                  await customDialogManager
-                                                      .showCustomDialog(
-                                                    icon:
-                                                        Icons.airlines_rounded,
-                                                    message:
-                                                        resultado['mensaje'],
-                                                    title: resultado['mensaje'],
-                                                    color: const Color.fromARGB(
-                                                        255, 244, 54, 54),
-                                                  );
+                                                  // await customDialogManager
+                                                  //     .showCustomDialog(
+                                                  //   icon:
+                                                  //       Icons.airlines_rounded,
+                                                  //   message:
+                                                  //       resultado['mensaje'],
+                                                  //   title: resultado['mensaje'],
+                                                  //   color: const Color.fromARGB(
+                                                  //       255, 244, 54, 54),
+                                                  // );
                                                 }
 
                                                 if (resultado.isNotEmpty) {
@@ -744,11 +744,11 @@ class ActualizaEmpleadoScreenState
                       ),
                     );
                   } else if (snapshot.hasError) {
-                    return const Text('data');
+                    return const Text('Error');
                     // return Text(snapshot.error.toString());
                   } else if (snapshot.hasData &&
                       snapshot.data!['mensaje'] != null) {
-                    return const Text('data');
+                    return  Text(snapshot.data!['mensaje']);
                     // return Text(snapshot.error.toString());
                   }
                   // By default show a loading spinner.

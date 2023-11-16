@@ -6,41 +6,41 @@ class InputDecorationBuilder {
     required String labelText
   }) {
     return InputDecoration(
-      border: OutlineInputBorder(
+      border: const OutlineInputBorder(
         borderSide: BorderSide(
           color: Colors.grey,
         )
       ),
       enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(
+        borderSide: const BorderSide(
           color: Colors.grey, 
           width: 2.0,
         ),
         borderRadius: BorderRadius.circular(10.0),
       ),
       focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(
+        borderSide: const BorderSide(
           color: Colors.blue,
           width: 2.0,
         ),
         borderRadius: BorderRadius.circular(10.0),
       ),
       focusedErrorBorder: OutlineInputBorder(
-        borderSide: BorderSide(
+        borderSide: const BorderSide(
           color: Colors.red,
           width: 1,
         ),
         borderRadius: BorderRadius.circular(10),
       ),
-      errorBorder: OutlineInputBorder(
-        borderSide: BorderSide(
+      errorBorder: const OutlineInputBorder(
+        borderSide:  BorderSide(
           color: Colors.red,
           width: 2,
         )
       ),
       hintText: hintText,
       labelText: labelText,
-      labelStyle: TextStyle(
+      labelStyle: const TextStyle(
         color: Color.fromARGB(255, 9, 21, 114),
       ),
     );
