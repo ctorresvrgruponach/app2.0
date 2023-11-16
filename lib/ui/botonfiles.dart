@@ -168,6 +168,7 @@ class BotonfileState extends ConsumerState<Botonfile> {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
+        fixedSize: Size( MediaQuery.of(context).size.width * 0.4, MediaQuery.of(context).size.width * 0.1,),
         backgroundColor: Color.fromARGB(filterColor ? 255 : 50, 5, 50, 91),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(displayWidth(context) * 0.02),
@@ -184,7 +185,10 @@ class BotonfileState extends ConsumerState<Botonfile> {
             title: 'Documento ${widget.texto}',
             texto: widget.texto);
       },
-      child: Text(' ${widget.texto}'),
+      child: Container(
+        alignment: Alignment.center,
+        child: Text(' ${widget.texto}',
+        style: const TextStyle(fontSize: 12),)),
     );
   }
 }
@@ -321,6 +325,9 @@ class CustomAlertDialogBotonState
                 filterColor = false;
               });
             },
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>( const Color.fromARGB(255, 5, 50, 91)), // Color de fondo
+            ),
             child: const Text(
               'Camara',
               style: TextStyle(
@@ -328,9 +335,6 @@ class CustomAlertDialogBotonState
                 // backgroundColor: Colors.amber,
                 fontSize: 14,
               ),
-            ),
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>( const Color.fromARGB(255, 5, 50, 91)), // Color de fondo
             ),
           ),
         ),
@@ -352,6 +356,9 @@ class CustomAlertDialogBotonState
                 filterColor = false;
               });
             },
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>( const Color.fromARGB(255, 5, 50, 91)), // Color de fondo
+            ),
             child: const Text(
               'Galeria',
               style: TextStyle(
@@ -359,9 +366,6 @@ class CustomAlertDialogBotonState
                 // backgroundColor: Colors.amber,
                 fontSize: 14,
               ),
-            ),
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>( const Color.fromARGB(255, 5, 50, 91)), // Color de fondo
             ),
           ),
         ),

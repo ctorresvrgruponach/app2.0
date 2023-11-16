@@ -1,7 +1,7 @@
 import '../libs/lib.dart';
 
 
-final solicita_prestamo = FutureProvider.autoDispose<Map<String, dynamic>>((ref) async {
+final solicitarPrestamo = FutureProvider.autoDispose<Map<String, dynamic>>((ref) async {
 
   final token         = await SharedPreferencesHelper.getdatos('token');
   final idEmpleado    = await SharedPreferencesHelper.getdatos('empleado');
@@ -22,9 +22,6 @@ final solicita_prestamo = FutureProvider.autoDispose<Map<String, dynamic>>((ref)
   if (datasolicitaPrestamo is Map<String, dynamic> &&
       datasolicitaPrestamo["success"] != null) {
     if (datasolicitaPrestamo["success"]) {
-      print(datasolicitaPrestamo);
-      // print('DATOS $datasolicitaPrestamo');
-      print('AQUI ESTA LA RESPUESTA MY LOVEEE');
     } else {}
   } else {
     if (kDebugMode) {

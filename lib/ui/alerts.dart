@@ -86,6 +86,9 @@ class CustomAlertDialog extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).pop();
             },
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>( const Color.fromARGB(255, 5, 50, 91)), // Color de fondo
+            ),
             child: const Text(
               'Ok',
               style: TextStyle(
@@ -93,9 +96,6 @@ class CustomAlertDialog extends StatelessWidget {
                 // backgroundColor: Colors.amber,
                 fontSize: 14,
               ),
-            ),
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>( const Color.fromARGB(255, 5, 50, 91)), // Color de fondo
             ),
           ),
         ),
@@ -105,6 +105,7 @@ class CustomAlertDialog extends StatelessWidget {
 }
 
 
+// ignore: camel_case_types
 class alersuccess extends StatelessWidget {
   final String message;
   final String title;
@@ -163,8 +164,11 @@ class alersuccess extends StatelessWidget {
           child: TextButton(
             onPressed: () {
               Navigator.of(context).pop();
-              Navigator.push(context,MaterialPageRoute(builder: (context) => HomeScreen()),);
+              Navigator.push(context,MaterialPageRoute(builder: (context) => const HomeScreen()),);
             },
+            style: ButtonStyle(
+             backgroundColor: MaterialStateProperty.all<Color>( const Color.fromARGB(255, 5, 50, 91)), // Color de fondo
+           ),
             child: const Text(
               'Aceptar',
               style: TextStyle(
@@ -173,9 +177,6 @@ class alersuccess extends StatelessWidget {
                 fontSize: 14,
               ),
             ),
-            style: ButtonStyle(
-             backgroundColor: MaterialStateProperty.all<Color>( const Color.fromARGB(255, 0, 4, 125)), // Color de fondo
-           ),
           ),
         ),
       ],
@@ -184,6 +185,7 @@ class alersuccess extends StatelessWidget {
 }
 
 
+// ignore: camel_case_types
 class alerterror extends StatelessWidget {
   final String message;
   final String title;
@@ -242,8 +244,11 @@ class alerterror extends StatelessWidget {
           child: TextButton(
             onPressed: () {
               Navigator.of(context).pop();
-              Navigator.push(context,MaterialPageRoute(builder: (context) => MisAdelantos()),);
+              Navigator.push(context,MaterialPageRoute(builder: (context) => const MisAdelantos()),);
             },
+            style: ButtonStyle(
+             backgroundColor: MaterialStateProperty.all<Color>( const Color.fromARGB(255, 5, 50, 91)), // Color de fondo
+           ),
             child: const Text(
               'Mas información',
               style: TextStyle(
@@ -252,9 +257,6 @@ class alerterror extends StatelessWidget {
                 fontSize: 14,
               ),
             ),
-            style: ButtonStyle(
-             backgroundColor: MaterialStateProperty.all<Color>( const Color.fromARGB(255, 5, 50, 91)), // Color de fondo
-           ),
           ),
         ),
       ],
