@@ -328,7 +328,7 @@ class _ServiciosScreenState extends State<ServiciosScreen> {
             ),
           ),
         ),
-        bottomNavigationBar: MyBottomNavigationBar(
+        bottomNavigationBar: const MyBottomNavigationBar(
           selectedIndex: 1,
         ),
       ),
