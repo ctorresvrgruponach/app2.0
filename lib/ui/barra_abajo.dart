@@ -312,8 +312,8 @@ class MyBottomNavigationBar extends StatelessWidget {
         return postMisMisNotificacionesProvider.when(
           data: (data) {
             // Verifica si 'aval_prestamos' está presente en el mapa y es una lista
-            final rows = (data?['aval_prestamos'] as List?)
-                ?.cast<Map<String, dynamic>>();
+            final rows =
+                (data['aval_prestamos'] as List?)?.cast<Map<String, dynamic>>();
             var count = rows?.length ?? 0;
             // print(count);
             return BottomNavigationBar(
