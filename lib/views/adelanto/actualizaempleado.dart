@@ -54,7 +54,6 @@ class ActualizaEmpleadoScreenState
 
   @override
   Widget build(BuildContext context) {
-    final customDialogManager = CustomDialogManager(context);
     final String argumento1;
     List<dynamic> argumentos = [''];
     final argumentosw = ModalRoute.of(context)?.settings.arguments;
@@ -748,7 +747,7 @@ class ActualizaEmpleadoScreenState
                     // return Text(snapshot.error.toString());
                   } else if (snapshot.hasData &&
                       snapshot.data!['mensaje'] != null) {
-                    return  Text(snapshot.data!['mensaje']);
+                    return Text(snapshot.data!['mensaje']);
                     // return Text(snapshot.error.toString());
                   }
                   // By default show a loading spinner.
@@ -759,7 +758,7 @@ class ActualizaEmpleadoScreenState
           ),
         ),
       ),
-      bottomNavigationBar: MyBottomNavigationBar(
+      bottomNavigationBar: const MyBottomNavigationBar(
         selectedIndex: 1,
       ),
     );
