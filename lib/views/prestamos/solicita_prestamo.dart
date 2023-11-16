@@ -1,4 +1,4 @@
-// import 'package:com.gruponach.nach_empleado/lib/custom_dropdown.dart';
+ // import 'package:com.gruponach.nach_empleado/lib/custom_dropdown.dart';
 import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:com.gruponach.nach_empleado/api/confirmar_prestamo.dart';
 import 'package:com.gruponach.nach_empleado/config/vistas.dart';
@@ -19,9 +19,7 @@ class IdOperacionNotifier extends StateNotifier<String> {
     state = newValue;
   }
 }
-
-final calcularPrestamos =
-    StateNotifierProvider<IdOperacionNotifier, String>((ref) {
+final calcularPrestamos = StateNotifierProvider<IdOperacionNotifier, String>((ref) {
   return IdOperacionNotifier();
 });
 
@@ -37,7 +35,7 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
       _button = true;
       _inputs = true;
       _ocultabtn = false;
-    });
+     });
   }
   // void onPressed() {
   //   setState(() {
@@ -73,11 +71,12 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
 
 //PARA LOS AVALES
 
-  final token = SharedPreferencesHelper.getdatos('token');
-  final idEmpleado = SharedPreferencesHelper.getdatos('empleado');
-  final idOperacionid = SharedPreferencesHelper.getdatos('idoperacionid');
+  final token         =  SharedPreferencesHelper.getdatos('token');
+  final idEmpleado    =  SharedPreferencesHelper.getdatos('empleado');
+  final idOperacionid =  SharedPreferencesHelper.getdatos('idoperacionid');
 
-  Map<int, int> idavales = {};
+
+  Map<int, int> idavales= {};
   List<String> filteredValues = [];
 
   List<int> montoavales = [];
@@ -104,47 +103,45 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
 
   @override
   Widget build(BuildContext context) {
-    final _montoinput = ref.read(montoinputControllerProvider);
-    final _plazos = ref.read(plazosControllerProvider);
 
-    fetchData() async {
-      final token = await SharedPreferencesHelper.getdatos('token');
-      final idEmpleado = await SharedPreferencesHelper.getdatos('empleado');
-      final idOperacionid =
-          await SharedPreferencesHelper.getdatos('idoperacionid');
-      final _montoinput = ref.watch(montoinputControllerProvider);
-      final _plazos = ref.watch(plazosControllerProvider);
-      montoinput = _montoinput.text;
-      plazos = _plazos.text;
+  final _montoinput   = ref.read(montoinputControllerProvider);
+  final _plazos       = ref.read(plazosControllerProvider);
 
-      final postDatas = {
-        "idEmpleado": idEmpleado,
-        "idOperacion": idOperacionid,
-        "monto_solicitado": montoinput,
-        "plazos": plazos,
-        "token": token,
-      };
+  fetchData () async {
+  final token         = await SharedPreferencesHelper.getdatos('token');
+  final idEmpleado    = await SharedPreferencesHelper.getdatos('empleado');
+  final idOperacionid = await SharedPreferencesHelper.getdatos('idoperacionid');
+  final _montoinput   = ref.watch(montoinputControllerProvider);
+  final _plazos       = ref.watch(plazosControllerProvider);
+  montoinput =_montoinput.text;
+  plazos     =_plazos.text;
 
-      final data = await fetchPostData(
-        modo,
-        completeUrldev,
-        baseUrl,
-        calculaPrestamo,
-        postDatas,
-      );
-      final response = await fetchPostData(
-          modo, completeUrldev, baseUrl, calculaPrestamo, postDatas);
-      if (response['estatus'] == 200) {
-        _sendData();
-        return response;
-      } else {
-        throw Exception('Error al cargar los datos');
-      }
+  final postDatas = {
+    "idEmpleado"       : idEmpleado,
+    "idOperacion"      : idOperacionid,
+    "monto_solicitado" : montoinput,
+    "plazos"           : plazos,
+    "token"            : token,
+  };
+
+  final data = await fetchPostData(
+    modo,
+    completeUrldev,
+    baseUrl,
+    calculaPrestamo,
+    postDatas,
+  );
+  final response = await fetchPostData( modo, completeUrldev, baseUrl, calculaPrestamo, postDatas);
+    if (response['estatus'] == 200) {
+    _sendData();
+            return response;
+    } else {
+      throw Exception('Error al cargar los datos');
     }
+}
 
-    final calculoresponse = ref.watch(calcularPrestamos);
+  final calculoresponse   = ref.watch(calcularPrestamos);
     return Scaffold(
-      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: const Text('Solicitar Prestamo'),
         backgroundColor:const Color.fromARGB(255, 5, 50, 91),
@@ -191,17 +188,12 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                               message: 'Tu Prestamo Debe Ser Menor o Igual a \$$montoMaximo',
                               title: 'Cantidad excedida',
                               icon: Icons.error_outline_outlined,
-                              color: Colors.red);
-                        },
-                      );
-                      _montoinput.clear();
-                    }
-                  }
-
-                  void ValidaPlazos() {
-                    final String amountText = _plazos.text;
-                    if (amountText.isEmpty) {
-                      return;
+                              color: Colors.red
+                            );
+                          },
+                        );
+                        _montoinput.clear();
+                      }
                     }
                     void validaPlazos() {
                       final String amountText = _plazos.text;
@@ -217,13 +209,13 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                               message: 'Los plazos no pueden ser mayor a $plazosRestantes.',
                               title: 'Error...',
                               icon: Icons.error_outline_outlined,
-                              color: Colors.amber);
-                        },
-                      );
-                      _plazos.clear();
+                              color: Colors.amber
+                            );
+                          },
+                        );
+                        _plazos.clear();
+                      }
                     }
-                  }
-
                   return Column(
                     children: [
                       Form(
@@ -240,18 +232,12 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                                       child: Hero(
                                         tag: 'alert',
                                         child: TextFormField(
+                                          controller: _montoinput,
                                           keyboardType: TextInputType.number,
                                           inputFormatters: <TextInputFormatter>[
-                                            FilteringTextInputFormatter.allow(
-                                                RegExp(
-                                                    r'[0-9]')), // Permite solo dígitos numéricos
+                                            FilteringTextInputFormatter.allow(RegExp(r'[0-9]')), // Permite solo dígitos numéricos
                                           ],
-                                          controller: _plazos,
-                                          decoration:
-                                              InputDecorationBuilder.finalinput(
-                                                  hintText:
-                                                      'Maximo $plazos_restantes plazos',
-                                                  labelText: 'Plazos'),
+                                          decoration: InputDecorationBuilder.finalinput(hintText: 'Cantidad', labelText: 'Monto prestamo'),
                                           enabled: !_inputs,
 
                                           onChanged: (value) {
@@ -266,10 +252,15 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                                           //   }
                                           // },
                                           validator: (value) {
-                                            if (value == null ||
-                                                value.isEmpty) {
-                                              return 'Por favor, ingresa el plazo';
+                                            if (value == null || value.isEmpty) {
+                                              return 'Ingresa el monto';
                                             }
+
+                                            var valor = int.tryParse(value); // Intenta convertir a entero
+                                            if (valor == null || valor < 1000) {
+                                              return 'Monto mínimo \$1000';
+                                            }
+                                            // Si no hay errores, retorna null
                                             return null;
                                           },
                                         )),
@@ -368,8 +359,7 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                                         children: [
                                           Expanded(
                                             child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
+                                              padding: const EdgeInsets.all(8.0),
                                               child: TextFormField(
                                                 readOnly: true,
                                                 // controller: _pagoPrestamo,
@@ -382,18 +372,13 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                                           ),
                                           Expanded(
                                             child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
+                                              padding: const EdgeInsets.all(8.0),
                                               child: TextFormField(
                                                 readOnly: true,
-                                                initialValue:
-                                                    comision.toString(),
-                                                decoration: InputDecorationBuilder
-                                                    .finalinput(
-                                                        hintText:
-                                                            'Comision por Apertura',
-                                                        labelText:
-                                                            'Comision por Apertura'),
+                                                initialValue: comision.toString(),
+                                                decoration: InputDecorationBuilder.finalinput(
+                                                  hintText: 'Comision por Apertura',
+                                                  labelText: 'Comision por Apertura'),
                                               ),
                                             ),
                                           )
@@ -422,33 +407,31 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                                       ),
                                     ],
                                   ),
-                                ),
-                              ],
-                            ),
-                          ))
+                                )  ,
+                            ],
+                          ),
+                        )
+                      )
                     ],
                   );
                 } else if (snapshot.hasError) {
                   return const Center(child: Text('Error intentalo mas tarde.'));
                   // return Text(snapshot.error.toString());
                 } else if (snapshot.hasData &&
-                    snapshot.data!['mensaje'] != null) {
-                  return alerterror(
-                      message: snapshot.data!['mensaje'],
-                      title: 'Notificación',
-                      icon: Icons.notification_add,
-                      color: Colors.white);
+                  snapshot.data!['mensaje'] != null) {
+                  return alerterror(message: snapshot.data!['mensaje'], title: 'Notificación', icon: Icons.notification_add, color: Colors.white);
                 }
                 // By default show a loading spinner.
                 return const Cargando();
               },
             ),
           ],
+          
         ),
       ),
     );
-  }
-
+    
+}
   void validaavales(int value) {
     if (value > montomaximoaval) {
       showDialog(
@@ -469,33 +452,27 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
         await Future.delayed(const Duration(seconds: 1));
         final busqueda = query.toLowerCase();
 
-      final matchingOptions = avales
-          .where((opcion) {
-            if (opcion is Map<String, dynamic> &&
-                opcion.containsKey('no_empleado') &&
-                opcion.containsKey('id_empleado') &&
-                opcion.containsKey('nombre_completo')) {
-              return opcion['no_empleado'].toString().toLowerCase() ==
-                      busqueda ||
-                  opcion['nombre_completo'].toString().toLowerCase() ==
-                      busqueda;
-            }
-            return false;
-          })
-          .map((opcion) {
-            if (opcion is Map<String, dynamic> &&
-                opcion.containsKey('nombre_completo')) {
-              return opcion['nombre_completo'].toString();
-            }
-            return null;
-          })
-          .whereType<String>()
-          .toList();
+        final matchingOptions = avales.where((opcion) {
+          if (opcion is Map<String, dynamic> &&
+              opcion.containsKey('no_empleado') &&
+              opcion.containsKey('id_empleado') &&
+              opcion.containsKey('nombre_completo')) {
+            return opcion['no_empleado'].toString().toLowerCase() == busqueda ||
+                opcion['nombre_completo'].toString().toLowerCase() == busqueda;
+          }
+          return false;
+        }).map((opcion) {
+          if (opcion is Map<String, dynamic> && opcion.containsKey('nombre_completo')) {
+            return opcion['nombre_completo'].toString();
+          }
+          return null;
+        }).whereType<String>().toList();
 
-      if (matchingOptions.isNotEmpty) {
-        return matchingOptions;
-      } else {
-        return [];
+        if (matchingOptions.isNotEmpty) {
+          return matchingOptions;
+        } else {
+          return [];
+        }
       }
       // bool validateAndHandleDialog(int i, dynamic value, List<Map<String, dynamic>> nuevoaval, Map<int, int> idavales) {
       //   if (value != null && value.toString().isNotEmpty) {
@@ -536,8 +513,7 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
       //   }
       // }
 
-    return Center(
-      child: SingleChildScrollView(
+   return Center(
         child: Container(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -546,14 +522,13 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
               for (var i = 0; i < navales; i++)
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
+                  children:[
                     CustomDropdown.searchRequest(
                       futureRequest: getFakeRequestData,
                       hintText: 'Selecciona a tu aval',
                       searchHintText: 'Número de empleado',
                       excludeSelected: false,
-                      items:
-                          filteredValues, // Usar filteredValues en lugar de avales
+                      items: filteredValues, // Usar filteredValues en lugar de avales
                       // onChanged: (value) {
                       //   List<Map<String, dynamic>> nuevoaval = avales.cast<Map<String, dynamic>>();
                       //   validateAndHandleDialog(i, value, nuevoaval, idavales);
@@ -627,7 +602,7 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                         FilteringTextInputFormatter.allow(RegExp(r'[0-9]')), // Permite solo dígitos numéricos
                       ],
                       decoration: InputDecorationBuilder.finalinput(
-                          hintText: 'Cantidad', labelText: 'Monto aval'),
+                        hintText: 'Cantidad', labelText: 'Monto aval'),
                       onChanged: (value) {
                         setState(() {
                           // ignore: unnecessary_null_comparison
@@ -754,6 +729,7 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                             
                           
                         }else {
+print('Error');
                             showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
@@ -779,7 +755,6 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
             ],
           ),
         ),
-      ),
-    );
+      );
   }
 }
