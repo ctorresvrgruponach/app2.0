@@ -11,6 +11,7 @@ import '../config/htmls.dart';
 
 bool hayDatos = true;
 bool filterColor = true;
+Map someMap = {};
 final imageProvider = StateNotifierProvider<ImageNotifier, File?>((ref) {
   return ImageNotifier();
 });
@@ -116,6 +117,7 @@ class ImageNotifier extends StateNotifier<File?> {
     String pdfbase642 = base64Encode(bytes);
     Clipboard.setData(ClipboardData(text: pdfbase642));
     SharedPreferencesHelper.setdatos(texto, pdfbase642);
+
     Navigator.pop(context);
 
     if (kDebugMode) {
@@ -168,8 +170,12 @@ class BotonfileState extends ConsumerState<Botonfile> {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        fixedSize: Size( MediaQuery.of(context).size.width * 0.4, MediaQuery.of(context).size.width * 0.1,),
-        backgroundColor: Color.fromARGB(filterColor ? 255 : 50, 5, 50, 91),
+        fixedSize: Size(
+          MediaQuery.of(context).size.width * 0.4,
+          MediaQuery.of(context).size.width * 0.1,
+        ),
+        backgroundColor: Color.fromARGB(
+            someMap[widget.texto] != widget.texto ? 255 : 50, 5, 50, 91),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(displayWidth(context) * 0.02),
         ),
@@ -184,11 +190,16 @@ class BotonfileState extends ConsumerState<Botonfile> {
             message: '',
             title: 'Documento ${widget.texto}',
             texto: widget.texto);
+        setState(() {
+          someMap[widget.texto] = widget.texto;
+        });
       },
       child: Container(
-        alignment: Alignment.center,
-        child: Text(' ${widget.texto}',
-        style: const TextStyle(fontSize: 12),)),
+          alignment: Alignment.center,
+          child: Text(
+            ' ${widget.texto}',
+            style: const TextStyle(fontSize: 12),
+          )),
     );
   }
 }
@@ -326,7 +337,8 @@ class CustomAlertDialogBotonState
               });
             },
             style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>( const Color.fromARGB(255, 5, 50, 91)), // Color de fondo
+              backgroundColor: MaterialStateProperty.all<Color>(
+                  const Color.fromARGB(255, 5, 50, 91)), // Color de fondo
             ),
             child: const Text(
               'Camara',
@@ -357,7 +369,8 @@ class CustomAlertDialogBotonState
               });
             },
             style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>( const Color.fromARGB(255, 5, 50, 91)), // Color de fondo
+              backgroundColor: MaterialStateProperty.all<Color>(
+                  const Color.fromARGB(255, 5, 50, 91)), // Color de fondo
             ),
             child: const Text(
               'Galeria',
