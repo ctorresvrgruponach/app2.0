@@ -113,7 +113,7 @@ class RecibosScreenState extends ConsumerState<RecibosScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: MyBottomNavigationBar(
+      bottomNavigationBar: const MyBottomNavigationBar(
         selectedIndex: 1,
       ),
     );

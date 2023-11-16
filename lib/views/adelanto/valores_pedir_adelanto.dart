@@ -535,7 +535,7 @@ class ValoresPedirAdelantoScreenState
             ],
           ),
         ),
-        bottomNavigationBar: MyBottomNavigationBar(
+        bottomNavigationBar: const MyBottomNavigationBar(
           selectedIndex: 1,
         ),
       ),

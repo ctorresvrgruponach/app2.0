@@ -137,8 +137,10 @@ class AdelantoScreenState extends ConsumerState<AdelantoScreen> {
                                                         ), // This is what you need!
                                                       ),
                                                       onPressed: () async {
-
-                                                        print('MANDA NUEVA VISTA');
+                                                        if (kDebugMode) {
+                                                          print(
+                                                              'MANDA NUEVA VISTA');
+                                                        }
                                                         SharedPreferencesHelper.setdatos(
                                                             'idoperacionid',
                                                             snapshot.data![

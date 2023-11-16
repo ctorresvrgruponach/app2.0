@@ -105,7 +105,7 @@ class ReciboNominaScreenState extends ConsumerState<ReciboNominaScreen> {
                             padding: const EdgeInsets.all(22.0),
                             child: Text(
                               operaciones[0]['nombre_operacion'].toString(),
-                              style:  TextStyle(
+                              style: TextStyle(
                                 fontSize: displayWidth(context) * 0.05,
                                 fontWeight: FontWeight.bold,
                                 color: const Color.fromARGB(255, 2, 9, 72),
@@ -126,7 +126,8 @@ class ReciboNominaScreenState extends ConsumerState<ReciboNominaScreen> {
                                     style: TextStyle(
                                       fontSize: displayWidth(context) * 0.05,
                                       fontWeight: FontWeight.bold,
-                                      color: const Color.fromARGB(255, 2, 9, 72),
+                                      color:
+                                          const Color.fromARGB(255, 2, 9, 72),
                                     ),
                                   ),
                                 ),
@@ -143,12 +144,13 @@ class ReciboNominaScreenState extends ConsumerState<ReciboNominaScreen> {
                                       horizontal: 12.0),
                                   child: DropdownButton<String>(
                                     value: operacionValueSelected,
-                                    style:  TextStyle(
+                                    style: TextStyle(
                                       color: Colors.black,
                                       fontSize: displayWidth(context) * 0.04,
                                     ),
                                     icon: Padding(
-                                      padding: EdgeInsets.only(left: displayWidth(context) * 0.09),
+                                      padding: EdgeInsets.only(
+                                          left: displayWidth(context) * 0.09),
                                       child: const Icon(
                                         Icons.keyboard_arrow_down_sharp,
                                         color: Color.fromARGB(255, 2, 9, 72),
@@ -161,7 +163,7 @@ class ReciboNominaScreenState extends ConsumerState<ReciboNominaScreen> {
                                           constraints: BoxConstraints(
                                               maxWidth:
                                                   displayWidth(context) * 0.6),
-                                              child: const Text(
+                                          child: const Text(
                                               'Selecciona una opción'),
                                         ),
                                       ),
@@ -181,10 +183,13 @@ class ReciboNominaScreenState extends ConsumerState<ReciboNominaScreen> {
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
                                                   fontSize: Tween<double>(
-                                                        begin: displayWidth(context) * 0.03,
-                                                        end: displayWidth(context) * 0.04,
-                                                      // ignore: invalid_use_of_protected_member
-                                                      ).lerp(0.5),
+                                                    begin:
+                                                        displayWidth(context) *
+                                                            0.03,
+                                                    end: displayWidth(context) *
+                                                        0.04,
+                                                    // ignore: invalid_use_of_protected_member
+                                                  ).lerp(0.5),
                                                 ),
                                               ),
                                             ),
@@ -193,7 +198,9 @@ class ReciboNominaScreenState extends ConsumerState<ReciboNominaScreen> {
                                       ).toList(),
                                     ],
                                     onChanged: (value) {
-                                      print(value);
+                                      if (kDebugMode) {
+                                        print(value);
+                                      }
                                       setState(() {
                                         operacionValueSelected = value;
                                       });
@@ -212,8 +219,12 @@ class ReciboNominaScreenState extends ConsumerState<ReciboNominaScreen> {
                           Visibility(
                             visible: operacionValueSelected != null,
                             child: // ...
-                              FutureBuilder(
-                              future: operacionValueSelected != null ? ref.read(periodosProvider(operacionValueSelected!).future): null,
+                                FutureBuilder(
+                              future: operacionValueSelected != null
+                                  ? ref.read(
+                                      periodosProvider(operacionValueSelected!)
+                                          .future)
+                                  : null,
                               builder: (context, snapshot) {
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
@@ -243,11 +254,13 @@ class ReciboNominaScreenState extends ConsumerState<ReciboNominaScreen> {
                                           DataCell(
                                             ElevatedButton(
                                               onPressed: () {
-                                                String url = "http://nachservice.com.mx/${periodo['archivo_timbrado_pdf']}";
+                                                String url =
+                                                    "http://nachservice.com.mx/${periodo['archivo_timbrado_pdf']}";
                                                 SharedPreferencesHelper
                                                     .setdatos(
                                                         "urlPdfVisor", url);
-                                                Navigator.pushNamed(context, 'pdf');
+                                                Navigator.pushNamed(
+                                                    context, 'pdf');
                                               },
                                               style: ElevatedButton.styleFrom(
                                                 backgroundColor: Colors.red,
@@ -263,15 +276,25 @@ class ReciboNominaScreenState extends ConsumerState<ReciboNominaScreen> {
                                           DataCell(
                                             ElevatedButton(
                                               onPressed: () {
-                                                fetchData(operacionValueSelected,periodo['periodo'],2)
-                                                .then((response) {
-                                                  String nombreArchivo = obtenerNombreArchivoXRuta(periodo['archivo_timbrado_xml']);
-                                                  String decodedString = utf8.decode(base64.decode(response['archivo']));
-                                                  _saveTextToFile(decodedString,nombreArchivo);
+                                                fetchData(
+                                                        operacionValueSelected,
+                                                        periodo['periodo'],
+                                                        2)
+                                                    .then((response) {
+                                                  String nombreArchivo =
+                                                      obtenerNombreArchivoXRuta(
+                                                          periodo[
+                                                              'archivo_timbrado_xml']);
+                                                  String decodedString =
+                                                      utf8.decode(base64.decode(
+                                                          response['archivo']));
+                                                  _saveTextToFile(decodedString,
+                                                      nombreArchivo);
                                                 }).catchError((error) {
                                                   showDialog(
                                                     context: context,
-                                                    builder: (BuildContext context) {
+                                                    builder:
+                                                        (BuildContext context) {
                                                       return const CircularProgressIndicator();
                                                     },
                                                   );
@@ -293,7 +316,8 @@ class ReciboNominaScreenState extends ConsumerState<ReciboNominaScreen> {
                                     }).toList(),
                                   );
                                 } else if (snapshot.hasError) {
-                                  return Center(child: Text('Error: ${snapshot.error}'));
+                                  return Center(
+                                      child: Text('Error: ${snapshot.error}'));
                                 }
                                 return const Text(
                                   'No hay datos a mostrar',
