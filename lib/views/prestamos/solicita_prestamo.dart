@@ -193,8 +193,9 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                     if (amountText.isEmpty) {
                       return;
                     }
-                    final double? amount = double.tryParse(amountText);
-                    if (amount != null && amount > plazosRestantes) {
+                    final int? amount = int.tryParse(amountText);
+                    print(amount);
+                    if (amount != null && amount > plazosRestantes ) {
                       showDialog(
                         context: context,
                         builder: (context) {
@@ -289,13 +290,21 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                                                       'Maximo $plazosRestantes plazos',
                                                   labelText: 'Plazos'),
                                           enabled: !_inputs,
-                                          validator: (value) {
-                                            if (value == null ||
-                                                value.isEmpty) {
-                                              return 'Por favor, ingresa el plazo';
-                                            }
-                                            return null;
-                                          },
+                                           validator: (value) {
+                                                if (value == null ||
+                                                    value.isEmpty) {
+                                                  return 'Por favor, ingresa los plazos';
+                                                }
+
+                                                var valor = int.tryParse(
+                                                    value); // Intenta convertir a entero
+                                                if (valor == null ||
+                                                    valor < 6) {
+                                                  return 'Minimo 6 plazos ';
+                                                }
+                                                // Si no hay errores, retorna null
+                                                return null;
+                                              },
                                           onChanged: (_) {
                                             validaPlazos();
                                           },
@@ -851,7 +860,7 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                               builder: (BuildContext context) {
                                 return const CustomAlertDialog(
                                     message:
-                                        'No todos los campos estan llenos ',
+                                        'No todos los campos son correctos',
                                     title: 'Error',
                                     icon: Icons.error_outline,
                                     color: Colors.red);
