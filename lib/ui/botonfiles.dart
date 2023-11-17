@@ -1,7 +1,6 @@
 import 'dart:io';
 
 // Importa la biblioteca de permisos
-import 'package:flutter/services.dart';
 import 'package:flutter_html_to_pdf/flutter_html_to_pdf.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
@@ -12,6 +11,8 @@ import '../config/htmls.dart';
 bool hayDatos = true;
 bool filterColor = true;
 Map someMap = {};
+var lados = 0;
+String base64Stringfrente = '';
 final imageProvider = StateNotifierProvider<ImageNotifier, File?>((ref) {
   return ImageNotifier();
 });
@@ -76,9 +77,15 @@ class ImageNotifier extends StateNotifier<File?> {
       }
 
       final compressedImage = await compressImage();
-      final base64String = base64Encode(compressedImage);
-
-      await imagenpdf.devolverimagen(base64String, dir, texto);
+      print(" lados $lados");
+      if (texto == 'INE' && lados == 0) {
+        base64Stringfrente = base64Encode(compressedImage);
+        lados = 1;
+      } else {
+        final base64String = base64Encode(compressedImage);
+        await imagenpdf.devolverimagen(
+            base64String, dir, texto, base64Stringfrente);
+      }
     } else {
       final XFile? photo1 = await picker.pickImage(source: ImageSource.gallery);
 
@@ -88,8 +95,14 @@ class ImageNotifier extends StateNotifier<File?> {
         if (isImage) {
           final dir = await path_provider.getTemporaryDirectory();
           var bytes = File(photo1.path).readAsBytesSync();
-
-          await imagenpdf.devolverimagen(base64Encode(bytes), dir, texto);
+          print(" lados $lados");
+          if (texto == 'INE' && lados == 0) {
+            base64Stringfrente = base64Encode(bytes);
+            lados = 1;
+          } else {
+            await imagenpdf.devolverimagen(
+                base64Encode(bytes), dir, texto, base64Stringfrente);
+          }
         } else {
           // Handle the case when a non-image file is selected.
           // print('El archivo seleccionado no es una imagen.');
@@ -98,13 +111,13 @@ class ImageNotifier extends StateNotifier<File?> {
     }
   }
 
-  Future<String> devolverimagen(
-      String base64String, Directory dir, String texto, context) async {
+  Future<String> devolverimagen(String base64String, Directory dir,
+      String texto, context, String frente) async {
     final now = DateTime.now();
     String formatter = DateFormat('d/MM/y').format(now);
     String htmlcotejado = texto == 'CURP' ? '' : formatText(formatter);
-    var htmlcode2 = texto == 'INE'
-        ? """<img src="data:image/png;base64,$base64String" alt=""  width="500" height="600"/><br/>"""
+    var htmlcode2 = frente != '' && texto == 'INE'
+        ? """<img src="data:image/png;base64,$frente" alt=""  width="500" height="600"/><br/>"""
         : '';
 
     var htmlcode =
@@ -115,10 +128,12 @@ class ImageNotifier extends StateNotifier<File?> {
         htmlcode, dir.path, targetFileNames3);
     final bytes = File('${dir.path}/$targetFileNames3.pdf').readAsBytesSync();
     String pdfbase642 = base64Encode(bytes);
-    Clipboard.setData(ClipboardData(text: pdfbase642));
+    //Clipboard.setData(ClipboardData(text: pdfbase642));
     SharedPreferencesHelper.setdatos(texto, pdfbase642);
 
     Navigator.pop(context);
+    base64Stringfrente = '';
+    lados = 0;
 
     if (kDebugMode) {
       // print('ARCHIVO CARGADO BASE 64 $pdfbase642');
@@ -209,12 +224,12 @@ class Imagenpdf {
 
   Imagenpdf(this.context);
   Future<String> devolverimagen(
-      String base64String, Directory dir, String texto) async {
+      String base64String, Directory dir, String texto, String frente) async {
     final now = DateTime.now();
     String formatter = DateFormat('d/MM/y').format(now);
     String htmlcotejado = texto == 'CURP' ? '' : formatText(formatter);
-    var htmlcode2 = texto == 'INE'
-        ? """<img src="data:image/png;base64,$base64String" alt=""  width="500" height="600"/><br/>"""
+    var htmlcode2 = frente != '' && texto == 'INE'
+        ? """<img src="data:image/png;base64,$frente" alt=""  width="500" height="600"/><br/>"""
         : '';
 
     var htmlcode =
@@ -225,13 +240,17 @@ class Imagenpdf {
         htmlcode, dir.path, targetFileNames3);
     final bytes = File('${dir.path}/$targetFileNames3.pdf').readAsBytesSync();
     String pdfbase642 = base64Encode(bytes);
-    Clipboard.setData(ClipboardData(text: pdfbase642));
+    //Clipboard.setData(ClipboardData(text: pdfbase642));
     SharedPreferencesHelper.setdatos(texto, pdfbase642);
+
     // ignore: use_build_context_synchronously
     Navigator.pop(context);
 
+    base64Stringfrente = '';
+    lados = 0;
+
     if (kDebugMode) {
-      print(pdfbase642);
+      // print('ARCHIVO CARGADO BASE 64 $pdfbase642');
     }
     return pdfbase642;
   }
@@ -296,7 +315,11 @@ class CustomAlertDialogBotonState
         color: widget.color,
       ),
       title: Text(
-        widget.title,
+        widget.title == 'INE'
+            ? base64Stringfrente == ''
+                ? "${widget.title} frente "
+                : "${widget.title} reverso"
+            : widget.title,
         style: const TextStyle(
           color: Colors.white,
         ),
@@ -333,7 +356,9 @@ class CustomAlertDialogBotonState
                   .read(imageProvider.notifier)
                   .pickImage('camara', widget.texto, context);
               setState(() {
-                filterColor = false;
+                if (widget.texto != 'INE') {
+                  filterColor = false;
+                }
               });
             },
             style: ButtonStyle(
@@ -416,7 +441,8 @@ class BotoncState extends ConsumerState<Botonc> {
   Widget build(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Color.fromARGB(filterColor ? 255 : 50, 5, 50, 91),
+        backgroundColor: Color.fromARGB(
+            someMap[widget.texto] != widget.texto ? 255 : 0, 5, 50, 91),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(displayWidth(context) * 0.02),
         ),
