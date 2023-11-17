@@ -1,8 +1,4 @@
-import 'package:flutter/material.dart';
-
-import '../../helpers/display.dart';
-import '../../helpers/guardarvars.dart';
-import '../../ui/barra_abajo.dart';
+import '../../libs/lib.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);

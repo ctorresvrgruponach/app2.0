@@ -1,12 +1,5 @@
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-
 import '../../api/firmaapi.dart';
-import '../../helpers/guardarvars.dart';
-import '../../helpers/somelugar.dart';
-import '../../ui/alerts.dart';
+import '../../libs/lib.dart';
 
 class ReviewSignaturePage extends StatelessWidget {
   final Uint8List? signature;

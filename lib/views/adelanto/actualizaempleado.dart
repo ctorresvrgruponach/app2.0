@@ -1,5 +1,4 @@
-import 'package:com.gruponach.nach_empleado/ui/decoracioninput.dart';
-
+import '../../ui/decoracioninput.dart';
 import '../../api/actualizadatosempleado.dart';
 import '../../api/apiadelanto.dart';
 import '../../libs/lib.dart';

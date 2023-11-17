@@ -23,3 +23,4 @@ export '../views/recibosnomina/recibosnomina.dart';
 export '../views/adelanto/actualizaempleado.dart';
 // export '../views/prestamos/prestamo_nomina.dart';
 export '../views/recibos/recibosnomina.dart';
+export '../../config/vistas.dart';

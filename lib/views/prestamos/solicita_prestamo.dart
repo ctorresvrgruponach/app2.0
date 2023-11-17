@@ -1,13 +1,9 @@
 // import 'package:com.gruponach.nach_empleado/lib/custom_dropdown.dart';
-import 'package:animated_custom_dropdown/custom_dropdown.dart';
-import 'package:com.gruponach.nach_empleado/api/confirmar_prestamo.dart';
-import 'package:com.gruponach.nach_empleado/config/vistas.dart';
-import 'package:com.gruponach.nach_empleado/libs/lib.dart';
-import 'package:com.gruponach.nach_empleado/ui/input.dart';
-import 'package:flutter/services.dart';
-
 import '../../api/calcula_prestamo.dart';
+import '../../api/confirmar_prestamo.dart';
 import '../../api/solicita_prestamo.dart';
+import '../../libs/lib.dart';
+import '../../ui/input.dart';
 
 String? montoinput;
 String? plazos;
@@ -150,14 +146,7 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
           IconButton(
             icon: const Icon(Icons.home),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return const HomeScreen();
-                  },
-                ),
-              );
+              Navigator.pushNamed(context, 'home');
             },
           ),
         ],
@@ -171,8 +160,8 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                 // print('object');
                 if (snapshot.hasData && snapshot.data!['empleado'] != null) {
                   if (kDebugMode) {}
-                  final avales          = snapshot.data!['avales'];
-                  final montoMaximo     = snapshot.data!['monto_maximo'];
+                  final avales = snapshot.data!['avales'];
+                  final montoMaximo = snapshot.data!['monto_maximo'];
                   // final montoXAval      = snapshot.data!['monto_x_aval'];
                   final plazosRestantes = snapshot.data!['plazos_restantes'];
                   // final montoingresado  = montosolicitado.text;
@@ -797,7 +786,8 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                             //         'Comprobante (DOMICILIO)');
                             final montosolicitado =
                                 ref.watch(montoinputControllerProvider);
-                            final plazoseleccionado = ref.watch(plazosControllerProvider);
+                            final plazoseleccionado =
+                                ref.watch(plazosControllerProvider);
                             montoinput = montosolicitado.text;
                             plazos = plazoseleccionado.text;
                             SharedPreferencesHelper.setdatos(
@@ -810,9 +800,9 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                                 'comision', '$comision'); //comision
                             SharedPreferencesHelper.setdatos(
                                 'avales', '$avales'); //avales
-                             setState(() {
-                               btnsolicitaPrestamo = true;
-                             });
+                            setState(() {
+                              btnsolicitaPrestamo = true;
+                            });
                             final respuesta =
                                 await enviarPrestamo.confirmaprestamo();
                             if (respuesta['estatus'] == 200) {

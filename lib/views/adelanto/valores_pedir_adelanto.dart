@@ -17,6 +17,7 @@ bool hidendobleCurp = true;
 bool isLoading = false;
 bool enviados = true;
 bool isblank = true;
+bool btnsolicitaPrestamo = false;
 
 bool visibleBt = false;
 int textomarcoemail = 0;
@@ -127,14 +128,14 @@ class ValoresPedirAdelantoScreenState
                               child: TextFormField(
                                 readOnly: true,
                                 controller: sueldoMensual,
-                                // inputFormatters: [
-                                //   FilteringTextInputFormatter.allow(
-                                //     RegExp(
-                                //       //r'^[-]{0,1}[0-9]*[,]?[0-9]*', //signed regex
-                                //       r'[1-9]*[.]?[0-9]',
-                                //     ),
-                                //   ),
-                                // ],
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.allow(
+                                    RegExp(
+                                      //r'^[-]{0,1}[0-9]*[,]?[0-9]*', //signed regex
+                                      r'[1-9]*[.]?[0-9]',
+                                    ),
+                                  ),
+                                ],
                                 style: const TextStyle(
                                     color: Color.fromARGB(255, 5, 50, 91)),
                                 keyboardType:
@@ -224,14 +225,14 @@ class ValoresPedirAdelantoScreenState
                               child: TextFormField(
                                 controller: monto,
                                 readOnly: readmonto,
-                                //inputFormatters: [
-                                //  FilteringTextInputFormatter.allow(
-                                //    RegExp(
-                                //      //r'^[-]{0,1}[0-9]*[,]?[0-9]*', //signed regex
-                                //      r'[1-9]*[.]?[0-9]',
-                                //    ),
-                                //  ),
-                                //],
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.allow(
+                                    RegExp(
+                                      //r'^[-]{0,1}[0-9]*[,]?[0-9]*', //signed regex
+                                      r'[1-9]*[.]?[0-9]',
+                                    ),
+                                  ),
+                                ],
                                 onChanged: (value) {
                                   SharedPreferencesHelper.setdatos(
                                       "montoapedir", monto.text);
@@ -330,14 +331,14 @@ class ValoresPedirAdelantoScreenState
                                   SharedPreferencesHelper.setdatos(
                                       "comision", value);
                                 },
-                                //inputFormatters: [
-                                //  FilteringTextInputFormatter.allow(
-                                //    RegExp(
-                                //      //r'^[-]{0,1}[0-9]*[,]?[0-9]*', //signed regex
-                                //      r'[1-9]*[.]?[0-9]',
-                                //    ),
-                                //  ),
-                                //],
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.allow(
+                                    RegExp(
+                                      //r'^[-]{0,1}[0-9]*[,]?[0-9]*', //signed regex
+                                      r'[1-9]*[.]?[0-9]',
+                                    ),
+                                  ),
+                                ],
                                 style: const TextStyle(
                                     color: Color.fromARGB(255, 5, 50, 91)),
                                 keyboardType:
@@ -375,14 +376,14 @@ class ValoresPedirAdelantoScreenState
                                   SharedPreferencesHelper.setdatos(
                                       "totaldescontar", value);
                                 },
-                                //inputFormatters: [
-                                //FilteringTextInputFormatter.allow(
-                                //  RegExp(
-                                //    //r'^[-]{0,1}[0-9]*[,]?[0-9]*', //signed regex
-                                //    r'[1-9]*[.]?[0-9]',
-                                //  ),
-                                //),
-                                // ],
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.allow(
+                                    RegExp(
+                                      //r'^[-]{0,1}[0-9]*[,]?[0-9]*', //signed regex
+                                      r'[1-9]*[.]?[0-9]',
+                                    ),
+                                  ),
+                                ],
                                 style: const TextStyle(
                                     color: Color.fromARGB(255, 5, 50, 91)),
                                 keyboardType:
@@ -496,21 +497,26 @@ class ValoresPedirAdelantoScreenState
                                     ),
                                     Botonc(
                                       texto: 'Aceptar Adelanto',
-                                      onPressed: () async {
-                                        final instanciaEnviaAdelanto =
-                                            EnviaAdelantoClass();
-                                        final resultado =
-                                            await instanciaEnviaAdelanto
-                                                .enviaadelanto();
-                                        await customDialogManager
-                                            .showCustomDialog(
-                                          icon: Icons.airlines_rounded,
-                                          message: resultado['mensaje'],
-                                          title: resultado['mensaje'],
-                                          color: const Color.fromARGB(
-                                              255, 244, 54, 54),
-                                        );
-                                      },
+                                      onPressed: btnsolicitaPrestamo
+                                          ? null
+                                          : () async {
+                                              setState(() {
+                                                btnsolicitaPrestamo = true;
+                                              });
+                                              final instanciaEnviaAdelanto =
+                                                  EnviaAdelantoClass();
+                                              final resultado =
+                                                  await instanciaEnviaAdelanto
+                                                      .enviaadelanto();
+                                              await customDialogManager
+                                                  .showCustomDialog(
+                                                icon: Icons.airlines_rounded,
+                                                message: resultado['mensaje'],
+                                                title: resultado['mensaje'],
+                                                color: const Color.fromARGB(
+                                                    255, 244, 54, 54),
+                                              );
+                                            },
                                     ),
                                   ],
                                 ),

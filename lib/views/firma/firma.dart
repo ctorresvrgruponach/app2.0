@@ -1,9 +1,7 @@
-import 'package:flutter/services.dart';
-
 import 'package:signature/signature.dart';
 
 import '../../config/vistas.dart';
-import '../../ui/barra_abajo.dart';
+import '../../libs/lib.dart';
 import '../../ui/lieneacentro.dart';
 
 class Firma extends StatefulWidget {

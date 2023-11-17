@@ -146,8 +146,19 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                             }
                           } else {
                             // Manejar caso de éxito falso
-                            return const Center(
-                                child: Text('Error en la solicitud'));
+                            return Center(
+                                child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 3,
+                              height: 100,
+                              child: const Text(
+                                "Notificaciones",
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 0, 36, 66),
+                                  fontSize: 40,
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                            ));
                           }
                         },
                         loading: () => Center(
@@ -312,8 +323,19 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                             }
                           } else {
                             // Manejar caso de éxito falso
-                            return const Center(
-                                child: Text('Error en la solicitud'));
+                            return Center(
+                                child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 3,
+                              height: 100,
+                              child: const Text(
+                                "Adelanto de nómina",
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 0, 36, 66),
+                                  fontSize: 40,
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                            ));
                           }
                         },
                         loading: () => Center(
@@ -478,8 +500,19 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                             }
                           } else {
                             // Manejar caso de éxito falso
-                            return const Center(
-                                child: Text('Error en la solicitud'));
+                            return Center(
+                                child: SizedBox(
+                              width: MediaQuery.of(context).size.width * 3,
+                              height: 100,
+                              child: const Text(
+                                "Prestamos",
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 0, 36, 66),
+                                  fontSize: 40,
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
+                            ));
                           }
                         },
                         loading: () => Center(

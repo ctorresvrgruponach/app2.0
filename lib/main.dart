@@ -1,10 +1,7 @@
 // main.dart
 
-import 'package:com.gruponach.nach_empleado/routes/app_routes.dart';
-import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'config/datos.dart';
-import 'config/vistas.dart'; // Importa las rutas desde el archivo separado
+import 'libs/lib.dart';
+// Importa las rutas desde el archivo separado
 
 void main() {
   runApp(
