@@ -77,7 +77,9 @@ class ImageNotifier extends StateNotifier<File?> {
       }
 
       final compressedImage = await compressImage();
-      print(" lados $lados");
+      if (kDebugMode) {
+        print(" lados $lados");
+      }
       if (texto == 'INE' && lados == 0) {
         base64Stringfrente = base64Encode(compressedImage);
         lados = 1;
@@ -95,7 +97,9 @@ class ImageNotifier extends StateNotifier<File?> {
         if (isImage) {
           final dir = await path_provider.getTemporaryDirectory();
           var bytes = File(photo1.path).readAsBytesSync();
-          print(" lados $lados");
+          if (kDebugMode) {
+            print(" lados $lados");
+          }
           if (texto == 'INE' && lados == 0) {
             base64Stringfrente = base64Encode(bytes);
             lados = 1;
