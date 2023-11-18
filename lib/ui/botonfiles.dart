@@ -56,7 +56,7 @@ class ImageNotifier extends StateNotifier<File?> {
         await EdgeDetection.detectEdge(
           imagePath,
           canUseGallery: true,
-          androidScanTitle: 'Frente',
+          androidScanTitle: base64Stringfrente == '' ? 'Frente' : 'Reverso',
           androidCropTitle: 'Recortar',
           androidCropBlackWhiteTitle: 'Blanco y negro',
           androidCropReset: 'Reestablecer',
@@ -89,29 +89,52 @@ class ImageNotifier extends StateNotifier<File?> {
             base64String, dir, texto, base64Stringfrente);
       }
     } else {
-      final XFile? photo1 = await picker.pickImage(source: ImageSource.gallery);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: base64Stringfrente == ''
+                ? Text('Documento $texto Frente')
+                : Text('Documento $texto Reverso'),
+            content: base64Stringfrente == ''
+                ? Text('Documento $texto Frente')
+                : Text('Documento $texto Reverso'),
+            actions: [
+              TextButton(
+                onPressed: () async {
+                  final XFile? photo1 =
+                      await picker.pickImage(source: ImageSource.gallery);
 
-      if (photo1 != null) {
-        final isImage = _isImageFile(photo1.path);
+                  if (photo1 != null) {
+                    final isImage = _isImageFile(photo1.path);
 
-        if (isImage) {
-          final dir = await path_provider.getTemporaryDirectory();
-          var bytes = File(photo1.path).readAsBytesSync();
-          if (kDebugMode) {
-            print(" lados $lados");
-          }
-          if (texto == 'INE' && lados == 0) {
-            base64Stringfrente = base64Encode(bytes);
-            lados = 1;
-          } else {
-            await imagenpdf.devolverimagen(
-                base64Encode(bytes), dir, texto, base64Stringfrente);
-          }
-        } else {
-          // Handle the case when a non-image file is selected.
-          // print('El archivo seleccionado no es una imagen.');
-        }
-      }
+                    if (isImage) {
+                      final dir = await path_provider.getTemporaryDirectory();
+                      var bytes = File(photo1.path).readAsBytesSync();
+                      if (kDebugMode) {
+                        print(" lados $lados");
+                      }
+                      if (texto == 'INE' && lados == 0) {
+                        base64Stringfrente = base64Encode(bytes);
+                        lados = 1;
+                      } else {
+                        await imagenpdf.devolverimagen(base64Encode(bytes), dir,
+                            texto, base64Stringfrente);
+                      }
+                    } else {
+                      // Handle the case when a non-image file is selected.
+                      // print('El archivo seleccionado no es una imagen.');
+                    }
+                  }
+                  // ignore: use_build_context_synchronously
+                  Navigator.of(context).pop(); // Cerrar el Dialog
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 
@@ -310,6 +333,16 @@ class CustomAlertDialogBoton extends ConsumerStatefulWidget {
 class CustomAlertDialogBotonState
     extends ConsumerState<CustomAlertDialogBoton> {
   @override
+  void initState() {
+    super.initState();
+    setState(() {
+      setState(() {
+        filterColor = true;
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: const Color.fromARGB(129, 0, 0, 0),
@@ -319,7 +352,7 @@ class CustomAlertDialogBotonState
         color: widget.color,
       ),
       title: Text(
-        widget.title == 'INE'
+        widget.texto == 'INE'
             ? base64Stringfrente == ''
                 ? "${widget.title} frente "
                 : "${widget.title} reverso"

@@ -130,10 +130,10 @@ class _HTMLtoWidgetState extends State<HTMLtoWidget> {
         // //print(value);
       });
     });
-    SharedPreferencesHelper.getdatos('nombre').then((value) {
+    SharedPreferencesHelper.getdatos('nombres').then((value) {
       setState(() {
         nombre = value;
-        // //print(value);
+        // print(value);
       });
     });
 
@@ -145,7 +145,7 @@ class _HTMLtoWidgetState extends State<HTMLtoWidget> {
     });
 
     SharedPreferencesHelper.getdatos('direccionCalle').then((value) {
-      //  //print(value);
+      //print(value);
       setState(() {
         direccionCalle = value;
       });

@@ -21,6 +21,7 @@ class ActualizaEmpleadoScreenState
   var textomarco = 0;
   late FocusNode telefonof;
   late FocusNode emailf;
+  var selectedEstado = 0;
 
   TextEditingController monto = TextEditingController();
   double montomaximo = 1;
@@ -87,6 +88,8 @@ class ActualizaEmpleadoScreenState
                     final operaciones = snapshot.data!['informacion_adelanto'];
                     final folioConsulta = snapshot.data!['folio_consulta'];
 
+                    // final estados = snapshot.data!['estados'];
+
                     nombret.text = snapshot.data!['nombres'].toString();
                     apellidoMaternot.text =
                         snapshot.data!['apellidoMaterno'].toString();
@@ -147,6 +150,11 @@ class ActualizaEmpleadoScreenState
                     SharedPreferencesHelper.setdatos('email', emailt.text);
                     SharedPreferencesHelper.setdatos(
                         'rfc', operaciones['RFC'].toString());
+                    List<dynamic> estadosList = snapshot.data!['estados'] ?? [];
+
+                    // Convierte la lista a una lista de cadenas (String)
+                    List<Map<String, dynamic>> estadosData =
+                        estadosList.cast<Map<String, dynamic>>();
 
                     return Card(
                       shape: RoundedRectangleBorder(
@@ -282,7 +290,7 @@ class ActualizaEmpleadoScreenState
                                       customTitulo.textot1(context, 'CURP'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
-                                        height: 60,
+                                        height: 70,
                                         child: TextFormField(
                                           controller: curpt,
                                           readOnly: true,
@@ -334,7 +342,7 @@ class ActualizaEmpleadoScreenState
                                       customTitulo.textot1(context, 'Calle'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
-                                        height: 60,
+                                        height: 70,
                                         child: TextFormField(
                                           controller: direccionCallet,
                                           onChanged: (value) {
@@ -377,7 +385,7 @@ class ActualizaEmpleadoScreenState
                             ),
                             Padding(
                               padding: const EdgeInsets.only(
-                                  top: 10.0, bottom: 20, left: 0, right: 20),
+                                  top: 10.0, bottom: 0, left: 0, right: 20),
                               child: Row(
                                 children: [
                                   Column(
@@ -429,7 +437,7 @@ class ActualizaEmpleadoScreenState
                             ),
                             Padding(
                               padding: const EdgeInsets.only(
-                                  top: 10.0, bottom: 20, left: 0, right: 20),
+                                  top: 0.0, bottom: 0, left: 0, right: 20),
                               child: Row(
                                 children: [
                                   Column(
@@ -437,7 +445,7 @@ class ActualizaEmpleadoScreenState
                                       customTitulo.textot1(context, 'Colonia'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
-                                        height: 60,
+                                        height: 80,
                                         child: TextFormField(
                                           controller: direccionColoniat,
                                           onChanged: (value) {
@@ -459,17 +467,74 @@ class ActualizaEmpleadoScreenState
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
                                         height: 60,
-                                        child: TextFormField(
-                                          controller: direccionEstadot,
-                                          onChanged: (value) {
-                                            SharedPreferencesHelper.setdatos(
-                                                'Estado', value);
-                                          },
-                                          style: const TextStyle(
-                                              color: Color.fromARGB(
-                                                  255, 255, 255, 255)),
-                                          decoration: CustomInputDecoration
-                                              .getDecoration(),
+                                        child: Column(
+                                          children: [
+                                            DropdownButton<
+                                                Map<String, dynamic>>(
+                                              dropdownColor:
+                                                  const Color.fromARGB(
+                                                      255, 5, 49, 91),
+                                              style: const TextStyle(
+                                                color: Color.fromARGB(
+                                                    255, 255, 255, 255),
+                                              ),
+                                              value:
+                                                  estadosData[selectedEstado],
+                                              items: estadosData
+                                                  .map((estado) =>
+                                                      DropdownMenuItem<
+                                                          Map<String, dynamic>>(
+                                                        value: estado,
+                                                        child: Text(estado[
+                                                            'direccion_estado']),
+                                                      ))
+                                                  .toList(),
+                                              onChanged: (newValue) {
+                                                // Manejar el cambio de valor aquí
+                                                if (newValue != null) {
+                                                  setState(() {
+                                                    int? idEstado =
+                                                        int.tryParse(newValue[
+                                                                'id_estado']
+                                                            .toString());
+                                                    selectedEstado =
+                                                        (idEstado! - 1);
+                                                  });
+                                                  SharedPreferencesHelper.setdatos(
+                                                      'id_estado',
+                                                      "${newValue['id_estado']}");
+                                                  SharedPreferencesHelper.setdatos(
+                                                      'direccionEstado',
+                                                      newValue[
+                                                          'direccion_estado']);
+                                                  SharedPreferencesHelper
+                                                      .setdatos(
+                                                          'claveEstado',
+                                                          newValue[
+                                                              'clave_estado']);
+
+                                                  print(
+                                                      'Seleccionaste el estado con id: ${newValue['id_estado']}');
+                                                  print(
+                                                      'Dirección del estado: ${newValue['direccion_estado']}');
+                                                  print(
+                                                      'Clave del estado: ${newValue['clave_estado']}');
+                                                }
+                                              },
+                                            ),
+                                            // TextFormField(
+                                            //   controller: direccionEstadot,
+                                            //   onChanged: (value) {
+                                            //     SharedPreferencesHelper
+                                            //         .setdatos('Estado', value);
+                                            //   },
+                                            //   style: const TextStyle(
+                                            //       color: Color.fromARGB(
+                                            //           255, 255, 255, 255)),
+                                            //   decoration: CustomInputDecoration
+                                            //       .getDecoration(),
+                                            // ),
+                                          ],
                                         ),
                                       ),
                                     ],
@@ -578,7 +643,7 @@ class ActualizaEmpleadoScreenState
                                       customTitulo.textot1(context, 'Email'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
-                                        height: 60,
+                                        height: 70,
                                         child: TextFormField(
                                           controller: emailt,
                                           focusNode: emailf,
@@ -717,16 +782,19 @@ class ActualizaEmpleadoScreenState
                                             },
                                             child: SizedBox(
                                               width:
-                                                  displayWidth(context) * 0.6,
-                                              child: Center(
-                                                child: Text(
-                                                    'Acepto que los datos son correctos',
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: displayWidth(
-                                                              context) *
-                                                          0.04,
-                                                    )),
+                                                  displayWidth(context) * 0.7,
+                                              child: Align(
+                                                alignment: Alignment.center,
+                                                child: Center(
+                                                  child: Text(
+                                                      'Acepto que los datos son correctos',
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: displayWidth(
+                                                                context) *
+                                                            0.04,
+                                                      )),
+                                                ),
                                               ),
                                             ),
                                           ),

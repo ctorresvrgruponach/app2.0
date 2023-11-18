@@ -59,7 +59,6 @@ class ValoresPedirAdelantoScreenState
 
   double _currentSliderValue = 100;
   TextEditingController monto = TextEditingController();
-  double montomaximo = 1;
 
   TextEditingController comision = TextEditingController();
   TextEditingController tdescontar = TextEditingController();
@@ -94,6 +93,8 @@ class ValoresPedirAdelantoScreenState
 
                     correo.text = operaciones['email'].toString();
                     String periodosPagos;
+                    double montomaximo =
+                        double.parse(operaciones['monto_real_prestamo']);
 
                     if (operaciones["tipo_nomina"] == 'Semanal') {
                       periodosPagos = '52';
@@ -236,63 +237,77 @@ class ValoresPedirAdelantoScreenState
                                 onChanged: (value) {
                                   SharedPreferencesHelper.setdatos(
                                       "montoapedir", monto.text);
-                                  if (double.parse(monto.text) > 100) {
-                                    setState(() {
-                                      if (monto.text != '') {
-                                        if (double.parse(monto.text) <
-                                            montomaximo) {
-                                          _currentSliderValue =
-                                              double.parse(monto.text);
-                                          comision.text =
-                                              (((_currentSliderValue * 0.13))
-                                                  .toStringAsFixed(2));
-                                          montoenviar = monto.text;
-                                          tdescontar.text =
-                                              ((((_currentSliderValue * 0.13) +
-                                                          (_currentSliderValue *
-                                                                  0.13) *
-                                                              0.16) +
-                                                      _currentSliderValue)
-                                                  .toStringAsFixed(2));
-                                          SharedPreferencesHelper.setdatos(
-                                              "totaldescontar",
-                                              tdescontar.text);
-                                          comisiontotal = (double.parse(
-                                                      comision.text) +
-                                                  (double.parse(comision.text) *
-                                                      0.16))
-                                              .toString();
-                                          SharedPreferencesHelper.setdatos(
-                                              "comision", comisiontotal);
-                                        } else {
-                                          _currentSliderValue = montomaximo;
-                                          monto.text = '$montomaximo';
-                                          montoenviar = monto.text;
-                                          comision.text =
-                                              (((_currentSliderValue * 0.13))
-                                                  .toStringAsFixed(2));
+                                  try {
+                                    double montoDouble =
+                                        double.parse(monto.text);
+                                    if (montoDouble > 100) {
+                                      setState(() {
+                                        if (monto.text != '') {
+                                          if (double.parse(monto.text) <
+                                              montomaximo) {
+                                            _currentSliderValue =
+                                                double.parse(monto.text);
+                                            comision.text =
+                                                (((_currentSliderValue * 0.13))
+                                                    .toStringAsFixed(2));
+                                            montoenviar = monto.text;
+                                            tdescontar
+                                                .text = ((((_currentSliderValue *
+                                                            0.13) +
+                                                        (_currentSliderValue *
+                                                                0.13) *
+                                                            0.16) +
+                                                    _currentSliderValue)
+                                                .toStringAsFixed(2));
+                                            SharedPreferencesHelper.setdatos(
+                                                "totaldescontar",
+                                                tdescontar.text);
+                                            comisiontotal =
+                                                (double.parse(comision.text) +
+                                                        (double.parse(
+                                                                comision.text) *
+                                                            0.16))
+                                                    .toString();
+                                            SharedPreferencesHelper.setdatos(
+                                                "comision", comisiontotal);
+                                          } else {
+                                            _currentSliderValue = montomaximo;
+                                            monto.text = '$montomaximo';
+                                            montoenviar = monto.text;
+                                            comision.text =
+                                                (((_currentSliderValue * 0.13))
+                                                    .toStringAsFixed(2));
 
-                                          comisiontotal = (double.parse(
-                                                      comision.text) +
-                                                  (double.parse(comision.text) *
-                                                      0.16))
-                                              .toString();
-                                          SharedPreferencesHelper.setdatos(
-                                              "comision", comisiontotal);
-                                          tdescontar.text =
-                                              ((((_currentSliderValue * 0.13) +
-                                                          (_currentSliderValue *
-                                                                  0.13) *
-                                                              0.16) +
-                                                      _currentSliderValue)
-                                                  .toStringAsFixed(2));
-                                          SharedPreferencesHelper.setdatos(
-                                              "totaldescontar",
-                                              tdescontar.text);
+                                            comisiontotal =
+                                                (double.parse(comision.text) +
+                                                        (double.parse(
+                                                                comision.text) *
+                                                            0.16))
+                                                    .toString();
+                                            SharedPreferencesHelper.setdatos(
+                                                "comision", comisiontotal);
+                                            tdescontar
+                                                .text = ((((_currentSliderValue *
+                                                            0.13) +
+                                                        (_currentSliderValue *
+                                                                0.13) *
+                                                            0.16) +
+                                                    _currentSliderValue)
+                                                .toStringAsFixed(2));
+                                            SharedPreferencesHelper.setdatos(
+                                                "totaldescontar",
+                                                tdescontar.text);
+                                          }
                                         }
-                                      }
-                                    });
-                                  } else {}
+                                      });
+                                    } else {}
+                                  } catch (e) {
+                                    if (kDebugMode) {
+                                      print(
+                                          'Error al parsear el monto a double: $e');
+                                    }
+                                    // Manejar el error, por ejemplo, mostrar un mensaje al usuario
+                                  }
                                 },
                                 style: const TextStyle(
                                     color: Color.fromARGB(255, 5, 50, 91)),
@@ -508,6 +523,12 @@ class ValoresPedirAdelantoScreenState
                                               final resultado =
                                                   await instanciaEnviaAdelanto
                                                       .enviaadelanto();
+                                              setState(() {
+                                                someMap.clear();
+                                              });
+                                              setState(() {
+                                                btnsolicitaPrestamo = false;
+                                              });
                                               await customDialogManager
                                                   .showCustomDialog(
                                                 icon: Icons.airlines_rounded,

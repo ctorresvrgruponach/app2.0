@@ -14,6 +14,17 @@ class SharedPreferencesHelper {
     prefs.setString(variable!, valor!);
   }
 
+  static remove(String key) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove(key);
+  }
+
+  static borrashared() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    await prefs.clear();
+  }
+
   static Future<Map?> getdatosall() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final keys = prefs.getKeys();
@@ -24,12 +35,6 @@ class SharedPreferencesHelper {
     }
     ////print(prefsMap);
     return (prefsMap);
-  }
-
-  static borrashared() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    await prefs.clear();
   }
 }
 

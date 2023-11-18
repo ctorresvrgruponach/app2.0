@@ -75,7 +75,9 @@ class LoginState extends ConsumerState<Login> {
           //print("object44645");
           noEmpleado = '';
           empleadoIMSS = '';
-
+          await SharedPreferencesHelper.remove('token');
+          await SharedPreferencesHelper.remove('imss');
+          await SharedPreferencesHelper.remove('empleadoId');
           if (kDebugMode) {
             print('Error de autenticación biométrica: $e');
           }
@@ -137,12 +139,19 @@ class LoginState extends ConsumerState<Login> {
         SharedPreferencesHelper.setdatos('token', '');
         SharedPreferencesHelper.setdatos('empleadoId', '');
         SharedPreferencesHelper.setdatos('imss', '');
-
-        await customDialogManager.showCustomDialog(
-            icon: Icons.warning,
-            title: 'Login incorrecto',
-            message: 'Las accesos proporcionados son incorrectos',
-            color: Colors.red);
+        if (data['mensaje'] == null) {
+          await customDialogManager.showCustomDialog(
+              icon: Icons.warning,
+              title: data['mensaje'],
+              message: data['mensaje'],
+              color: Colors.red);
+        } else {
+          await customDialogManager.showCustomDialog(
+              icon: Icons.warning,
+              title: 'Login incorrecto',
+              message: 'Las accesos proporcionados son incorrectos',
+              color: Colors.red);
+        }
       }
     } else {
       if (kDebugMode) {
@@ -167,8 +176,8 @@ class LoginState extends ConsumerState<Login> {
   @override
   Widget build(BuildContext context) {
     final employeeNumberController = ref.read(employeeNumberControllerProvider);
-    final imssController           = ref.read(imssControllerProvider);
-    final labelText                = ref.watch(labelTextProvider);
+    final imssController = ref.read(imssControllerProvider);
+    final labelText = ref.watch(labelTextProvider);
 
     return Scaffold(
       body: Center(

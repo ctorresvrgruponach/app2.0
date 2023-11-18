@@ -37,7 +37,8 @@ class Datosgenerales {
     } else {
       digito = "20";
     }
-    String ret = '$dia/$mes/$digito$ano';
+    String ret =
+        '${dia.toString().padLeft(2, '0')}/${mes.toString().padLeft(2, '0')}/$digito$ano';
     //String result = curp.substring(11, 13);
     return ret;
     //GATA750803HDFSLL05

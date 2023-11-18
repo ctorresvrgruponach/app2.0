@@ -25,6 +25,7 @@ class CustomInputDecoration {
         ),
         borderRadius: BorderRadius.all(Radius.circular(5.0)),
       ),
+      counter: SizedBox.shrink(),
       labelStyle: TextStyle(
         color: Color.fromARGB(255, 5, 49, 91),
       ),
