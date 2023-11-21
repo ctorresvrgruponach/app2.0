@@ -97,7 +97,7 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                             Botondocu(
                                               texto: 'INE',
                                               indiceadelanto:
-                                                  '${rowData['id']}',
+                                                  '${rowData['id_prestamo']}',
                                             ),
                                           ),
                                           // Agrega más DataCell según sea necesario
@@ -114,7 +114,7 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                   children: [
                                     SizedBox(
                                       width:
-                                          MediaQuery.of(context).size.width * 3,
+                                          MediaQuery.of(context).size.width * 1,
                                       height: 100,
                                       child: const Text(
                                         "Notificaciones",
@@ -126,20 +126,6 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                             .left, // Set the text alignment to the left
                                       ),
                                     ),
-                                    SizedBox(
-                                      width:
-                                          MediaQuery.of(context).size.width * 3,
-                                      height: 100,
-                                      child: const Text(
-                                        "No se encontraron datos.",
-                                        style: TextStyle(
-                                          color: Color.fromARGB(255, 0, 0, 1),
-                                        ),
-                                        textAlign: TextAlign
-                                            .left, // Set the text alignment to the left
-                                      ),
-                                    ),
-                                    const Text('No se encontraron datos.'),
                                   ],
                                 ),
                               );
@@ -325,7 +311,7 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                             // Manejar caso de éxito falso
                             return Center(
                                 child: SizedBox(
-                              width: MediaQuery.of(context).size.width * 3,
+                              width: MediaQuery.of(context).size.width * 1,
                               height: 100,
                               child: const Text(
                                 "Adelanto de nómina",
@@ -502,7 +488,7 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                             // Manejar caso de éxito falso
                             return Center(
                                 child: SizedBox(
-                              width: MediaQuery.of(context).size.width * 3,
+                              width: MediaQuery.of(context).size.width * 1,
                               height: 100,
                               child: const Text(
                                 "Prestamos",

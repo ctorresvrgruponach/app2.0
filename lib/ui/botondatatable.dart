@@ -1,3 +1,4 @@
+import '../api/enviaraprobacion.dart';
 import '../libs/lib.dart';
 
 class Botoneditar extends ConsumerStatefulWidget {
@@ -215,6 +216,7 @@ class BotondocuState extends ConsumerState<Botondocu> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.indiceadelanto);
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: Color.fromARGB(filterColor ? 255 : 50, 5, 50, 91),
@@ -231,17 +233,24 @@ class BotondocuState extends ConsumerState<Botondocu> {
           builder: (BuildContext context) => SizedBox(
             width: displayWidth(context) * 0.9,
             height: displayHeight(context) * 0.6,
-            child: const AlertDialog(
-              title: Text("Visualizar archivos"),
-              content: Text(''),
+            child: AlertDialog(
+              title: const Text("Visualizar archivos"),
+              content: const Text(''),
               actions: <Widget>[
                 Column(
                   children: [
-                    Text('Selecciona que archivo quieres editar'),
-                    Botonfile(texto: 'INE'),
-                    Botonfile(texto: 'Comprobante'),
-                    Botonfile(texto: 'CURP'),
-                    Text('Selecciona que archivo quieres visualizar'),
+                    const Text('Selecciona que archivo quieres editar'),
+                    const Botonfile(texto: 'INE'),
+                    const Botonfile(texto: 'Comprobante'),
+                    const Botonfile(texto: 'CURP'),
+                    Botonc(
+                      texto: 'Enviar',
+                      onPressed: () async {
+                        final instanciaEnviaAdelanto = EnviaAprobacionClass();
+                        await instanciaEnviaAdelanto
+                            .enviaAprobacion(widget.indiceadelanto);
+                      },
+                    )
                   ],
                 ),
               ],

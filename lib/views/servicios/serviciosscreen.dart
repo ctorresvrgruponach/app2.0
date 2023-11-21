@@ -1,13 +1,12 @@
 import '../../libs/lib.dart';
 
-class ServiciosScreen extends StatefulWidget {
-  const ServiciosScreen({Key? key}) : super(key: key);
-
+class ServiciosScreen extends ConsumerStatefulWidget {
+  const ServiciosScreen({super.key});
   @override
-  State<ServiciosScreen> createState() => _ServiciosScreenState();
+  ServiciosState createState() => ServiciosState();
 }
 
-class _ServiciosScreenState extends State<ServiciosScreen> {
+class ServiciosState extends ConsumerState<ServiciosScreen> {
   @override
   Widget build(BuildContext context) {
     // var datos = getdatos();
@@ -124,205 +123,86 @@ class _ServiciosScreenState extends State<ServiciosScreen> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(displayWidth(context) * 0.1),
-                      //set border radius more than 50% of height and width to make circle
-                    ),
-                    child: Container(
-                      // width: displayWidth(context),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          bottomRight:
-                              Radius.circular(displayWidth(context) * 0.1),
-                          bottomLeft:
-                              Radius.circular(displayWidth(context) * 0.1),
-                        ),
-                        image: const DecorationImage(
-                            image: AssetImage(
-                              "assets/images/fondo_azul.png",
+                  tarjeta(context),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          top: 1.0, bottom: 1.0, left: 8.0, right: 8.0),
+                      child: Consumer(builder: (context, watch, child) {
+                        final postMisserviciosProvider =
+                            ref.watch(postMisserviciosProviders);
+                        return postMisserviciosProvider.when(
+                          data: (data) {
+                            if (data["success"] != null && data["success"]) {
+                              // Procesar y mostrar datos en DataTable
+                              // print(data['servicios'][0]["nombre_servicio"]);
+                              List<Widget> buildServiciosItems(
+                                  BuildContext context,
+                                  List<dynamic> servicios) {
+                                List<Widget> items = [];
+
+                                for (var servicio in servicios) {
+                                  items.add(item(
+                                    context,
+                                    servicio["imagen_servicio"],
+                                    servicio["nombre_servicio"],
+                                    servicio["descripcion_servicio"],
+                                    servicio["ruta_servicio"],
+                                  ));
+                                }
+
+                                return items;
+                              }
+
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: buildServiciosItems(
+                                    context, data['servicios']),
+                              );
+                            } else {
+                              // Manejar caso en que rows es nulo o vacío
+                              return Center(
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width * 3,
+                                      height: 100,
+                                      child: const Text(
+                                        "No se encontraron servicios.",
+                                        style: TextStyle(
+                                          color: Color.fromARGB(255, 0, 0, 1),
+                                        ),
+                                        textAlign: TextAlign
+                                            .left, // Set the text alignment to the left
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
+                          },
+                          loading: () => Center(
+                              child: Padding(
+                            padding: const EdgeInsets.all(40.0),
+                            child: SizedBox(
+                              width: displayWidth(context) * 0.8,
+                              child: const Column(
+                                children: [
+                                  Cargando(),
+                                ],
+                              ),
                             ),
-                            fit: BoxFit.cover),
-                      ),
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            FutureBuilder<String>(
-                                // get the languageCode, saved in the preferences
-                                future: SharedPreferencesHelper.getdatos(
-                                    'nombreCompleto'),
-                                initialData: '',
-                                builder: (BuildContext context,
-                                    AsyncSnapshot<String> snapshot) {
-                                  return snapshot.hasData
-                                      ? Padding(
-                                          padding: EdgeInsets.only(
-                                              top: displayWidth(context) * 0.1),
-                                          child: SingleChildScrollView(
-                                            child: Column(
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsets.symmetric(
-                                                      horizontal: displayWidth(
-                                                              context) *
-                                                          0.05,
-                                                      vertical: displayWidth(
-                                                              context) *
-                                                          0.11),
-                                                  child: Row(
-                                                    children: [
-                                                      SizedBox(
-                                                        width: displayWidth(
-                                                                context) *
-                                                            0.5,
-                                                        height: displayWidth(
-                                                                context) *
-                                                            0.20,
-                                                        child: Column(
-                                                          children: [
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .only(
-                                                                        top:
-                                                                            12.0),
-                                                                child: Text(
-                                                                  "¡Hola!",
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize:
-                                                                        displayWidth(context) *
-                                                                            0.05,
-                                                                    color: const Color
-                                                                        .fromARGB(
-                                                                        255,
-                                                                        255,
-                                                                        255,
-                                                                        255),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .only(
-                                                                      bottom:
-                                                                          12.0),
-                                                              child: Text(
-                                                                snapshot.data
-                                                                    .toString(),
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontSize:
-                                                                      displayWidth(
-                                                                              context) *
-                                                                          0.03,
-                                                                  color: const Color
-                                                                      .fromARGB(
-                                                                      255,
-                                                                      255,
-                                                                      255,
-                                                                      255),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                        child: SizedBox(
-                                                          width: displayWidth(
-                                                                  context) *
-                                                              0.25,
-                                                          height: displayWidth(
-                                                                  context) *
-                                                              0.11,
-                                                        ),
-                                                      ),
-                                                      Container(
-                                                        width: displayWidth(
-                                                                context) *
-                                                            0.11,
-                                                        height: displayWidth(
-                                                                context) *
-                                                            0.11,
-                                                        decoration:
-                                                            const BoxDecoration(
-                                                          image:
-                                                              DecorationImage(
-                                                                  image:
-                                                                      AssetImage(
-                                                                    "assets/images/logo_sesion.png",
-                                                                  ),
-                                                                  fit: BoxFit
-                                                                      .cover),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 2,
-                                                      vertical: 3),
-                                                  child: Text(
-                                                    'SERVICIOS',
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: displayWidth(
-                                                              context) *
-                                                          0.15,
-                                                      color:
-                                                          const Color.fromARGB(
-                                                              255,
-                                                              248,
-                                                              248,
-                                                              248),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: const EdgeInsets
-                                                      .symmetric(
-                                                      horizontal: 1,
-                                                      vertical: 20),
-                                                  child: Text(
-                                                    'SOLICITUDES DEL EMPLEADO',
-                                                    style: TextStyle(
-                                                      fontSize: displayWidth(
-                                                              context) *
-                                                          0.035,
-                                                      color:
-                                                          const Color.fromARGB(
-                                                              255,
-                                                              255,
-                                                              255,
-                                                              255),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        )
-                                      : Container();
-                                }),
-                          ],
-                        ),
-                      ),
+                          )),
+                          error: (error, stackTrace) {
+                            // Manejar el error de la solicitud
+                            return Center(child: Text('Error: $error'));
+                          },
+                        );
+                      }),
                     ),
                   ),
-                  item(context, "assets/images/baby_totem.png", 'BABY TOTEM',
-                      'Adelanto de nómina', 'adelanto_nomina'),
-                  item(context, "assets/images/totem_max.png", 'TOTEM MAX',
-                      'Prestamo via nómina', 'prestamo'),
                 ],
               ),
             ),
@@ -334,9 +214,157 @@ class _ServiciosScreenState extends State<ServiciosScreen> {
       ),
     );
   }
+
+  Card tarjeta(BuildContext context) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(displayWidth(context) * 0.1),
+        //set border radius more than 50% of height and width to make circle
+      ),
+      child: Container(
+        // width: displayWidth(context),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+            bottomRight: Radius.circular(displayWidth(context) * 0.1),
+            bottomLeft: Radius.circular(displayWidth(context) * 0.1),
+          ),
+          image: const DecorationImage(
+              image: AssetImage(
+                "assets/images/fondo_azul.png",
+              ),
+              fit: BoxFit.cover),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              FutureBuilder<String>(
+                  // get the languageCode, saved in the preferences
+                  future: SharedPreferencesHelper.getdatos('nombreCompleto'),
+                  initialData: '',
+                  builder:
+                      (BuildContext context, AsyncSnapshot<String> snapshot) {
+                    return snapshot.hasData
+                        ? Padding(
+                            padding: EdgeInsets.only(
+                                top: displayWidth(context) * 0.1),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal:
+                                            displayWidth(context) * 0.05,
+                                        vertical: displayWidth(context) * 0.11),
+                                    child: Row(
+                                      children: [
+                                        SizedBox(
+                                          width: displayWidth(context) * 0.5,
+                                          height: displayWidth(context) * 0.20,
+                                          child: Column(
+                                            children: [
+                                              Expanded(
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 12.0),
+                                                  child: Text(
+                                                    "¡Hola!",
+                                                    style: TextStyle(
+                                                      fontSize: displayWidth(
+                                                              context) *
+                                                          0.05,
+                                                      color:
+                                                          const Color.fromARGB(
+                                                              255,
+                                                              255,
+                                                              255,
+                                                              255),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 12.0),
+                                                child: Text(
+                                                  snapshot.data.toString(),
+                                                  style: TextStyle(
+                                                    fontSize:
+                                                        displayWidth(context) *
+                                                            0.03,
+                                                    color: const Color.fromARGB(
+                                                        255, 255, 255, 255),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: SizedBox(
+                                            width: displayWidth(context) * 0.25,
+                                            height:
+                                                displayWidth(context) * 0.11,
+                                          ),
+                                        ),
+                                        Container(
+                                          width: displayWidth(context) * 0.11,
+                                          height: displayWidth(context) * 0.11,
+                                          decoration: const BoxDecoration(
+                                            image: DecorationImage(
+                                                image: AssetImage(
+                                                  "assets/images/logo_sesion.png",
+                                                ),
+                                                fit: BoxFit.cover),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 2, vertical: 3),
+                                    child: Text(
+                                      'SERVICIOS',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: displayWidth(context) * 0.15,
+                                        color: const Color.fromARGB(
+                                            255, 248, 248, 248),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 1, vertical: 20),
+                                    child: Text(
+                                      'SOLICITUDES DEL EMPLEADO',
+                                      style: TextStyle(
+                                        fontSize: displayWidth(context) * 0.035,
+                                        color: const Color.fromARGB(
+                                            255, 255, 255, 255),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        : Container();
+                  }),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 item(context, imagen, texto1, texto2, ruta) {
+  Uint8List bytes = base64.decode(imagen);
+  final image = MemoryImage(bytes);
   return Padding(
     padding: EdgeInsets.only(top: displayWidth(context) * 0.05),
     child: ElevatedButton(
@@ -360,7 +388,7 @@ item(context, imagen, texto1, texto2, ruta) {
                     child: SizedBox(
                       width: displayWidth(context) * 0.25,
                       child: Image(
-                        image: AssetImage(imagen),
+                        image: image,
                       ),
                     ),
                   ),
