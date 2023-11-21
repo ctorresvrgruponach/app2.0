@@ -95,7 +95,7 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                           ),
                                           DataCell(
                                             Botondocu(
-                                              texto: 'INE',
+                                              texto: 'APROBAR',
                                               indiceadelanto:
                                                   '${rowData['id_prestamo']}',
                                             ),
