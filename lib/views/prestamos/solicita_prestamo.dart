@@ -50,7 +50,7 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
   // late TextEditingController  _tasaconiva;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   // final List<TextEditingController> _montoaval        = [];
-  int? selectedValue; //
+  int? selectedValue = 1; //
   String? idEmpleadoSeleccionado;
   bool button = false;
   bool _inputs = false;
@@ -729,7 +729,7 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
             // Text(totalAmount == cnatidadfinal ? 'Válido' : 'Total no valido '),
             const SizedBox(height: 20),
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
                   onPressed: () {
@@ -757,6 +757,8 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                   onPressed: btnsolicitaPrestamo
                       ? null
                       : () async {
+                          final ine           = await SharedPreferencesHelper.getdatos('Identificación (INE)');
+                          final comprobante   = await SharedPreferencesHelper.getdatos('Comprobante (DOMICILIO)');
                           if (kDebugMode) {
                             print('ESTE ES EL VALOR $selectedValue');
                           }
@@ -764,6 +766,7 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                             if (kDebugMode) {
                               print(selectedValue);
                             }
+                            // ignore: use_build_context_synchronously
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
@@ -777,8 +780,7 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                             );
                             return;
                           }
-                          if (totalAmount == cnatidadfinal &&
-                              selectedValue != null) {
+                          if (totalAmount == cnatidadfinal && selectedValue ! > 1 && ine != '' && comprobante != '') {
                             // validar todo
                             Map<int, Map<String, int>> avales = {};
                             idavales.forEach((key, value) {
@@ -841,13 +843,14 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                               );
                             }
                             const SizedBox(height: 20);
-                          } else if (selectedValue == null) {
+                          } else if (totalAmount < cnatidadfinal || ine == ''  || comprobante == '') {
+                            // ignore: use_build_context_synchronously
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return const CustomAlertDialog(
-                                    message: ' selecciona avales',
-                                    title: 'Error',
+                                return  CustomAlertDialog(
+                                    message: totalAmount  < cnatidadfinal ? 'Por favor verifica el monto ingresado por aval.' : (ine == '') ? 'El INE no ha sido cargado.': 'El comprobante no ha sido cargado',
+                                    title: 'Atención',
                                     icon: Icons.error_outline,
                                     color: Colors.amber);
                               },
@@ -856,6 +859,7 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                             if (kDebugMode) {
                               print('Error');
                             }
+                            // ignore: use_build_context_synchronously
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
