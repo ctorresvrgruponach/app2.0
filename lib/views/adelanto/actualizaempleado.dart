@@ -513,12 +513,18 @@ class ActualizaEmpleadoScreenState
                                                           newValue[
                                                               'clave_estado']);
 
-                                                  print(
-                                                      'Seleccionaste el estado con id: ${newValue['id_estado']}');
-                                                  print(
-                                                      'Dirección del estado: ${newValue['direccion_estado']}');
-                                                  print(
-                                                      'Clave del estado: ${newValue['clave_estado']}');
+                                                  if (kDebugMode) {
+                                                    print(
+                                                        'Seleccionaste el estado con id: ${newValue['id_estado']}');
+                                                  }
+                                                  if (kDebugMode) {
+                                                    print(
+                                                        'Dirección del estado: ${newValue['direccion_estado']}');
+                                                  }
+                                                  if (kDebugMode) {
+                                                    print(
+                                                        'Clave del estado: ${newValue['clave_estado']}');
+                                                  }
                                                 }
                                               },
                                             ),

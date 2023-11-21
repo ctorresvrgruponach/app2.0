@@ -216,7 +216,10 @@ class BotondocuState extends ConsumerState<Botondocu> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.indiceadelanto);
+    if (kDebugMode) {
+      print(widget.indiceadelanto);
+    }
+    final customDialogManager = CustomDialogManager(context);
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: Color.fromARGB(filterColor ? 255 : 50, 5, 50, 91),
@@ -247,8 +250,18 @@ class BotondocuState extends ConsumerState<Botondocu> {
                       texto: 'Enviar',
                       onPressed: () async {
                         final instanciaEnviaAdelanto = EnviaAprobacionClass();
-                        await instanciaEnviaAdelanto
+                        final resp = await instanciaEnviaAdelanto
                             .enviaAprobacion(widget.indiceadelanto);
+                        if (kDebugMode) {
+                          print(resp['mensaje']);
+                        }
+                        await customDialogManager.showCustomDialog(
+                            icon: Icons.warning,
+                            title: resp['mensaje'],
+                            message: resp['mensaje'],
+                            color: const Color.fromARGB(255, 54, 244, 76));
+                        // ignore: use_build_context_synchronously
+                        Navigator.of(context).pop();
                       },
                     )
                   ],

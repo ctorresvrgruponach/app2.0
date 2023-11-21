@@ -62,9 +62,7 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                       DataColumn(
                                         label: Text('nombre_solicitante'),
                                       ),
-                                      DataColumn(
-                                        label: Text('estatus_prestamo'),
-                                      ),
+
                                       DataColumn(
                                         label: Text('estatus'),
                                       ),
@@ -86,10 +84,7 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                             Text(
                                                 '${rowData['nombre_solicitante']}'),
                                           ),
-                                          DataCell(
-                                            Text(
-                                                '${rowData['estatus_prestamo']}'),
-                                          ),
+
                                           DataCell(
                                             Text('${rowData['estatus']}'),
                                           ),

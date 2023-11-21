@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       title: 'APP NACH',
       debugShowCheckedModeBanner: modo == 'dev' ? true : false,
       theme: ThemeData(
-        primaryColor: const Color.fromARGB(255, 7, 15, 168),
+        primaryColor: const Color.fromARGB(255, 251, 251, 251),
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       initialRoute:
