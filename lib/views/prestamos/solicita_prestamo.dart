@@ -69,7 +69,6 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
   String? nuevo; //
   bool mostrarCard = true;
 
-
 //PARA LOS AVALES
 
   final token = SharedPreferencesHelper.getdatos('token');
@@ -173,12 +172,13 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                   final plazosRestantes = snapshot.data!['plazos_restantes'];
                   // final montoingresado  = montosolicitado.text;
                   String formatCurrency(int amount) {
-                  NumberFormat currencyFormat = NumberFormat.currency(locale: 'es_MX', symbol: '\$');
-                  return currencyFormat.format(amount);
-                }
-                    String formattedMonoto= formatCurrency(montoMaximo);
-                    // print('Res $formattedMonoto');
+                    NumberFormat currencyFormat =
+                        NumberFormat.currency(locale: 'es_MX', symbol: '\$');
+                    return currencyFormat.format(amount);
+                  }
 
+                  String formattedMonoto = formatCurrency(montoMaximo);
+                  // print('Res $formattedMonoto');
 
                   void validaMonto() {
                     final String amountText = montosolicitado.text;
@@ -373,8 +373,8 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                                                       montomaximoaval =
                                                           montoXAval;
                                                       actualizarNavales();
-                                                      mostrarCard = !mostrarCard;
-
+                                                      mostrarCard =
+                                                          !mostrarCard;
                                                     });
                                                   }
                                                 }).catchError((error) {
@@ -548,42 +548,45 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
       );
     }
   }
+
   Widget card(formattedMonoto) {
-  return Container(
-    decoration: BoxDecoration(
-      boxShadow: [
-        BoxShadow(
-          color: const Color.fromARGB(255, 74, 74, 75).withOpacity(0.5), // Color del sombreado azul
-          spreadRadius: 5,
-          blurRadius: 7,
-          offset: const Offset(0, 5),
-        ),
-      ],
-    ),
-    child: SizedBox(
-      width: 380,
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0), // Radio de borde de la tarjeta
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              ListTile(
-                title: const Text('Nota'),
-                subtitle: Text(
-                  'El máximo que se te puede prestar es de $formattedMonoto pesos mexicanos y el monto mínimo que puedes solicitar es de \$1,000.00 pesos mexicanos.',
-                  textAlign: TextAlign.justify,
+    return Container(
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: const Color.fromARGB(255, 74, 74, 75)
+                .withOpacity(0.5), // Color del sombreado azul
+            spreadRadius: 5,
+            blurRadius: 7,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: SizedBox(
+        width: 380,
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius:
+                BorderRadius.circular(15.0), // Radio de borde de la tarjeta
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                ListTile(
+                  title: const Text('Nota'),
+                  subtitle: Text(
+                    'El máximo que se te puede prestar es de $formattedMonoto pesos mexicanos y el monto mínimo que puedes solicitar es de \$1,000.00 pesos mexicanos.',
+                    textAlign: TextAlign.justify,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   Widget generaAvales(avales, navales, cnatidadfinal) {
     // print('Numero de avales que se genera $navales');
@@ -592,11 +595,11 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
     //   String?  x = montoinput ?? '0';
     //   print('VALOR DE X $x');
 
-      //  setState(() {
-      //             montoavales.add(200);
-      //           });
-        // int solicitud = int.parse(x.toString()) ;
-        // print(solicitud);
+    //  setState(() {
+    //             montoavales.add(200);
+    //           });
+    // int solicitud = int.parse(x.toString()) ;
+    // print(solicitud);
 
     // montoavales.add(int.parse(montoinput.toString()));
     // print(montoinput);
@@ -780,8 +783,8 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                     ],
                     decoration: InputDecorationBuilder.finalinput(
                         hintText: 'Cantidad', labelText: 'Monto aval'),
-                        initialValue: navales == 1 ? montoinput : '',
-                        readOnly: navales == 1 ? true : false,
+                    initialValue: navales == 1 ? montoinput : '',
+                    readOnly: navales == 1 ? true : false,
                     onChanged: (value) {
                       setState(() {
                         // ignore: unnecessary_null_comparison
@@ -830,8 +833,11 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                   onPressed: btnsolicitaPrestamo
                       ? null
                       : () async {
-                          final ine           = await SharedPreferencesHelper.getdatos('Identificación (INE)');
-                          final comprobante   = await SharedPreferencesHelper.getdatos('Comprobante (DOMICILIO)');
+                          final ine = await SharedPreferencesHelper.getdatos(
+                              'Identificación (INE)');
+                          final comprobante =
+                              await SharedPreferencesHelper.getdatos(
+                                  'Comprobante (DOMICILIO)');
                           // print('VALOR PARA INE $ine');
                           // print('VALOR PARA COMPROBANTE $comprobante');
                           if (kDebugMode) {
@@ -858,18 +864,26 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                           int monto = int.parse(montoinput.toString());
                           // print('NUMERO DE AVALES GENERADOS $navales');
                           // print('VALOR AVALA $selectedValue');
-                          if ((navales == 1 ? monto == cnatidadfinal : totalAmount == cnatidadfinal ) && idavales.length == navales && ine != '' && comprobante != '') {
-                            //AQUI VAMOS A RESOLVER ESTE PEDOO   
+                          if ((navales == 1
+                                  ? monto == cnatidadfinal
+                                  : totalAmount == cnatidadfinal) &&
+                              idavales.length == navales &&
+                              ine != '' &&
+                              comprobante != '') {
+                            //AQUI VAMOS A RESOLVER ESTE PEDOO
                             // print(montoinput);
                             // print(cnatidadfinal);
-                            // print('SE VALIDO TODO CORRECTO');
+                            // print('SE VALIDO TODOCORRECTO');
                             // print(idavales);
                             Map<int, Map<String, int>> avales = {};
 
-                            if (navales == 1 ){
-                              Map<String, int> nuevoAval = {'idEmpleado': idavales[0]!, 'monto_aval': monto};
+                            if (navales == 1) {
+                              Map<String, int> nuevoAval = {
+                                'idEmpleado': idavales[0]!,
+                                'monto_aval': monto
+                              };
                               avales[0] = nuevoAval;
-                            } else{
+                            } else {
                               idavales.forEach((key, value) {
                                 if (montoavales.length > key) {
                                   avales[key] = {
@@ -931,16 +945,23 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                                 },
                               );
                             }
-                          
 
                             const SizedBox(height: 20);
-                          } else if ((navales == 1 ? monto == cnatidadfinal : totalAmount < cnatidadfinal ) || ine == ''  || comprobante == '') {
-                              // ignore: use_build_context_synchronously
+                          } else if ((navales == 1
+                                  ? monto == cnatidadfinal
+                                  : totalAmount < cnatidadfinal) ||
+                              ine == '' ||
+                              comprobante == '') {
+                            // ignore: use_build_context_synchronously
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return  CustomAlertDialog(
-                                  message: ine == '' ? 'El INE no ha sido cargado.' : (comprobante == '' ? 'El comprobante no ha sido cargado.' : 'Por favor Llena todos los campos solicitados'),
+                                return CustomAlertDialog(
+                                    message: ine == ''
+                                        ? 'El INE no ha sido cargado.'
+                                        : (comprobante == ''
+                                            ? 'El comprobante no ha sido cargado.'
+                                            : 'Por favor Llena todos los campos solicitados'),
 
                                     // message:'La identificacion o el comprobante no han  sido cargado.' ,
 
@@ -949,20 +970,20 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                                     color: Colors.amber);
                               },
                             );
-                          } else if(selectedValue == 1 || idavales.length < navales){
-                             // ignore: use_build_context_synchronously
-                             showDialog(
+                          } else if (selectedValue == 1 ||
+                              idavales.length < navales) {
+                            // ignore: use_build_context_synchronously
+                            showDialog(
                               context: context,
                               builder: (BuildContext context) {
                                 return const CustomAlertDialog(
-                                    message:
-                                        'Selecciona a tus avales.',
+                                    message: 'Selecciona a tus avales.',
                                     title: 'Atención',
                                     icon: Icons.error_outline,
                                     color: Colors.amber);
                               },
                             );
-                          } else{
+                          } else {
                             if (kDebugMode) {
                               print('Error');
                             }
