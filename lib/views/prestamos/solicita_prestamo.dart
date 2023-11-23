@@ -1,4 +1,6 @@
 // import 'package:com.gruponach.nach_empleado/lib/custom_dropdown.dart';
+import 'package:intl/intl.dart';
+
 import '../../api/calcula_prestamo.dart';
 import '../../api/confirmar_prestamo.dart';
 import '../../api/solicita_prestamo.dart';
@@ -65,6 +67,8 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
   bool btncalculaprestamo = false;
   bool btnsolicitaPrestamo = false;
   String? nuevo; //
+  bool mostrarCard = true;
+
 
 //PARA LOS AVALES
 
@@ -162,9 +166,19 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                   if (kDebugMode) {}
                   final avales = snapshot.data!['avales'];
                   final montoMaximo = snapshot.data!['monto_maximo'];
+                  // print('El monto bb $montoMaximo');
+                  // print(montoMaximo.runtimeType);
+
                   // final montoXAval      = snapshot.data!['monto_x_aval'];
                   final plazosRestantes = snapshot.data!['plazos_restantes'];
                   // final montoingresado  = montosolicitado.text;
+                  String formatCurrency(int amount) {
+                  NumberFormat currencyFormat = NumberFormat.currency(locale: 'es_MX', symbol: '\$');
+                  return currencyFormat.format(amount);
+                }
+                    String formattedMonoto= formatCurrency(montoMaximo);
+                    // print('Res $formattedMonoto');
+
 
                   void validaMonto() {
                     final String amountText = montosolicitado.text;
@@ -215,6 +229,7 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
 
                   return Column(
                     children: [
+                      mostrarCard ? card(formattedMonoto) : Container(),
                       Form(
                           key: _formKey,
                           child: SingleChildScrollView(
@@ -358,6 +373,8 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                                                       montomaximoaval =
                                                           montoXAval;
                                                       actualizarNavales();
+                                                      mostrarCard = !mostrarCard;
+
                                                     });
                                                   }
                                                 }).catchError((error) {
@@ -431,7 +448,7 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                                                         hintText:
                                                             'Monto a pagar',
                                                         labelText:
-                                                            'Pago del prestamo'),
+                                                            'Pago por periodo'),
                                               ),
                                             ),
                                           ),
@@ -517,6 +534,7 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
 
   void validaavales(int value) {
     if (value > montomaximoaval) {
+      // print('VALUEEEEEE $value');
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -530,8 +548,61 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
       );
     }
   }
+  Widget card(formattedMonoto) {
+  return Container(
+    decoration: BoxDecoration(
+      boxShadow: [
+        BoxShadow(
+          color: const Color.fromARGB(255, 74, 74, 75).withOpacity(0.5), // Color del sombreado azul
+          spreadRadius: 5,
+          blurRadius: 7,
+          offset: const Offset(0, 5),
+        ),
+      ],
+    ),
+    child: SizedBox(
+      width: 380,
+      child: Card(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0), // Radio de borde de la tarjeta
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              ListTile(
+                title: const Text('Nota'),
+                subtitle: Text(
+                  'El máximo que se te puede prestar es de $formattedMonoto pesos mexicanos y el monto mínimo que puedes solicitar es de \$1,000.00 pesos mexicanos.',
+                  textAlign: TextAlign.justify,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+}
 
   Widget generaAvales(avales, navales, cnatidadfinal) {
+    // print('Numero de avales que se genera $navales');
+    // print(montoinput);
+    // print(montoinput.runtimeType);
+    //   String?  x = montoinput ?? '0';
+    //   print('VALOR DE X $x');
+
+      //  setState(() {
+      //             montoavales.add(200);
+      //           });
+        // int solicitud = int.parse(x.toString()) ;
+        // print(solicitud);
+
+    // montoavales.add(int.parse(montoinput.toString()));
+    // print(montoinput);
+    // // print(montoinput.runtimeType);
+    //     int solicitud = int.parse(montoinput.toString());
+    //     // print('NUEVO VALOR $numero');
     final enviarPrestamo = ConfirmarPrestamo();
     Future<List<Object>> getFakeRequestData(String query) async {
       await Future.delayed(const Duration(seconds: 1));
@@ -709,6 +780,8 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                     ],
                     decoration: InputDecorationBuilder.finalinput(
                         hintText: 'Cantidad', labelText: 'Monto aval'),
+                        initialValue: navales == 1 ? montoinput : '',
+                        readOnly: navales == 1 ? true : false,
                     onChanged: (value) {
                       setState(() {
                         // ignore: unnecessary_null_comparison
@@ -759,10 +832,12 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                       : () async {
                           final ine           = await SharedPreferencesHelper.getdatos('Identificación (INE)');
                           final comprobante   = await SharedPreferencesHelper.getdatos('Comprobante (DOMICILIO)');
+                          // print('VALOR PARA INE $ine');
+                          // print('VALOR PARA COMPROBANTE $comprobante');
                           if (kDebugMode) {
-                            print('ESTE ES EL VALOR $selectedValue');
+                            // print('ESTE ES EL VALOR $selectedValue');
                           }
-                          if (selectedValue != null && (selectedValue == 0)) {
+                          if (selectedValue == 1 && (selectedValue == 0)) {
                             if (kDebugMode) {
                               print(selectedValue);
                             }
@@ -780,17 +855,31 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                             );
                             return;
                           }
-                          if (totalAmount == cnatidadfinal && selectedValue ! > 1 && ine != '' && comprobante != '') {
-                            // validar todo
+                          int monto = int.parse(montoinput.toString());
+                          // print('NUMERO DE AVALES GENERADOS $navales');
+                          // print('VALOR AVALA $selectedValue');
+                          if ((navales == 1 ? monto == cnatidadfinal : totalAmount == cnatidadfinal ) && idavales.length == navales && ine != '' && comprobante != '') {
+                            //AQUI VAMOS A RESOLVER ESTE PEDOO   
+                            // print(montoinput);
+                            // print(cnatidadfinal);
+                            // print('SE VALIDO TODO CORRECTO');
+                            // print(idavales);
                             Map<int, Map<String, int>> avales = {};
-                            idavales.forEach((key, value) {
-                              if (montoavales.length > key) {
-                                avales[key] = {
-                                  'idEmpleado': value,
-                                  'monto_aval': montoavales[key],
-                                };
-                              }
-                            });
+
+                            if (navales == 1 ){
+                              Map<String, int> nuevoAval = {'idEmpleado': idavales[0]!, 'monto_aval': monto};
+                              avales[0] = nuevoAval;
+                            } else{
+                              idavales.forEach((key, value) {
+                                if (montoavales.length > key) {
+                                  avales[key] = {
+                                    'idEmpleado': value,
+                                    'monto_aval': montoavales[key],
+                                  };
+                                }
+                              });
+                            }
+
                             // final idEmpleado    =  SharedPreferencesHelper.getdatos('empleado');
                             // final ine           =  SharedPreferencesHelper.getdatos('Identificación (INE)');
                             // final comprobante =
@@ -842,20 +931,38 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                                 },
                               );
                             }
+                          
+
                             const SizedBox(height: 20);
-                          } else if (totalAmount < cnatidadfinal || ine == ''  || comprobante == '') {
-                            // ignore: use_build_context_synchronously
+                          } else if ((navales == 1 ? monto == cnatidadfinal : totalAmount < cnatidadfinal ) || ine == ''  || comprobante == '') {
+                              // ignore: use_build_context_synchronously
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
                                 return  CustomAlertDialog(
-                                    message: totalAmount  < cnatidadfinal ? 'Por favor verifica el monto ingresado por aval.' : (ine == '') ? 'El INE no ha sido cargado.': 'El comprobante no ha sido cargado',
+                                  message: ine == '' ? 'El INE no ha sido cargado.' : (comprobante == '' ? 'El comprobante no ha sido cargado.' : 'Por favor Llena todos los campos solicitados'),
+
+                                    // message:'La identificacion o el comprobante no han  sido cargado.' ,
+
                                     title: 'Atención',
                                     icon: Icons.error_outline,
                                     color: Colors.amber);
                               },
                             );
-                          } else {
+                          } else if(selectedValue == 1 || idavales.length < navales){
+                             // ignore: use_build_context_synchronously
+                             showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return const CustomAlertDialog(
+                                    message:
+                                        'Selecciona a tus avales.',
+                                    title: 'Atención',
+                                    icon: Icons.error_outline,
+                                    color: Colors.amber);
+                              },
+                            );
+                          } else{
                             if (kDebugMode) {
                               print('Error');
                             }
@@ -865,7 +972,7 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                               builder: (BuildContext context) {
                                 return const CustomAlertDialog(
                                     message:
-                                        'No todos los campos son correctos',
+                                        'No todos los campos son correctos. Por favor verifica que todos los campos esten llenos ',
                                     title: 'Error',
                                     icon: Icons.error_outline,
                                     color: Colors.red);
