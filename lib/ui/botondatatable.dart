@@ -318,7 +318,7 @@ class BotondocupState extends ConsumerState<Botondocup> {
     }
     List<Widget> avalesTextList = widget.someAvalesMap!.map((aval) {
       // Convierte el mapa a una cadena para mostrarla en Text
-      String nombre = aval['nombre_solicitante'].toString();
+      String nombre = aval['nombre_aval'].toString();
 
       return Padding(
         padding: const EdgeInsets.all(8.0),
@@ -357,7 +357,7 @@ class BotondocupState extends ConsumerState<Botondocup> {
                   children: [
                     ...avalesTextList,
                     Botonc(
-                      texto: 'seleccionar mas avales',
+                      texto: 'selecciona nuevos avales',
                       onPressed: () {
                         if (kDebugMode) {
                           print(numeroavales);
