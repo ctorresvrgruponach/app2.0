@@ -465,7 +465,6 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                             final rowsavales =
                                 (data['adelantos']['resultados3'] as List?)
                                     ?.cast<Map<String, dynamic>>();
-                            final List<Map<String, dynamic>>? avales;
 
                             //  print(avales.length);
 

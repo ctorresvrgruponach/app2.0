@@ -385,7 +385,7 @@ class CustomAlertDialogBotonState
         color: widget.color,
       ),
       title: Text(
-        "${widget.title}",
+        widget.title,
         style: const TextStyle(
           color: Colors.white,
         ),

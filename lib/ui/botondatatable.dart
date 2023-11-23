@@ -287,14 +287,14 @@ class BotondocuState extends ConsumerState<Botondocu> {
 class Botondocup extends ConsumerStatefulWidget {
   final String texto;
   final String? indiceadelanto;
-  Map someAvalesMap = {};
+  final List<Map<String, dynamic>>? someAvalesMap;
 
-  Botondocup({
-    Key? key,
-    required this.texto,
-    required this.indiceadelanto,
-    List<Map<String, dynamic>>? someAvalesMap,
-  }) : super(key: key);
+  const Botondocup(
+      {Key? key,
+      required this.texto,
+      required this.indiceadelanto,
+      this.someAvalesMap})
+      : super(key: key);
 
   @override
   BotondocupState createState() => BotondocupState();
@@ -314,9 +314,25 @@ class BotondocupState extends ConsumerState<Botondocup> {
   @override
   Widget build(BuildContext context) {
     if (kDebugMode) {
-      // print(widget.indiceadelanto);
-      print(widget.someAvalesMap.values);
+      print(widget.indiceadelanto);
     }
+    List<Widget> avalesTextList = widget.someAvalesMap!.map((aval) {
+      // Convierte el mapa a una cadena para mostrarla en Text
+      String nombre = aval['nombre_solicitante'].toString();
+
+      return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: SizedBox(
+          child: Column(
+            children: [
+              Text('El aval $nombre ha'),
+              const Text('rechazado la solicitud de ser aval'),
+            ],
+          ),
+        ),
+      );
+    }).toList();
+    var numeroavales = (widget.someAvalesMap?.length);
     final customDialogManager = CustomDialogManager(context);
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
@@ -336,10 +352,21 @@ class BotondocupState extends ConsumerState<Botondocup> {
             height: displayHeight(context) * 0.6,
             child: AlertDialog(
               title: const Text("Adjuntar documentos"),
-              content: const Text(''),
               actions: <Widget>[
                 Column(
                   children: [
+                    ...avalesTextList,
+                    Botonc(
+                      texto: 'seleccionar mas avales',
+                      onPressed: () {
+                        if (kDebugMode) {
+                          print(numeroavales);
+                        }
+                        if (kDebugMode) {
+                          print(widget.indiceadelanto);
+                        }
+                      },
+                    ),
                     const Text('Selecciona que archivo quieres editar'),
                     const Botonfile(texto: 'INE'),
                     const Botonfile(texto: 'Comprobante'),
