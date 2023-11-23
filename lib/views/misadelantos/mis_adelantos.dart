@@ -17,6 +17,7 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Align(
                   alignment: Alignment.centerRight,
@@ -41,7 +42,7 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                   SizedBox(
                                     width:
                                         MediaQuery.of(context).size.width * 3,
-                                    height: 100,
+                                    height: 80,
                                     child: const Text(
                                       "Notificaciones",
                                       style: TextStyle(
@@ -67,7 +68,11 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                         label: Text('estatus'),
                                       ),
                                       DataColumn(
-                                        label: Text('editar'),
+                                        label: Text('Aprobar'),
+                                      ),
+
+                                      DataColumn(
+                                        label: Text('Rechazar'),
                                       ),
                                       // Agrega más DataColumn según sea necesario
                                     ],
@@ -89,8 +94,16 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                             Text('${rowData['estatus']}'),
                                           ),
                                           DataCell(
-                                            Botondocu(
+                                            Botondocup(
                                               texto: 'APROBAR',
+                                              indiceadelanto:
+                                                  '${rowData['id_prestamo']}',
+                                            ),
+                                          ),
+
+                                          DataCell(
+                                            Botondocur(
+                                              texto: 'Rechazar',
                                               indiceadelanto:
                                                   '${rowData['id_prestamo']}',
                                             ),
@@ -104,18 +117,33 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                               );
                             } else {
                               // Manejar caso en que rows es nulo o vacío
-                              return Center(
+                              return Align(
+                                alignment: Alignment.centerRight,
                                 child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     SizedBox(
                                       width:
                                           MediaQuery.of(context).size.width * 1,
-                                      height: 100,
+                                      height: 80,
                                       child: const Text(
                                         "Notificaciones",
                                         style: TextStyle(
                                           color: Color.fromARGB(255, 1, 55, 98),
                                           fontSize: 40,
+                                        ),
+                                        textAlign: TextAlign
+                                            .right, // Set the text alignment to the left
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width * 1,
+                                      height: 80,
+                                      child: const Text(
+                                        "No tiene notificaciones nuevas.",
+                                        style: TextStyle(
+                                          color: Color.fromARGB(255, 0, 0, 1),
                                         ),
                                         textAlign: TextAlign
                                             .left, // Set the text alignment to the left
@@ -127,19 +155,60 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                             }
                           } else {
                             // Manejar caso de éxito falso
-                            return Center(
-                                child: SizedBox(
-                              width: MediaQuery.of(context).size.width * 3,
-                              height: 100,
-                              child: const Text(
-                                "Notificaciones",
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 0, 36, 66),
-                                  fontSize: 40,
-                                ),
-                                textAlign: TextAlign.left,
+                            return Align(
+                              alignment: Alignment.centerRight,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                1,
+                                        height: 80,
+                                        child: const Text(
+                                          "Notificaciones",
+                                          style: TextStyle(
+                                            color:
+                                                Color.fromARGB(255, 0, 36, 66),
+                                            fontSize: 40,
+                                          ),
+                                          textAlign: TextAlign.right,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Align(
+                                    alignment: Alignment.bottomLeft,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              1,
+                                          height: 100,
+                                          child: const Text(
+                                            "No tiene notificaciones nuevas.",
+                                            style: TextStyle(
+                                              color:
+                                                  Color.fromARGB(255, 0, 0, 1),
+                                            ),
+                                            textAlign: TextAlign
+                                                .left, // Set the text alignment to the left
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ));
+                            );
                           }
                         },
                         loading: () => Center(
@@ -185,7 +254,7 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                   SizedBox(
                                     width:
                                         MediaQuery.of(context).size.width * 3,
-                                    height: 100,
+                                    height: 80,
                                     child: const Text(
                                       "Adelanto de nómina",
                                       style: TextStyle(
@@ -252,7 +321,7 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                             ),
                                             DataCell(
                                               Botoneditar(
-                                                texto: 'INE',
+                                                texto: 'Editar',
                                                 indiceadelanto:
                                                     '${rowData['id']}',
                                               ),
@@ -267,56 +336,94 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                               );
                             } else {
                               // Manejar caso en que rows es nulo o vacío
-                              return Center(
+                              return Align(
+                                alignment: Alignment.centerLeft,
                                 child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    SizedBox(
-                                      width:
-                                          MediaQuery.of(context).size.width * 3,
-                                      height: 100,
-                                      child: const Text(
-                                        "Adelanto de nómina",
-                                        style: TextStyle(
-                                          color: Color.fromARGB(255, 0, 39, 71),
-                                          fontSize: 40,
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                1,
+                                        height: 80,
+                                        child: const Text(
+                                          "Adelanto de nómina",
+                                          style: TextStyle(
+                                            color:
+                                                Color.fromARGB(255, 0, 39, 71),
+                                            fontSize: 40,
+                                          ),
+                                          textAlign: TextAlign
+                                              .left, // Set the text alignment to the left
                                         ),
-                                        textAlign: TextAlign
-                                            .left, // Set the text alignment to the left
                                       ),
                                     ),
-                                    SizedBox(
-                                      width:
-                                          MediaQuery.of(context).size.width * 3,
-                                      height: 100,
-                                      child: const Text(
-                                        "No se encontraron datos.",
-                                        style: TextStyle(
-                                          color: Color.fromARGB(255, 0, 0, 1),
-                                        ),
-                                        textAlign: TextAlign
-                                            .left, // Set the text alignment to the left
+                                    Align(
+                                      alignment: Alignment.bottomLeft,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                1,
+                                            height: 100,
+                                            child: const Text(
+                                              "No se encontraron prestamos.",
+                                              style: TextStyle(
+                                                color: Color.fromARGB(
+                                                    255, 0, 0, 1),
+                                              ),
+                                              textAlign: TextAlign
+                                                  .left, // Set the text alignment to the left
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    const Text('No se encontraron datos.'),
                                   ],
                                 ),
                               );
                             }
                           } else {
                             // Manejar caso de éxito falso
-                            return Center(
-                                child: SizedBox(
-                              width: MediaQuery.of(context).size.width * 1,
-                              height: 100,
-                              child: const Text(
-                                "Adelanto de nómina",
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 0, 36, 66),
-                                  fontSize: 40,
-                                ),
-                                textAlign: TextAlign.left,
+                            return Align(
+                              alignment: Alignment.centerLeft,
+                              child: Column(
+                                children: [
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width * 1,
+                                    height: 100,
+                                    child: const Text(
+                                      "Adelanto de nómina",
+                                      style: TextStyle(
+                                        color: Color.fromARGB(255, 0, 36, 66),
+                                        fontSize: 40,
+                                      ),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width * 1,
+                                    height: 100,
+                                    child: const Text(
+                                      "No cuenta con adelanto de nómina.",
+                                      style: TextStyle(
+                                        color: Color.fromARGB(255, 0, 0, 1),
+                                      ),
+                                      textAlign: TextAlign
+                                          .left, // Set the text alignment to the left
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ));
+                            );
                           }
                         },
                         loading: () => Center(
@@ -354,6 +461,13 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                             final rows =
                                 (data['adelantos']['resultados2'] as List?)
                                     ?.cast<Map<String, dynamic>>();
+
+                            final rowsavales =
+                                (data['adelantos']['resultados3'] as List?)
+                                    ?.cast<Map<String, dynamic>>();
+                            final List<Map<String, dynamic>>? avales;
+
+                            //  print(avales.length);
 
                             if (rows != null && rows.isNotEmpty) {
                               return Column(
@@ -431,10 +545,11 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                               Text('${rowData['pago']}'),
                                             ),
                                             DataCell(
-                                              Botoneditar(
-                                                texto: 'INE',
+                                              Botondocup(
+                                                texto: 'Editar',
                                                 indiceadelanto:
                                                     '${rowData['id']}',
+                                                someAvalesMap: rowsavales,
                                               ),
                                             ),
                                             // Agrega más DataCell según sea necesario
@@ -448,6 +563,7 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                             } else {
                               // Manejar caso en que rows es nulo o vacío
                               return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   SizedBox(
                                     width:
@@ -463,37 +579,48 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                           .left, // Set the text alignment to the left
                                     ),
                                   ),
-                                  SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.width * 3,
-                                    height: 100,
-                                    child: const Text(
-                                      "No se encontraron datos.",
-                                      style: TextStyle(
-                                        color: Color.fromARGB(255, 0, 0, 1),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                3,
+                                        height: 100,
+                                        child: const Text(
+                                          "No se encontraron datos.",
+                                          style: TextStyle(
+                                            color: Color.fromARGB(255, 0, 0, 3),
+                                          ),
+                                          textAlign: TextAlign
+                                              .left, // Set the text alignment to the left
+                                        ),
                                       ),
-                                      textAlign: TextAlign
-                                          .left, // Set the text alignment to the left
-                                    ),
+                                    ],
                                   ),
                                 ],
                               );
                             }
                           } else {
                             // Manejar caso de éxito falso
-                            return Center(
-                                child: SizedBox(
-                              width: MediaQuery.of(context).size.width * 1,
-                              height: 100,
-                              child: const Text(
-                                "Prestamos",
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 0, 36, 66),
-                                  fontSize: 40,
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  width: MediaQuery.of(context).size.width * 3,
+                                  height: 100,
+                                  child: const Text(
+                                    "Prestamos",
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 0, 36, 66),
+                                      fontSize: 40,
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ),
                                 ),
-                                textAlign: TextAlign.left,
-                              ),
-                            ));
+                              ],
+                            );
                           }
                         },
                         loading: () => Center(

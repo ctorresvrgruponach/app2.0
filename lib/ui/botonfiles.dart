@@ -80,7 +80,7 @@ class ImageNotifier extends StateNotifier<File?> {
       if (kDebugMode) {
         print(" lados $lados");
       }
-      if (texto == 'INE' && lados == 0) {
+      if (myList.contains(texto) && lados == 0) {
         base64Stringfrente = base64Encode(compressedImage);
         lados = 1;
       } else {
@@ -89,52 +89,85 @@ class ImageNotifier extends StateNotifier<File?> {
             base64String, dir, texto, base64Stringfrente);
       }
     } else {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: base64Stringfrente == ''
-                ? Text('Documento $texto Frente')
-                : Text('Documento $texto Reverso'),
-            content: base64Stringfrente == ''
-                ? Text('Documento $texto Frente')
-                : Text('Documento $texto Reverso'),
-            actions: [
-              TextButton(
-                onPressed: () async {
-                  final XFile? photo1 =
-                      await picker.pickImage(source: ImageSource.gallery);
+      if (myList.contains(texto)) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: base64Stringfrente == ''
+                  ? Text('Documento $texto Frente')
+                  : Text('Documento $texto Reverso'),
+              content: base64Stringfrente == ''
+                  ? Text('Documento $texto Frente')
+                  : Text('Documento $texto Reverso'),
+              actions: [
+                TextButton(
+                  onPressed: () async {
+                    final XFile? photo1 =
+                        await picker.pickImage(source: ImageSource.gallery);
 
-                  if (photo1 != null) {
-                    final isImage = _isImageFile(photo1.path);
+                    if (photo1 != null) {
+                      final isImage = _isImageFile(photo1.path);
 
-                    if (isImage) {
-                      final dir = await path_provider.getTemporaryDirectory();
-                      var bytes = File(photo1.path).readAsBytesSync();
-                      if (kDebugMode) {
-                        print(" lados $lados");
-                      }
-                      if (texto == 'INE' && lados == 0) {
-                        base64Stringfrente = base64Encode(bytes);
-                        lados = 1;
+                      if (isImage) {
+                        final dir = await path_provider.getTemporaryDirectory();
+                        var bytes = File(photo1.path).readAsBytesSync();
+                        if (kDebugMode) {
+                          print(" lados $lados");
+                        }
+                        if (myList.contains(texto) && lados == 0) {
+                          base64Stringfrente = base64Encode(bytes);
+                          lados = 1;
+                        } else {
+                          await imagenpdf.devolverimagen(base64Encode(bytes),
+                              dir, texto, base64Stringfrente);
+                          // ignore: use_build_context_synchronously
+                          //    Navigator.of(context).pop();
+                        }
                       } else {
-                        await imagenpdf.devolverimagen(base64Encode(bytes), dir,
-                            texto, base64Stringfrente);
+                        // Handle the case when a non-image file is selected.
+                        // print('El archivo seleccionado no es una imagen.');
                       }
-                    } else {
-                      // Handle the case when a non-image file is selected.
-                      // print('El archivo seleccionado no es una imagen.');
                     }
-                  }
-                  // ignore: use_build_context_synchronously
-                  Navigator.of(context).pop(); // Cerrar el Dialog
-                },
-                child: const Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
+                    // ignore: use_build_context_synchronously
+                    Navigator.of(context).pop(); // Cerrar el Dialog
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        final XFile? photo1 =
+            await picker.pickImage(source: ImageSource.gallery);
+
+        if (photo1 != null) {
+          final isImage = _isImageFile(photo1.path);
+
+          if (isImage) {
+            final dir = await path_provider.getTemporaryDirectory();
+            var bytes = File(photo1.path).readAsBytesSync();
+            if (kDebugMode) {
+              print(" lados $lados");
+            }
+            if (myList.contains(texto) && lados == 0) {
+              base64Stringfrente = base64Encode(bytes);
+              lados = 1;
+            } else {
+              await imagenpdf.devolverimagen(
+                  base64Encode(bytes), dir, texto, base64Stringfrente);
+              // ignore: use_build_context_synchronously
+            }
+          } else {
+            // Handle the case when a non-image file is selected.
+            // print('El archivo seleccionado no es una imagen.');
+          }
+          // ignore: use_build_context_synchronously
+          //Navigator.of(context).pop();
+        }
+        // ignore: use_build_context_synchronously
+      }
     }
   }
 
@@ -143,7 +176,7 @@ class ImageNotifier extends StateNotifier<File?> {
     final now = DateTime.now();
     String formatter = DateFormat('d/MM/y').format(now);
     String htmlcotejado = texto == 'CURP' ? '' : formatText(formatter);
-    var htmlcode2 = frente != '' && texto == 'INE'
+    var htmlcode2 = frente != '' && myList.contains(texto)
         ? """<img src="data:image/png;base64,$frente" alt=""  width="500" height="600"/><br/>"""
         : '';
 
@@ -255,7 +288,7 @@ class Imagenpdf {
     final now = DateTime.now();
     String formatter = DateFormat('d/MM/y').format(now);
     String htmlcotejado = texto == 'CURP' ? '' : formatText(formatter);
-    var htmlcode2 = frente != '' && texto == 'INE'
+    var htmlcode2 = frente != '' && myList.contains(texto)
         ? """<img src="data:image/png;base64,$frente" alt=""  width="500" height="600"/><br/>"""
         : '';
 
@@ -352,11 +385,7 @@ class CustomAlertDialogBotonState
         color: widget.color,
       ),
       title: Text(
-        widget.texto == 'INE'
-            ? base64Stringfrente == ''
-                ? "${widget.title} frente "
-                : "${widget.title} reverso"
-            : widget.title,
+        "${widget.title}",
         style: const TextStyle(
           color: Colors.white,
         ),
@@ -393,7 +422,7 @@ class CustomAlertDialogBotonState
                   .read(imageProvider.notifier)
                   .pickImage('camara', widget.texto, context);
               setState(() {
-                if (widget.texto != 'INE') {
+                if (!myList.contains(widget.texto)) {
                   filterColor = false;
                 }
               });

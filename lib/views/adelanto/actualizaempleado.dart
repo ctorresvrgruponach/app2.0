@@ -478,8 +478,13 @@ class ActualizaEmpleadoScreenState
                                                 color: Color.fromARGB(
                                                     255, 255, 255, 255),
                                               ),
-                                              value:
-                                                  estadosData[selectedEstado],
+                                              value: selectedEstado != 0
+                                                  ? estadosData[selectedEstado]
+                                                  : estadosData[int.parse(
+                                                          operaciones[
+                                                                  'id_estado']
+                                                              .toString()) -
+                                                      1],
                                               items: estadosData
                                                   .map((estado) =>
                                                       DropdownMenuItem<

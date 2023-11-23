@@ -237,7 +237,7 @@ class BotondocuState extends ConsumerState<Botondocu> {
             width: displayWidth(context) * 0.9,
             height: displayHeight(context) * 0.6,
             child: AlertDialog(
-              title: const Text("Visualizar archivos"),
+              title: const Text("Adjuntar documentos"),
               content: const Text(''),
               actions: <Widget>[
                 Column(
@@ -251,17 +251,229 @@ class BotondocuState extends ConsumerState<Botondocu> {
                       onPressed: () async {
                         final instanciaEnviaAdelanto = EnviaAprobacionClass();
                         final resp = await instanciaEnviaAdelanto
-                            .enviaAprobacion(widget.indiceadelanto);
+                            .enviaAprobacion(widget.indiceadelanto, 0);
                         if (kDebugMode) {
                           print(resp['mensaje']);
                         }
+                        if (resp['success']) {
+                          await customDialogManager.showCustomDialog(
+                              icon: Icons.check,
+                              title: resp['mensaje'],
+                              message: resp['mensaje'],
+                              color: const Color.fromARGB(255, 54, 244, 76));
+                          // ignore: use_build_context_synchronously
+                          Navigator.of(context).pop();
+                        } else {
+                          await customDialogManager.showCustomDialog(
+                              icon: Icons.warning,
+                              title: resp['mensaje'],
+                              message: resp['mensaje'],
+                              color: const Color.fromARGB(255, 244, 54, 54));
+                        }
+                      },
+                    )
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+      child: Text(' ${widget.texto}'),
+    );
+  }
+}
+
+class Botondocup extends ConsumerStatefulWidget {
+  final String texto;
+  final String? indiceadelanto;
+  Map someAvalesMap = {};
+
+  Botondocup({
+    Key? key,
+    required this.texto,
+    required this.indiceadelanto,
+    List<Map<String, dynamic>>? someAvalesMap,
+  }) : super(key: key);
+
+  @override
+  BotondocupState createState() => BotondocupState();
+}
+
+class BotondocupState extends ConsumerState<Botondocup> {
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      setState(() {
+        filterColor = true;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (kDebugMode) {
+      // print(widget.indiceadelanto);
+      print(widget.someAvalesMap.values);
+    }
+    final customDialogManager = CustomDialogManager(context);
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Color.fromARGB(filterColor ? 255 : 50, 54, 244, 76),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(displayWidth(context) * 0.02),
+        ),
+      ),
+      onPressed: () {
+        final notifier = ref.read(idAdelantoProvider.notifier);
+        notifier.updateIdAdelanto(widget.indiceadelanto as String);
+
+        showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => SizedBox(
+            width: displayWidth(context) * 0.9,
+            height: displayHeight(context) * 0.6,
+            child: AlertDialog(
+              title: const Text("Adjuntar documentos"),
+              content: const Text(''),
+              actions: <Widget>[
+                Column(
+                  children: [
+                    const Text('Selecciona que archivo quieres editar'),
+                    const Botonfile(texto: 'INE'),
+                    const Botonfile(texto: 'Comprobante'),
+                    Botonc(
+                      texto: 'Enviar',
+                      onPressed: () async {
                         await customDialogManager.showCustomDialog(
-                            icon: Icons.warning,
-                            title: resp['mensaje'],
-                            message: resp['mensaje'],
-                            color: const Color.fromARGB(255, 54, 244, 76));
-                        // ignore: use_build_context_synchronously
-                        Navigator.of(context).pop();
+                          icon: Icons.warning,
+                          message:
+                              'Al dar click se tendrá acceso a tu último recibo de nómina.',
+                          title:
+                              'Al dar click se tendrá acceso a tu último recibo de nómina.',
+                          color: const Color.fromARGB(255, 244, 54, 54),
+                        );
+                        final instanciaEnviaAdelanto = EnviaAprobacionClass();
+                        final resp = await instanciaEnviaAdelanto
+                            .enviaAprobacion(widget.indiceadelanto, 1);
+                        if (kDebugMode) {
+                          print(resp['mensaje']);
+                        }
+                        if (resp['success']) {
+                          await customDialogManager.showCustomDialog(
+                              icon: Icons.check,
+                              title: resp['mensaje'],
+                              message: resp['mensaje'],
+                              color: const Color.fromARGB(255, 54, 244, 76));
+                          // ignore: use_build_context_synchronously
+                          Navigator.of(context).pop();
+                        } else {
+                          await customDialogManager.showCustomDialog(
+                              icon: Icons.warning,
+                              title: resp['mensaje'],
+                              message: resp['mensaje'],
+                              color: const Color.fromARGB(255, 244, 54, 54));
+                        }
+                      },
+                    )
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+      child: Text(' ${widget.texto}'),
+    );
+  }
+}
+
+class Botondocur extends ConsumerStatefulWidget {
+  final String texto;
+  final String? indiceadelanto;
+
+  const Botondocur({
+    Key? key,
+    required this.texto,
+    required this.indiceadelanto,
+  }) : super(key: key);
+
+  @override
+  BotondocurState createState() => BotondocurState();
+}
+
+class BotondocurState extends ConsumerState<Botondocur> {
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      setState(() {
+        filterColor = true;
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (kDebugMode) {
+      print(widget.indiceadelanto);
+    }
+    final customDialogManager = CustomDialogManager(context);
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Color.fromARGB(filterColor ? 255 : 50, 244, 54, 54),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(displayWidth(context) * 0.02),
+        ),
+      ),
+      onPressed: () {
+        final notifier = ref.read(idAdelantoProvider.notifier);
+        notifier.updateIdAdelanto(widget.indiceadelanto as String);
+
+        showDialog<String>(
+          context: context,
+          builder: (BuildContext context) => SizedBox(
+            width: displayWidth(context) * 0.9,
+            height: displayHeight(context) * 0.6,
+            child: AlertDialog(
+              title: const Text("¿Deseas rechazar ser aval?"),
+              content: const Text(''),
+              actions: <Widget>[
+                Column(
+                  children: [
+                    Botonc(
+                      texto: 'SI',
+                      onPressed: () async {
+                        await customDialogManager.showCustomDialog(
+                          icon: Icons.warning,
+                          message:
+                              'Al dar click se tendrá acceso a tu último recibo de nómina.',
+                          title:
+                              'Al dar click se tendrá acceso a tu último recibo de nómina.',
+                          color: const Color.fromARGB(255, 244, 54, 54),
+                        );
+                        final instanciaEnviaAdelanto = EnviaAprobacionClass();
+                        final resp = await instanciaEnviaAdelanto
+                            .enviaAprobacion(widget.indiceadelanto, 2);
+                        if (kDebugMode) {
+                          print(resp['mensaje']);
+                        }
+                        if (resp['success']) {
+                          await customDialogManager.showCustomDialog(
+                              icon: Icons.check,
+                              title: resp['mensaje'],
+                              message: resp['mensaje'],
+                              color: const Color.fromARGB(255, 54, 244, 76));
+                          // ignore: use_build_context_synchronously
+                          Navigator.of(context).pop();
+                        } else {
+                          await customDialogManager.showCustomDialog(
+                              icon: Icons.warning,
+                              title: resp['mensaje'],
+                              message: resp['mensaje'],
+                              color: const Color.fromARGB(255, 244, 54, 54));
+                        }
                       },
                     )
                   ],
