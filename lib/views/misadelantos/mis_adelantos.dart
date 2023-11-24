@@ -33,6 +33,9 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                             // Procesar y mostrar datos en DataTable
                             final rows = (data['aval_prestamos'] as List?)
                                 ?.cast<Map<String, dynamic>>();
+                            final rowsavales = (data['adelantos'] as List?)
+                                    ?.cast<Map<String, dynamic>>() ??
+                                [];
 
                             if (rows != null && rows.isNotEmpty) {
                               return Column(
@@ -98,6 +101,7 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                               texto: 'APROBAR',
                                               indiceadelanto:
                                                   '${rowData['id_prestamo']}',
+                                              someAvalesMap: rowsavales,
                                             ),
                                           ),
 
@@ -117,39 +121,49 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                               );
                             } else {
                               // Manejar caso en que rows es nulo o vacío
-                              return Align(
-                                alignment: Alignment.centerRight,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      width:
-                                          MediaQuery.of(context).size.width * 1,
-                                      height: 80,
-                                      child: const Text(
-                                        "Notificaciones",
-                                        style: TextStyle(
-                                          color: Color.fromARGB(255, 1, 55, 98),
-                                          fontSize: 40,
+                              return GestureDetector(
+                                onTap: () {
+                                  ref.refresh(
+                                      postMisNotificacionesdetalleProviders);
+                                },
+                                child: Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                1,
+                                        height: 80,
+                                        child: const Text(
+                                          "Notificaciones",
+                                          style: TextStyle(
+                                            color:
+                                                Color.fromARGB(255, 1, 55, 98),
+                                            fontSize: 40,
+                                          ),
+                                          textAlign: TextAlign
+                                              .right, // Set the text alignment to the left
                                         ),
-                                        textAlign: TextAlign
-                                            .right, // Set the text alignment to the left
                                       ),
-                                    ),
-                                    SizedBox(
-                                      width:
-                                          MediaQuery.of(context).size.width * 1,
-                                      height: 80,
-                                      child: const Text(
-                                        "No tiene notificaciones nuevas.",
-                                        style: TextStyle(
-                                          color: Color.fromARGB(255, 0, 0, 1),
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                1,
+                                        height: 80,
+                                        child: const Text(
+                                          "No tiene notificaciones nuevas. Toca para actualizar",
+                                          style: TextStyle(
+                                            color: Color.fromARGB(255, 0, 0, 1),
+                                          ),
+                                          textAlign: TextAlign
+                                              .left, // Set the text alignment to the left
                                         ),
-                                        textAlign: TextAlign
-                                            .left, // Set the text alignment to the left
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               );
                             }
@@ -181,29 +195,35 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                       ),
                                     ],
                                   ),
-                                  Align(
-                                    alignment: Alignment.bottomLeft,
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        SizedBox(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              1,
-                                          height: 100,
-                                          child: const Text(
-                                            "No tiene notificaciones nuevas.",
-                                            style: TextStyle(
-                                              color:
-                                                  Color.fromARGB(255, 0, 0, 1),
+                                  GestureDetector(
+                                    onTap: () {
+                                      ref.refresh(
+                                          postMisNotificacionesdetalleProviders);
+                                    },
+                                    child: Align(
+                                      alignment: Alignment.bottomLeft,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                1,
+                                            height: 100,
+                                            child: const Text(
+                                              "No tiene notificaciones nuevas. Toca para actualizar",
+                                              style: TextStyle(
+                                                color: Color.fromARGB(
+                                                    255, 0, 0, 1),
+                                              ),
+                                              textAlign: TextAlign
+                                                  .left, // Set the text alignment to the left
                                             ),
-                                            textAlign: TextAlign
-                                                .left, // Set the text alignment to the left
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ],

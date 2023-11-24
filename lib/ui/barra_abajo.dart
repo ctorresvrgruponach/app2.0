@@ -295,11 +295,17 @@ BottomNavigationBar bottomNachBarfirma(context) {
   );
 }
 
-class MyBottomNavigationBar extends StatelessWidget {
+class MyBottomNavigationBar extends ConsumerStatefulWidget {
   final int selectedIndex;
 
-  const MyBottomNavigationBar({super.key, required this.selectedIndex});
+  const MyBottomNavigationBar({Key? key, required this.selectedIndex})
+      : super(key: key);
 
+  @override
+  MyBottomNavigationBarState createState() => MyBottomNavigationBarState();
+}
+
+class MyBottomNavigationBarState extends ConsumerState<MyBottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
     return Consumer(
@@ -311,7 +317,9 @@ class MyBottomNavigationBar extends StatelessWidget {
             // Verifica si 'aval_prestamos' está presente en el mapa y es una lista
             final rows =
                 (data['aval_prestamos'] as List?)?.cast<Map<String, dynamic>>();
-            var count = rows?.length ?? 0;
+            final rows2 = (data['avales_rechazados'] as List?)
+                ?.cast<Map<String, dynamic>>();
+            var count = rows!.length + rows2!.length;
             // print(count);
             return BottomNavigationBar(
               showUnselectedLabels: true,
@@ -417,7 +425,7 @@ class MyBottomNavigationBar extends StatelessWidget {
                   // backgroundColor: Colors.pink,
                 ),
               ],
-              currentIndex: selectedIndex,
+              currentIndex: widget.selectedIndex,
               fixedColor: const Color.fromARGB(255, 5, 50, 91),
               onTap: (int index) {
                 switch (index) {

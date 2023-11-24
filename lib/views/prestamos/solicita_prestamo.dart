@@ -171,7 +171,7 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                   // final montoXAval      = snapshot.data!['monto_x_aval'];
                   final plazosRestantes = snapshot.data!['plazos_restantes'];
                   // final montoingresado  = montosolicitado.text;
-                  String formatCurrency(int amount) {
+                  String formatCurrency(dynamic amount) {
                     NumberFormat currencyFormat =
                         NumberFormat.currency(locale: 'es_MX', symbol: '\$');
                     return currencyFormat.format(amount);

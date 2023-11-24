@@ -393,6 +393,7 @@ class BotondocupState extends ConsumerState<Botondocup> {
                               title: resp['mensaje'],
                               message: resp['mensaje'],
                               color: const Color.fromARGB(255, 54, 244, 76));
+                          ref.refresh(postMisNotificacionesdetalleProviders);
                           // ignore: use_build_context_synchronously
                           Navigator.of(context).pop();
                         } else {
@@ -472,14 +473,6 @@ class BotondocurState extends ConsumerState<Botondocur> {
                     Botonc(
                       texto: 'SI',
                       onPressed: () async {
-                        await customDialogManager.showCustomDialog(
-                          icon: Icons.warning,
-                          message:
-                              'Al dar click se tendrá acceso a tu último recibo de nómina.',
-                          title:
-                              'Al dar click se tendrá acceso a tu último recibo de nómina.',
-                          color: const Color.fromARGB(255, 244, 54, 54),
-                        );
                         final instanciaEnviaAdelanto = EnviaAprobacionClass();
                         final resp = await instanciaEnviaAdelanto
                             .enviaAprobacion(widget.indiceadelanto, 2);
@@ -494,6 +487,7 @@ class BotondocurState extends ConsumerState<Botondocur> {
                               color: const Color.fromARGB(255, 54, 244, 76));
                           // ignore: use_build_context_synchronously
                           Navigator.of(context).pop();
+                          ref.refresh(postMisNotificacionesdetalleProviders);
                         } else {
                           await customDialogManager.showCustomDialog(
                               icon: Icons.warning,
