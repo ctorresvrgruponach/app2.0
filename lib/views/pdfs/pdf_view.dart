@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart';
 
 import '../../libs/lib.dart';
 
@@ -45,6 +44,21 @@ class PdfViewerPageState extends State<PdfViewerPage> {
     }
   }
 
+  Future<Uint8List?> readPdfBytes(String filename) async {
+    try {
+      final dir =
+          await getApplicationDocumentsDirectory(); // Cambiar según tus necesidades
+      final file = File('${dir.path}/$filename');
+      final bytes = await file.readAsBytes();
+      return Uint8List.fromList(bytes);
+    } catch (error) {
+      if (kDebugMode) {
+        print('Error al leer el archivo PDF: $error');
+      }
+      return null;
+    }
+  }
+
   Future<void> savePdfToFile(BuildContext context) async {
     if (pdfFile == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -57,15 +71,19 @@ class PdfViewerPageState extends State<PdfViewerPage> {
     }
 
     final filename = p.basename(pdfUrl!);
-    final directory = await getApplicationDocumentsDirectory();
-    final savePath = p.join(directory.path, filename);
+    if (kDebugMode) {
+      print(filename);
+    }
 
-    await pdfFile?.copy(savePath);
+    Uint8List? bytes = await readPdfBytes(filename);
+
+    await FileSaver.instance.saveAs(
+        name: filename, ext: 'pdf', mimeType: MimeType.other, bytes: bytes);
 
     // ignore: use_build_context_synchronously
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('PDF guardado en $savePath'),
+        content: Text('PDF guardado en $filename'),
         duration: const Duration(seconds: 3),
       ),
     );

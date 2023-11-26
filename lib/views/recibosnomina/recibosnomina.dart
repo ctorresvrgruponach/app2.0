@@ -1,7 +1,3 @@
-import 'dart:io';
-
-import 'package:path_provider/path_provider.dart';
-
 import '../../libs/lib.dart';
 
 class ReciboNominaScreen extends ConsumerStatefulWidget {
@@ -363,14 +359,16 @@ class ReciboNominaScreenState extends ConsumerState<ReciboNominaScreen> {
 
   Future<void> _saveTextToFile(String textToSave, String nameDocument) async {
     try {
-      final appDocDir = await getApplicationDocumentsDirectory();
-      final file = File('${appDocDir.path}/$nameDocument');
-      await file.writeAsString(textToSave);
+      Uint8List bytes = Uint8List.fromList(utf8.encode(textToSave));
+      await FileSaver.instance.saveAs(
+          name: nameDocument,
+          ext: 'xml',
+          mimeType: MimeType.other,
+          bytes: bytes);
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(
-              'Archivo guardado con éxito ${appDocDir.path}/$nameDocument'),
+          content: Text('Archivo guardado con éxito $nameDocument'),
         ),
       );
     } catch (e) {

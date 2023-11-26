@@ -27,3 +27,5 @@ export '../../ui/botonfiles.dart';
 export 'package:flutter/services.dart';
 export 'package:animated_custom_dropdown/custom_dropdown.dart';
 export '../../api/apiservicios.dart';
+export 'package:path_provider/path_provider.dart';
+export 'package:file_saver/file_saver.dart';

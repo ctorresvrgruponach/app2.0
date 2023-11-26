@@ -108,7 +108,9 @@ class ActualizaEmpleadoScreenState
 
                       // Verificar la condición
                       if (resultadoResta < 100) {
-                        print(resultadoResta);
+                        if (kDebugMode) {
+                          print(resultadoResta);
+                        }
                       }
                     }
 
@@ -216,7 +218,7 @@ class ActualizaEmpleadoScreenState
                                           context, 'Nombre(s) *'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
-                                        height: 60,
+                                        height: 80,
                                         child: TextFormField(
                                           controller: nombret,
                                           onChanged: (value) {
@@ -238,7 +240,7 @@ class ActualizaEmpleadoScreenState
                                           context, 'Apellido Paterno'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
-                                        height: 60,
+                                        height: 80,
                                         child: TextFormField(
                                           controller: apellidoPaternot,
                                           onChanged: (value) {
@@ -268,7 +270,7 @@ class ActualizaEmpleadoScreenState
                                           context, 'Apellido Materno'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
-                                        height: 60,
+                                        height: 80,
                                         child: TextFormField(
                                           controller: apellidoMaternot,
                                           onChanged: (value) {
@@ -290,7 +292,7 @@ class ActualizaEmpleadoScreenState
                                           context, 'Folio de consulta Buro'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
-                                        height: 60,
+                                        height: 80,
                                         child: TextFormField(
                                           controller: folioConsultat,
                                           readOnly: true,
@@ -316,7 +318,7 @@ class ActualizaEmpleadoScreenState
                                       customTitulo.textot1(context, 'CURP'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
-                                        height: 70,
+                                        height: 80,
                                         child: TextFormField(
                                           controller: curpt,
                                           readOnly: true,
@@ -339,7 +341,7 @@ class ActualizaEmpleadoScreenState
                                           context, 'Código postal'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
-                                        height: 60,
+                                        height: 80,
                                         child: TextFormField(
                                           controller: direccionCpt,
                                           onChanged: (value) {
@@ -368,7 +370,7 @@ class ActualizaEmpleadoScreenState
                                       customTitulo.textot1(context, 'Calle'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
-                                        height: 70,
+                                        height: 80,
                                         child: TextFormField(
                                           controller: direccionCallet,
                                           onChanged: (value) {
@@ -390,7 +392,7 @@ class ActualizaEmpleadoScreenState
                                           context, 'Número exterior'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
-                                        height: 60,
+                                        height: 80,
                                         child: TextFormField(
                                           controller: direccionExtt,
                                           onChanged: (value) {
@@ -420,7 +422,7 @@ class ActualizaEmpleadoScreenState
                                           context, 'Número interior'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
-                                        height: 60,
+                                        height: 80,
                                         child: TextFormField(
                                           controller: direccionIntt,
                                           onChanged: (value) {
@@ -442,7 +444,7 @@ class ActualizaEmpleadoScreenState
                                           context, 'Municipio'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
-                                        height: 60,
+                                        height: 80,
                                         child: TextFormField(
                                           controller: direccionMunicipiot,
                                           onChanged: (value) {
@@ -492,7 +494,7 @@ class ActualizaEmpleadoScreenState
                                       customTitulo.textot1(context, 'Estado'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
-                                        height: 60,
+                                        height: 80,
                                         child: Column(
                                           children: [
                                             DropdownButton<
@@ -525,18 +527,6 @@ class ActualizaEmpleadoScreenState
                                                 nuevo(newValue);
                                               },
                                             ),
-                                            // TextFormField(
-                                            //   controller: direccionEstadot,
-                                            //   onChanged: (value) {
-                                            //     SharedPreferencesHelper
-                                            //         .setdatos('Estado', value);
-                                            //   },
-                                            //   style: const TextStyle(
-                                            //       color: Color.fromARGB(
-                                            //           255, 255, 255, 255)),
-                                            //   decoration: CustomInputDecoration
-                                            //       .getDecoration(),
-                                            // ),
                                           ],
                                         ),
                                       ),
@@ -556,7 +546,7 @@ class ActualizaEmpleadoScreenState
                                           context, 'Lugar de nacimiento'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
-                                        height: 60,
+                                        height: 80,
                                         child: TextFormField(
                                           controller: lugardenact,
                                           readOnly: true,
@@ -575,7 +565,7 @@ class ActualizaEmpleadoScreenState
                                           context, 'Fecha de nacimiento'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
-                                        height: 60,
+                                        height: 80,
                                         child: TextFormField(
                                           controller: fechadenact,
                                           readOnly: true,
@@ -602,7 +592,7 @@ class ActualizaEmpleadoScreenState
                                           context, 'Nacionalidad'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
-                                        height: 60,
+                                        height: 80,
                                         child: TextFormField(
                                           controller: nacionalidadt,
                                           readOnly: true,
@@ -620,7 +610,7 @@ class ActualizaEmpleadoScreenState
                                       customTitulo.textot1(context, 'Género'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
-                                        height: 60,
+                                        height: 80,
                                         child: TextFormField(
                                           controller: generot,
                                           readOnly: true,
@@ -646,7 +636,7 @@ class ActualizaEmpleadoScreenState
                                       customTitulo.textot1(context, 'Email'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
-                                        height: 70,
+                                        height: 80,
                                         child: TextFormField(
                                           controller: emailt,
                                           focusNode: emailf,
@@ -668,7 +658,7 @@ class ActualizaEmpleadoScreenState
                                       customTitulo.textot1(context, 'País'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
-                                        height: 60,
+                                        height: 80,
                                         child: TextFormField(
                                           controller: paist,
                                           readOnly: true,
@@ -694,7 +684,7 @@ class ActualizaEmpleadoScreenState
                                       customTitulo.textot1(context, 'Teléfono'),
                                       SizedBox(
                                         width: displayWidth(context) * 0.45,
-                                        height: 60,
+                                        height: 80,
                                         child: TextFormField(
                                           controller: telefonot,
                                           focusNode: telefonof,
