@@ -1,3 +1,5 @@
+import 'package:com.gruponach.nach_empleado/views/prestamos/edita_prestamo.dart';
+
 import '../api/enviaraprobacion.dart';
 import '../libs/lib.dart';
 
@@ -360,10 +362,15 @@ class BotondocupState extends ConsumerState<Botondocup> {
                       texto: 'selecciona nuevos avales',
                       onPressed: () {
                         if (kDebugMode) {
-                          print(numeroavales);
                         }
                         if (kDebugMode) {
-                          print(widget.indiceadelanto);
+                          String? idPrestamo = widget.indiceadelanto;
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>  EditaPrestamo(data:  idPrestamo,),
+                              ),
+                          );
                         }
                       },
                     ),
