@@ -30,10 +30,12 @@ const String endpointRecibosBase64 = '/descarga_recibo_nomina';
 const String endpointMisNotificaciones = '/notifica_aval';
 
 //PRESTAMOS NOMINA
-const String prestamo = '/prestamo_nomina';
-const String solicitaPrestamo = '/solicita_prestamo_nomina';
-const String calculaPrestamo = '/calcula_prestamo';
-const String confirmaPrestamo = '/guarda_prestamo';
+const String prestamo             = '/prestamo_nomina';
+const String solicitaPrestamo     = '/solicita_prestamo_nomina';
+const String calculaPrestamo      = '/calcula_prestamo';
+const String confirmaPrestamo     = '/guarda_prestamo';
+const String solicitaPrestamoEdit = '/edita_prestamo_nomina';
+
 
 List<String> myList = ['Identificación (INE)', 'INE'];
 
