@@ -42,6 +42,12 @@ String? nombrePerfilfile;
 String? nombreContratofile;
 double? catTotal = 0;
 String? cat;
+String? curpss;
+String? pais;
+String? genero;
+String? lugardenac;
+String? fechadenac;
+String? nacionalidad;
 
 class HTMLtoWidget extends StatefulWidget {
   const HTMLtoWidget({
@@ -104,6 +110,7 @@ class _HTMLtoWidgetState extends State<HTMLtoWidget> {
         nombrePerfilfile = value;
       });
     });
+
     SharedPreferencesHelper.getdatos('nombreContratofile').then((value) {
       setState(() {
         nombreContratofile = value;
@@ -119,7 +126,7 @@ class _HTMLtoWidgetState extends State<HTMLtoWidget> {
         apellidoMaterno = value;
       });
     });
-    SharedPreferencesHelper.getdatos('usuario').then((value) {
+    SharedPreferencesHelper.getdatos('empleadoId').then((value) {
       setState(() {
         noEmpleado = value;
       });
@@ -199,6 +206,20 @@ class _HTMLtoWidgetState extends State<HTMLtoWidget> {
       });
     });
 
+    SharedPreferencesHelper.getdatos('curpe').then((value) {
+      //  //print(value);
+      setState(() {
+        curpss = value;
+        Datosgenerales datosGeneraless = Datosgenerales();
+
+        pais = datosGeneraless.funcioncurppais(value);
+        genero = datosGeneraless.funcioncurpgen(value);
+        lugardenac = datosGeneraless.funcioncurpln(value);
+        fechadenac = datosGeneraless.funcioncurpfn(value);
+        nacionalidad = datosGeneraless.funcioncurpna(value);
+      });
+    });
+
     SharedPreferencesHelper.getdatos('direccionMunicipio').then((value) {
       //  //print(value);
       setState(() {
@@ -258,6 +279,11 @@ class _HTMLtoWidgetState extends State<HTMLtoWidget> {
         montoPrestamo: montoPrestamo.toString(),
         totalPago: totalPago.toString(),
         nombre: nombre.toString(),
+        fechadenac: fechadenac.toString(),
+        nacionalidad: nacionalidad.toString(),
+        pais: pais.toString(),
+        genero: genero.toString(),
+        lugardenac: lugardenac.toString(),
         apellidoPaterno: apellidoPaterno.toString(),
         apellidoMaterno: apellidoMaterno.toString(),
         fechaactualdocumentos: formatter.toString(),
@@ -270,10 +296,14 @@ class _HTMLtoWidgetState extends State<HTMLtoWidget> {
         direccionCp: direccionCp.toString(),
         direccionMunicipio: direccionMunicipio.toString(),
         estado: estado.toString(),
+        curps: curpss.toString(),
         rfcEmpleado: rfcEmpleado.toString(),
         email: email.toString(),
         telefono: telefono.toString(),
         noEmpleado: noEmpleado.toString(),
+        dia: dia.toString(),
+        mes: mes.toString(),
+        ano: ano.toString(),
         montoLetra: '',
         montoPrestamoletra: '',
         comisionSinIva: double.parse(comision!).toStringAsFixed(2).toString(),
@@ -304,11 +334,13 @@ class Documentos extends StatefulWidget {
     required this.nombre,
     required this.apellidoPaterno,
     required this.apellidoMaterno,
+    required this.dia,
     required this.fechaactualdocumentos,
     required this.fechalimitedocumentos,
     required this.fechaVencimiento,
     required this.direccionCalle,
     required this.direccionInt,
+    required this.curps,
     required this.direccionExt,
     required this.direccionColonia,
     required this.direccionCp,
@@ -323,6 +355,13 @@ class Documentos extends StatefulWidget {
     required this.montotransacciones,
     required this.folioburo,
     required this.catTotal1,
+    required this.pais,
+    required this.genero,
+    required this.lugardenac,
+    required this.fechadenac,
+    required this.nacionalidad,
+    required this.mes,
+    required this.ano,
   });
   final String montoPrestamo;
   final String montoPrestamoletra;
@@ -333,6 +372,10 @@ class Documentos extends StatefulWidget {
   final String salario;
   final String totalPago;
   final String nombre;
+  final String dia;
+  final String mes;
+  final String ano;
+  final String curps;
   final String apellidoPaterno;
   final String apellidoMaterno;
   final String fechaactualdocumentos;
@@ -354,6 +397,11 @@ class Documentos extends StatefulWidget {
   final String montotransacciones;
   final String folioburo;
   final String catTotal1;
+  final String? pais;
+  final String? genero;
+  final String? lugardenac;
+  final String? fechadenac;
+  final String? nacionalidad;
 
   @override
   State<Documentos> createState() => _DocumentosState();
@@ -578,7 +626,7 @@ class _DocumentosState extends State<Documentos> {
 			<span style="font-size:9px"><strong>T&Oacute;TEM PR&Eacute;STAMOS&rdquo;, S.A. DE C.V. SOCIEDAD FINANCIERA DE OBJETO M&Uacute;LTIPLE NO REGULADA&nbsp;<br />
 			REPRESENTADA POR EL<br />
 			LIC. ABELARDO SEBASTIAN ROMERO RUANO</strong></span></td>
-			<td style="text-align:center; vertical-align:top; width:212px">________________________________________ <span style="font-size:9px">&nbsp;<strong>NOMBRE COMPLETO</strong></span></td>
+			<td style="text-align:center; vertical-align:top; width:212px">________________________________________ <span style="font-size:9px">&nbsp;<strong>${widget.nombre} ${widget.apellidoPaterno} ${widget.apellidoMaterno}</strong></span></td>
 		</tr>
 	</tbody>
 </table>
@@ -757,7 +805,7 @@ class _DocumentosState extends State<Documentos> {
 <table style="width:478px">
 	<tbody>
 		<tr>
-			<td style="text-align:justify; width:466px"><span style="font-size:10px"><strong>CONTRATO DE APERTURA DE CR&Eacute;DITO SIMPLE DENOMINADO T&Oacute;TEM PERSONAL</strong>, que celebran de una parte la Sociedad Mercantil denominada <strong>&ldquo;T&Oacute;TEM PR&Eacute;STAMOS&rdquo;, SOCIEDAD AN&Oacute;NIMA DE CAPITAL VARIABLE, SOCIEDAD FINANCIERA DE OBJETO M&Uacute;LTIPLE, ENTIDAD NO REGULADA</strong>, a quien en lo sucesivo se le denominar&aacute; como &ldquo;LA PARTE ACREDITANTE&rdquo;, representada en este acto por el Lic. Abelardo Sebasti&aacute;n Romero Ruano, en su car&aacute;cter de Representante Legal, como se acredita en la escritura p&uacute;blica n&uacute;mero 3823 de fecha 29 de agosto de 2022, Poder otorgado ante la Fe P&uacute;blica de la licenciada Luz Mar&iacute;a Angelica Alatorre Carbajal, Notario P&uacute;blico n&uacute;mero 186 del Estado de M&eacute;xico, con residencia en la Ciudad de Atizap&aacute;n de Zaragoza, por otra parte __________________________________________________________________, a quien en lo sucesivo se le denominara <strong>&ldquo;LA PARTE ACREDITADA&rdquo;</strong>, de conformidad con las siguientes declaraciones y cl&aacute;usulas:</span></td>
+			<td style="text-align:justify; width:466px"><span style="font-size:10px"><strong>CONTRATO DE APERTURA DE CR&Eacute;DITO SIMPLE DENOMINADO T&Oacute;TEM PERSONAL</strong>, que celebran de una parte la Sociedad Mercantil denominada <strong>&ldquo;T&Oacute;TEM PR&Eacute;STAMOS&rdquo;, SOCIEDAD AN&Oacute;NIMA DE CAPITAL VARIABLE, SOCIEDAD FINANCIERA DE OBJETO M&Uacute;LTIPLE, ENTIDAD NO REGULADA</strong>, a quien en lo sucesivo se le denominar&aacute; como &ldquo;LA PARTE ACREDITANTE&rdquo;, representada en este acto por el Lic. Abelardo Sebasti&aacute;n Romero Ruano, en su car&aacute;cter de Representante Legal, como se acredita en la escritura p&uacute;blica n&uacute;mero 3823 de fecha 29 de agosto de 2022, Poder otorgado ante la Fe P&uacute;blica de la licenciada Luz Mar&iacute;a Angelica Alatorre Carbajal, Notario P&uacute;blico n&uacute;mero 186 del Estado de M&eacute;xico, con residencia en la Ciudad de Atizap&aacute;n de Zaragoza, por otra parte ${widget.nombre} ${widget.apellidoPaterno} ${widget.apellidoMaterno}, a quien en lo sucesivo se le denominara <strong>&ldquo;LA PARTE ACREDITADA&rdquo;</strong>, de conformidad con las siguientes declaraciones y cl&aacute;usulas:</span></td>
 		</tr>
 	</tbody>
 </table>
@@ -810,7 +858,7 @@ class _DocumentosState extends State<Documentos> {
 	<tbody>
 		<tr>
 			<td style="text-align:justify; width:480px"><span style="font-size:10px"><strong>SEGUNDA</strong>. - <strong>De &ldquo;LA PARTE ACREDITADA&rdquo;</strong> bajo protesta de decir verdad:<br />
-			<strong>I.- </strong>Ser mexicano, mayor de edad, con capacidad legal suficiente para celebrar el presente contrato, oblig&aacute;ndose consecuentemente a los t&eacute;rminos de este y que tiene como domicilio el siguiente__________________________________________________ y su correo electr&oacute;nico es ________________________.<br />
+			<strong>I.- </strong>Ser mexicano, mayor de edad, con capacidad legal suficiente para celebrar el presente contrato, oblig&aacute;ndose consecuentemente a los t&eacute;rminos de este y que tiene como domicilio el siguiente ${widget.direccionCalle} ${widget.direccionColonia} ${widget.direccionExt} ${widget.direccionInt} ${widget.direccionMunicipio} ${widget.direccionCp} y su correo electr&oacute;nico es _${widget.email}.<br />
 			<strong>II.- </strong>Que reconoce la personalidad con la que<strong> &ldquo;LA PARTE ACREDITANTE&rdquo;</strong> comparece a la celebraci&oacute;n del presente acto;<br />
 			<strong>III.- </strong>Que ha solicitado por <strong>&ldquo;LA PARTE ACREDITANTE&rdquo;</strong> el otorgamiento de un cr&eacute;dito de n&oacute;mina en moneda nacional, en su favor el cual tendr&aacute; un manejo individual.<br />
 			<strong>IV.- </strong>Que cuenta con la capacidad econ&oacute;mica para hacer frente a las obligaciones que adquiere por medio del presente contrato.<br />
@@ -925,7 +973,7 @@ class _DocumentosState extends State<Documentos> {
 <table style="width:515px">
 	<tbody>
 		<tr>
-			<td style="text-align:justify; width:505px"><span style="font-size:10px"><strong>S&Eacute;PTIMA. -<u>COSTO ANUAL TOTAL O &ldquo;CAT&rdquo;</u></strong>. - Se entender&aacute; por &ldquo;CAT&rdquo; El Costo Anual Total de financiamiento expresado en t&eacute;rminos porcentuales anuales que, para fines informativos y de comparaci&oacute;n, incorpora la totalidad de los costos y gastos inherentes a los cr&eacute;ditos que otorgan las Instituciones, el cual deber&aacute; ser calculado de acuerdo con los componentes y metodolog&iacute;a previstos en las circulares correspondientes de Banco de M&eacute;xico, y sus modificaciones si las hubiere. En cumplimiento a lo anterior se da a conocer el &ldquo;<strong>CAT</strong>&rdquo; (Costo Anual Total) de este financiamiento &ldquo;para fines informativos y de comparaci&oacute;n exclusivamente&rdquo;, el cual, en t&eacute;rminos de lo establecido en este contrato, ser&aacute; del _____% (______ por ciento).</span></td>
+			<td style="text-align:justify; width:505px"><span style="font-size:10px"><strong>S&Eacute;PTIMA. -<u>COSTO ANUAL TOTAL O &ldquo;CAT&rdquo;</u></strong>. - Se entender&aacute; por &ldquo;CAT&rdquo; El Costo Anual Total de financiamiento expresado en t&eacute;rminos porcentuales anuales que, para fines informativos y de comparaci&oacute;n, incorpora la totalidad de los costos y gastos inherentes a los cr&eacute;ditos que otorgan las Instituciones, el cual deber&aacute; ser calculado de acuerdo con los componentes y metodolog&iacute;a previstos en las circulares correspondientes de Banco de M&eacute;xico, y sus modificaciones si las hubiere. En cumplimiento a lo anterior se da a conocer el &ldquo;<strong>CAT</strong>&rdquo; (Costo Anual Total) de este financiamiento &ldquo;para fines informativos y de comparaci&oacute;n exclusivamente&rdquo;, el cual, en t&eacute;rminos de lo establecido en este contrato, ser&aacute; del ${widget.catTotal1}% (______ por ciento).</span></td>
 		</tr>
 	</tbody>
 </table>
@@ -1033,7 +1081,7 @@ class _DocumentosState extends State<Documentos> {
 <table style="width:527.333px">
 	<tbody>
 		<tr>
-			<td style="text-align:justify; width:517px"><span style="font-size:10px"><strong>D&Eacute;CIMA TERCERA. - <u>VIGENCIA. </u>&ldquo;LA PARTE ACREDITADA</strong>&rdquo; se obliga a pagar a <strong>&ldquo;LA PARTE ACREDITANTE&rdquo;</strong> el importe del cr&eacute;dito, sus intereses, accesorios y dem&aacute;s consecuencias a su cargo en un plazo ___________ contado a partir de la fecha de firma de este Instrumento. Sin embargo, este instrumento mantendr&aacute; su vigencia, respecto de las obligaciones a cargo de<strong> &ldquo;LA PARTE ACREDITADA&rdquo;</strong> hasta que &eacute;sta liquide totalmente las cantidades ya sean por capital, intereses o cualquier otro accesorio que resulten a su cargo derivadas de este contrato, el cual no ser&aacute; prorrogable.</span></td>
+			<td style="text-align:justify; width:517px"><span style="font-size:10px"><strong>D&Eacute;CIMA TERCERA. - <u>VIGENCIA. </u>&ldquo;LA PARTE ACREDITADA</strong>&rdquo; se obliga a pagar a <strong>&ldquo;LA PARTE ACREDITANTE&rdquo;</strong> el importe del cr&eacute;dito, sus intereses, accesorios y dem&aacute;s consecuencias a su cargo en un plazo 1 contado a partir de la fecha de firma de este Instrumento. Sin embargo, este instrumento mantendr&aacute; su vigencia, respecto de las obligaciones a cargo de<strong> &ldquo;LA PARTE ACREDITADA&rdquo;</strong> hasta que &eacute;sta liquide totalmente las cantidades ya sean por capital, intereses o cualquier otro accesorio que resulten a su cargo derivadas de este contrato, el cual no ser&aacute; prorrogable.</span></td>
 		</tr>
 	</tbody>
 </table>
@@ -1085,7 +1133,7 @@ class _DocumentosState extends State<Documentos> {
 <table style="width:520px">
 	<tbody>
 		<tr>
-			<td style="text-align:justify; width:449px"><span style="font-size:10px"><strong>&ldquo;LA PARTE ACREDITANTE&rdquo;</strong>: Av. Adolfo Ru&iacute;z Cortines Edif. Torre 2, PB, Mz. 1, Lt. 26, Oficina 118, Lomas de Atizap&aacute;n 2da Secc. Atizap&aacute;n de Zaragoza, Estado de M&eacute;xico, C.P. 52977. <strong>&ldquo;LA PARTE ACREDITADA&rdquo;: ________________________________________________________________________________.</strong><br />
+			<td style="text-align:justify; width:449px"><span style="font-size:10px"><strong>&ldquo;LA PARTE ACREDITANTE&rdquo;</strong>: Av. Adolfo Ru&iacute;z Cortines Edif. Torre 2, PB, Mz. 1, Lt. 26, Oficina 118, Lomas de Atizap&aacute;n 2da Secc. Atizap&aacute;n de Zaragoza, Estado de M&eacute;xico, C.P. 52977. <strong>&ldquo;LA PARTE ACREDITADA&rdquo;: ${widget.nombre} ${widget.apellidoPaterno} ${widget.apellidoMaterno}.</strong><br />
 			Cualquier cambio de domicilio deber&aacute; ser comunicado a <strong>&quot;LA PARTE ACREDITANTE&quot;</strong> por escrito, mediante carta certificada con acuse de recibo dentro de los tres, d&iacute;as siguientes a la fecha en que tenga lugar dicho cambio.</span></td>
 		</tr>
 	</tbody>
@@ -1121,7 +1169,7 @@ class _DocumentosState extends State<Documentos> {
 	<tbody>
 		<tr>
 			<td style="text-align:justify; width:518px"><span style="font-size:10px"><strong>DECIMA NOVENA.</strong>- <strong><u>ESTADOS DE CUENTA</u></strong>. - &ldquo;<strong>LA PARTE ACREDITANTE</strong>&rdquo; enviar&aacute; al domicilio mencionado en la cl&aacute;usula DECIMASEXTA a <strong>&ldquo;LA PARTE ACREDITADA&rdquo;</strong> un estado de cuenta sin que esto cause ning&uacute;n costo adicional, con la finalidad de enterarse de manera oportuna de la informaci&oacute;n referente al cr&eacute;dito. Dicho estado de cuenta se enviar&aacute; dentro de los cinco d&iacute;as h&aacute;biles posteriores al &uacute;ltimo corte o pago del cr&eacute;dito correspondiente.<strong> &ldquo;LA PARTE ACREDITANTE&rdquo;</strong> tendr&aacute; un periodo de 90 d&iacute;as naturales para objetar el contenido del estado de cuenta, enviando un correo electr&oacute;nico explicando el motivo de la inconformidad o aclaraci&oacute;n al correo <u><span style="color:#0000ff">administracion@totemprestamos.mx</span></u>, donde le proporcionar&aacute;n respuesta a su aclaraci&oacute;n en un plazo no mayor a 15 d&iacute;as h&aacute;biles, por el mismo medio.<br />
-			<strong>&ldquo;LA PARTE ACREDITANTE&rdquo; </strong>pone a disposici&oacute;n de <strong>&ldquo;LA PARTE ACREDITADA&rdquo;</strong> el env&iacute;o de dicho estado de cuenta a su correo electr&oacute;nico, si as&iacute; lo desea <strong>&ldquo;LA PARTE ACREDITADA&rdquo;</strong> puede solicitar se sustituya el env&iacute;o de su estado de cuenta f&iacute;sico por el env&iacute;o de un estado de cuenta digital, mencionando su correo electr&oacute;nico y aceptando dicha sustituci&oacute;n de env&iacute;o. Acepto me env&iacute;en mi estado de cuenta al correo electr&oacute;nico _________________________</span></td>
+			<strong>&ldquo;LA PARTE ACREDITANTE&rdquo; </strong>pone a disposici&oacute;n de <strong>&ldquo;LA PARTE ACREDITADA&rdquo;</strong> el env&iacute;o de dicho estado de cuenta a su correo electr&oacute;nico, si as&iacute; lo desea <strong>&ldquo;LA PARTE ACREDITADA&rdquo;</strong> puede solicitar se sustituya el env&iacute;o de su estado de cuenta f&iacute;sico por el env&iacute;o de un estado de cuenta digital, mencionando su correo electr&oacute;nico y aceptando dicha sustituci&oacute;n de env&iacute;o. Acepto me env&iacute;en mi estado de cuenta al correo electr&oacute;nico ${widget.email}</span></td>
 		</tr>
 	</tbody>
 </table>
@@ -1179,7 +1227,7 @@ class _DocumentosState extends State<Documentos> {
 <table style="width:530.333px">
 	<tbody>
 		<tr>
-			<td style="text-align:justify; width:520.328px"><strong><span style="font-size:10px">ENTERADAS LAS PARTES DEL CONTENIDO Y FUERZA LEGAL DE LAS CL&Aacute;USULAS DEL PRESENTE CONTRATO DE CR&Eacute;DITO, LO FIRMAN DE CONFORMIDAD EN 5 HOJAS &Uacute;TILES Y EN DOS EJEMPLARES, EN LA CIUDAD DE M&Eacute;XICO. A LOS ___ D&Iacute;AS DEL MES DE ____DE 20__, QUEDANDO UN EJEMPLAR Y LOS ANEXOS RESPECTIVOS EN PODER DE &ldquo;LA PARTE ACREDITADA&rdquo;</span></strong></td>
+			<td style="text-align:justify; width:520.328px"><strong><span style="font-size:10px">ENTERADAS LAS PARTES DEL CONTENIDO Y FUERZA LEGAL DE LAS CL&Aacute;USULAS DEL PRESENTE CONTRATO DE CR&Eacute;DITO, LO FIRMAN DE CONFORMIDAD EN 5 HOJAS &Uacute;TILES Y EN DOS EJEMPLARES, EN LA CIUDAD DE M&Eacute;XICO. A LOS ${widget.dia} D&Iacute;AS DEL MES DE ${widget.mes} DE ${widget.ano}, QUEDANDO UN EJEMPLAR Y LOS ANEXOS RESPECTIVOS EN PODER DE &ldquo;LA PARTE ACREDITADA&rdquo;</span></strong></td>
 		</tr>
 	</tbody>
 </table>
@@ -1207,7 +1255,7 @@ class _DocumentosState extends State<Documentos> {
 			</td>
 			<td style="text-align:center; vertical-align:top; width:258px">
 			<p>_____________________________</p>
-			<span style="font-size:8px"><strong>(NOMBRE DEL ACREDITADO)</strong></span></td>
+			<span style="font-size:8px"><strong>${widget.nombre} ${widget.apellidoPaterno} ${widget.apellidoMaterno}</strong></span></td>
 		</tr>
 	</tbody>
 </table>
@@ -1251,11 +1299,11 @@ class _DocumentosState extends State<Documentos> {
 			<td style="width:464.5px">&nbsp;</td>
 		</tr>
 		<tr>
-			<td style="width:264.5px"><span style="font-size:11px"><strong>Fecha de nacimiento:</strong></span></td>
+			<td style="width:264.5px"><span style="font-size:11px"><strong>Fecha de nacimiento:${widget.fechadenac}</strong></span></td>
 			<td style="width:264.5px">&nbsp;</td>
 		</tr>
 		<tr>
-			<td style="width:264.5px"><span style="font-size:11px"><strong>Nacionalidad:</strong></span></td>
+			<td style="width:264.5px"><span style="font-size:11px"><strong>Nacionalidad:${widget.nacionalidad}</strong></span></td>
 			<td style="width:264.5px">&nbsp;</td>
 		</tr>
 		<tr>
@@ -1267,19 +1315,19 @@ class _DocumentosState extends State<Documentos> {
 			<td style="width:264.5px">&nbsp;</td>
 		</tr>
 		<tr>
-			<td style="width:264.5px"><span style="font-size:11px"><strong>CURP:</strong></span></td>
+			<td style="width:264.5px"><span style="font-size:11px"><strong>CURP:${widget.curps}</strong></span></td>
 			<td style="width:264.5px">&nbsp;</td>
 		</tr>
 		<tr>
-			<td style="width:264.5px"><span style="font-size:11px"><strong>Genero:</strong></span></td>
+			<td style="width:264.5px"><span style="font-size:11px"><strong>Genero:${widget.genero}</strong></span></td>
 			<td style="width:264.5px">&nbsp;</td>
 		</tr>
 		<tr>
-			<td style="width:264.5px"><span style="font-size:11px"><strong>Entidad federativa de nacimiento:</strong></span></td>
+			<td style="width:264.5px"><span style="font-size:11px"><strong>Entidad federativa de nacimiento:${widget.lugardenac}</strong></span></td>
 			<td style="width:264.5px">&nbsp;</td>
 		</tr>
 		<tr>
-			<td style="width:264.5px"><span style="font-size:11px"><strong>Pa&iacute;s de Nacimiento:</strong></span></td>
+			<td style="width:264.5px"><span style="font-size:11px"><strong>Pa&iacute;s de Nacimiento:${widget.pais}</strong></span></td>
 			<td style="width:264.5px">&nbsp;</td>
 		</tr>
 		<tr>
@@ -1291,7 +1339,7 @@ class _DocumentosState extends State<Documentos> {
 			<td style="width:264.5px">&nbsp;</td>
 		</tr>
 		<tr>
-			<td style="width:264.5px"><span style="font-size:11px"><strong>RFC con homoclave:</strong></span></td>
+			<td style="width:264.5px"><span style="font-size:11px"><strong>RFC con homoclave:${widget.rfcEmpleado}</strong></span></td>
 			<td style="width:264.5px">&nbsp;</td>
 		</tr>
 		<tr>
@@ -1626,7 +1674,7 @@ class _DocumentosState extends State<Documentos> {
 
 <table style="height:5px; width:544.333px">
 	<tbody>
-		<tr>  ${widget.direccionExt}, , , , C.P. 
+		<tr>  
 			<td style="width:186px"><span style="font-size:10px">Calle:____${widget.direccionCalle}____</span></td>
 			<td style="width:192px"><span style="font-size:10px">Colonia:____${widget.direccionColonia}_____</span></td>
 		</tr>

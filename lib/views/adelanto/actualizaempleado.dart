@@ -139,6 +139,8 @@ class ActualizaEmpleadoScreenState
                         .funcioncurppais(operaciones['curp'].toString());
                     generot.text = datosGenerales
                         .funcioncurpgen(operaciones['curp'].toString());
+                    SharedPreferencesHelper.setdatos('salarioMensual',
+                        operaciones['salario_mensual'].toString());
                     lugardenact.text = datosGenerales
                         .funcioncurpln(operaciones['curp'].toString());
                     fechadenact.text = datosGenerales
@@ -173,7 +175,7 @@ class ActualizaEmpleadoScreenState
                         'telefono', telefonot.text);
                     SharedPreferencesHelper.setdatos('email', emailt.text);
                     SharedPreferencesHelper.setdatos(
-                        'rfc', operaciones['RFC'].toString());
+                        'rfc', operaciones['rfc'].toString());
                     List<dynamic> estadosList = snapshot.data!['estados'] ?? [];
 
                     // Convierte la lista a una lista de cadenas (String)
