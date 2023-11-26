@@ -68,7 +68,6 @@ class ValoresPedirAdelantoScreenState
 
   TextEditingController telefonot = TextEditingController();
   TextEditingController emailt = TextEditingController();
-  Map<String, String> someMap = {};
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +110,6 @@ class ValoresPedirAdelantoScreenState
                     }
                     SharedPreferencesHelper.setdatos(
                         "periodosPagos", periodosPagos);
-                    final customDialogManager = CustomDialogManager(context);
 
                     return Card(
                       child: Container(
@@ -183,8 +181,6 @@ class ValoresPedirAdelantoScreenState
                                 onChanged: readmonto
                                     ? null
                                     : (double value) {
-                                        SharedPreferencesHelper.setdatos(
-                                            "montoapedir", monto.text);
                                         setState(() {
                                           _currentSliderValue = value;
                                           monto.text = _currentSliderValue
@@ -218,6 +214,11 @@ class ValoresPedirAdelantoScreenState
                                           SharedPreferencesHelper.setdatos(
                                               "totaldescontar",
                                               tdescontar.text);
+                                          if (kDebugMode) {
+                                            print(montototal);
+                                          }
+                                          SharedPreferencesHelper.setdatos(
+                                              "montoapedir", monto.text);
                                         });
                                       },
                               ),
@@ -235,15 +236,13 @@ class ValoresPedirAdelantoScreenState
                                   ),
                                 ],
                                 onChanged: (value) {
-                                  SharedPreferencesHelper.setdatos(
-                                      "montoapedir", monto.text);
                                   try {
                                     double montoDouble =
                                         double.parse(monto.text);
-                                    if (montoDouble > 100) {
+                                    if (montoDouble >= 100) {
                                       setState(() {
                                         if (monto.text != '') {
-                                          if (double.parse(monto.text) <
+                                          if (double.parse(monto.text) <=
                                               montomaximo) {
                                             _currentSliderValue =
                                                 double.parse(monto.text);
@@ -270,6 +269,11 @@ class ValoresPedirAdelantoScreenState
                                                     .toString();
                                             SharedPreferencesHelper.setdatos(
                                                 "comision", comisiontotal);
+                                            if (kDebugMode) {
+                                              print(monto.text);
+                                            }
+                                            SharedPreferencesHelper.setdatos(
+                                                "montoapedir", monto.text);
                                           } else {
                                             _currentSliderValue = montomaximo;
                                             monto.text = '$montomaximo';
@@ -297,6 +301,11 @@ class ValoresPedirAdelantoScreenState
                                             SharedPreferencesHelper.setdatos(
                                                 "totaldescontar",
                                                 tdescontar.text);
+                                            if (kDebugMode) {
+                                              print(monto.text);
+                                            }
+                                            SharedPreferencesHelper.setdatos(
+                                                "montoapedir", monto.text);
                                           }
                                         }
                                       });
@@ -516,6 +525,8 @@ class ValoresPedirAdelantoScreenState
                                           ? null
                                           : () async {
                                               setState(() {
+                                                someMap['Aceptar Adelanto'] =
+                                                    'Aceptar Adelanto';
                                                 btnsolicitaPrestamo = true;
                                               });
                                               final instanciaEnviaAdelanto =
@@ -523,20 +534,36 @@ class ValoresPedirAdelantoScreenState
                                               final resultado =
                                                   await instanciaEnviaAdelanto
                                                       .enviaadelanto();
-                                              setState(() {
-                                                someMap.clear();
-                                              });
-                                              setState(() {
-                                                btnsolicitaPrestamo = false;
-                                              });
-                                              await customDialogManager
-                                                  .showCustomDialog(
-                                                icon: Icons.airlines_rounded,
-                                                message: resultado['mensaje'],
-                                                title: resultado['mensaje'],
-                                                color: const Color.fromARGB(
-                                                    255, 244, 54, 54),
-                                              );
+                                              if (resultado['success']) {
+                                                if (kDebugMode) {
+                                                  print(resultado);
+                                                }
+                                                final customDialogManager =
+                                                    // ignore: use_build_context_synchronously
+                                                    CustomDialogManager(
+                                                        context);
+                                                List<dynamic> argumentos = [];
+                                                final navegador =
+                                                    // ignore: use_build_context_synchronously
+                                                    NavegadorDeRuta(
+                                                        context, argumentos);
+                                                await navegador
+                                                    .algunlugar('home');
+                                                setState(() {
+                                                  someMap.clear();
+                                                });
+                                                setState(() {
+                                                  btnsolicitaPrestamo = false;
+                                                });
+                                                await customDialogManager
+                                                    .showCustomDialog(
+                                                  icon: Icons.airlines_rounded,
+                                                  message: resultado['mensaje'],
+                                                  title: resultado['mensaje'],
+                                                  color: const Color.fromARGB(
+                                                      255, 244, 54, 54),
+                                                );
+                                              }
                                             },
                                     ),
                                   ],
@@ -566,6 +593,19 @@ class ValoresPedirAdelantoScreenState
           selectedIndex: 1,
         ),
       ),
+    );
+  }
+
+  alerta() async {
+    final customDialogManager =
+        // ignore: use_build_context_synchronously
+        CustomDialogManager(context);
+
+    await customDialogManager.showCustomDialog(
+      icon: Icons.airlines_rounded,
+      message: 'descuentos',
+      title: 'des',
+      color: const Color.fromARGB(255, 244, 54, 54),
     );
   }
 }

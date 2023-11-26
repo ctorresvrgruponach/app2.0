@@ -36,3 +36,5 @@ const String calculaPrestamo = '/calcula_prestamo';
 const String confirmaPrestamo = '/guarda_prestamo';
 
 List<String> myList = ['Identificación (INE)', 'INE'];
+
+Map<String, String> someMap = {};

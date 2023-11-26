@@ -50,7 +50,6 @@ class ActualizaEmpleadoScreenState
   TextEditingController paist = TextEditingController();
   TextEditingController telefonot = TextEditingController();
   TextEditingController emailt = TextEditingController();
-  Map<String, String> someMap = {};
 
   @override
   Widget build(BuildContext context) {
@@ -67,11 +66,13 @@ class ActualizaEmpleadoScreenState
     //InputDecoration decoration = CustomInputDecoration.getDecoration();
     CustomTitulo customTitulo = CustomTitulo();
     PdfGenerator pdfGenerator = PdfGenerator(context);
+    double resultadoResta = 0.0;
 
     // var datos = getdatos();
     telefonof = FocusNode();
     emailf = FocusNode();
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 5, 50, 91),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Column(
@@ -89,6 +90,27 @@ class ActualizaEmpleadoScreenState
                     final folioConsulta = snapshot.data!['folio_consulta'];
 
                     // final estados = snapshot.data!['estados'];
+                    final prestamosAnteriores =
+                        operaciones['prestamosAnteriores'];
+                    final montoRealPrestamo =
+                        operaciones['monto_real_prestamo'];
+
+                    double? prestamosAnterioresNumero =
+                        double.tryParse(prestamosAnteriores?.toString() ?? '');
+                    double? montoRealPrestamoNumero =
+                        double.tryParse(montoRealPrestamo?.toString() ?? '');
+
+                    if (prestamosAnterioresNumero != null &&
+                        montoRealPrestamoNumero != null) {
+                      // Realizar la resta
+                      resultadoResta =
+                          montoRealPrestamoNumero - prestamosAnterioresNumero;
+
+                      // Verificar la condición
+                      if (resultadoResta < 100) {
+                        print(resultadoResta);
+                      }
+                    }
 
                     nombret.text = snapshot.data!['nombres'].toString();
                     apellidoMaternot.text =
@@ -166,6 +188,10 @@ class ActualizaEmpleadoScreenState
                         // width: displayWidth(context),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.only(
+                            topLeft:
+                                Radius.circular(displayWidth(context) * 0.1),
+                            topRight:
+                                Radius.circular(displayWidth(context) * 0.1),
                             bottomRight:
                                 Radius.circular(displayWidth(context) * 0.1),
                             bottomLeft:
@@ -496,41 +522,7 @@ class ActualizaEmpleadoScreenState
                                                   .toList(),
                                               onChanged: (newValue) {
                                                 // Manejar el cambio de valor aquí
-                                                if (newValue != null) {
-                                                  setState(() {
-                                                    int? idEstado =
-                                                        int.tryParse(newValue[
-                                                                'id_estado']
-                                                            .toString());
-                                                    selectedEstado =
-                                                        (idEstado! - 1);
-                                                  });
-                                                  SharedPreferencesHelper.setdatos(
-                                                      'id_estado',
-                                                      "${newValue['id_estado']}");
-                                                  SharedPreferencesHelper.setdatos(
-                                                      'direccionEstado',
-                                                      newValue[
-                                                          'direccion_estado']);
-                                                  SharedPreferencesHelper
-                                                      .setdatos(
-                                                          'claveEstado',
-                                                          newValue[
-                                                              'clave_estado']);
-
-                                                  if (kDebugMode) {
-                                                    print(
-                                                        'Seleccionaste el estado con id: ${newValue['id_estado']}');
-                                                  }
-                                                  if (kDebugMode) {
-                                                    print(
-                                                        'Dirección del estado: ${newValue['direccion_estado']}');
-                                                  }
-                                                  if (kDebugMode) {
-                                                    print(
-                                                        'Clave del estado: ${newValue['clave_estado']}');
-                                                  }
-                                                }
+                                                nuevo(newValue);
                                               },
                                             ),
                                             // TextFormField(
@@ -756,8 +748,6 @@ class ActualizaEmpleadoScreenState
                                               final resulta =
                                                   pdfGenerator.generatePdf();
                                               if (await resulta) {
-                                                // await navegador
-                                                //     .algunlugar(argumento1);
                                                 final enviaDatosEmpleado =
                                                     EnviaDatosEmpleadoClass();
                                                 final resultado =
@@ -779,13 +769,31 @@ class ActualizaEmpleadoScreenState
 
                                                 if (resultado.isNotEmpty) {
                                                   // ignore: use_build_context_synchronously
-                                                  Navigator
-                                                      .pushNamedAndRemoveUntil(
-                                                          context,
-                                                          'valores_pedir_adelanto',
-                                                          (route) => false);
-                                                  await navegador
-                                                      .algunlugar(argumento1);
+                                                  final customDialogManager =
+                                                      // ignore: use_build_context_synchronously
+                                                      CustomDialogManager(
+                                                          context);
+                                                  if (resultadoResta < 100 &&
+                                                      argumento1 ==
+                                                          'valores_pedir_adelanto') {
+                                                    await customDialogManager
+                                                        .showCustomDialog(
+                                                      icon: Icons
+                                                          .airlines_rounded,
+                                                      message:
+                                                          'La suma de tus adelantos supera el disponible para solicitar',
+                                                      title:
+                                                          'La suma de tus adelantos supera el disponible para solicitar',
+                                                      color:
+                                                          const Color.fromARGB(
+                                                              255, 244, 54, 54),
+                                                    );
+                                                    await navegador
+                                                        .algunlugar('home');
+                                                  } else {
+                                                    await navegador
+                                                        .algunlugar(argumento1);
+                                                  }
                                                 }
 
                                                 // // print(resultado['success']);
@@ -840,6 +848,33 @@ class ActualizaEmpleadoScreenState
         selectedIndex: 1,
       ),
     );
+  }
+
+  void nuevo(Map<String, dynamic>? newValue) {
+    if (newValue != null) {
+      setState(() {
+        actualiza(newValue);
+      });
+      SharedPreferencesHelper.setdatos('id_estado', "${newValue['id_estado']}");
+      SharedPreferencesHelper.setdatos(
+          'direccionEstado', newValue['direccion_estado']);
+      SharedPreferencesHelper.setdatos('claveEstado', newValue['clave_estado']);
+
+      if (kDebugMode) {
+        print('Seleccionaste el estado con id: ${newValue['id_estado']}');
+      }
+      if (kDebugMode) {
+        print('Dirección del estado: ${newValue['direccion_estado']}');
+      }
+      if (kDebugMode) {
+        print('Clave del estado: ${newValue['clave_estado']}');
+      }
+    }
+  }
+
+  void actualiza(Map<String, dynamic> newValue) {
+    int? idEstado = int.tryParse(newValue['id_estado'].toString());
+    selectedEstado = (idEstado! - 1);
   }
 }
 

@@ -10,7 +10,7 @@ import '../config/htmls.dart';
 
 bool hayDatos = true;
 bool filterColor = true;
-Map someMap = {};
+
 var lados = 0;
 String base64Stringfrente = '';
 final imageProvider = StateNotifierProvider<ImageNotifier, File?>((ref) {

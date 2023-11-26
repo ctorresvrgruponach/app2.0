@@ -1,5 +1,7 @@
 import '../../libs/lib.dart';
 
+bool colorenv = false;
+
 class IdOperacionNotifier extends StateNotifier<String> {
   IdOperacionNotifier() : super('');
 
@@ -124,9 +126,13 @@ class AdelantoScreenState extends ConsumerState<AdelantoScreen> {
                                                       style: ElevatedButton
                                                           .styleFrom(
                                                         backgroundColor:
-                                                            const Color
-                                                                .fromARGB(
-                                                                255, 5, 50, 91),
+                                                            Color.fromARGB(
+                                                                colorenv
+                                                                    ? 50
+                                                                    : 255,
+                                                                5,
+                                                                50,
+                                                                91),
                                                         shape:
                                                             RoundedRectangleBorder(
                                                           borderRadius:
@@ -141,6 +147,9 @@ class AdelantoScreenState extends ConsumerState<AdelantoScreen> {
                                                           print(
                                                               'MANDA NUEVA VISTA');
                                                         }
+                                                        setState(() {
+                                                          colorenv = true;
+                                                        });
                                                         SharedPreferencesHelper.setdatos(
                                                             'idoperacionid',
                                                             snapshot.data![
@@ -158,6 +167,9 @@ class AdelantoScreenState extends ConsumerState<AdelantoScreen> {
                                                                     'idOperacion']
                                                                 .toString());
                                                         somelugar();
+                                                        setState(() {
+                                                          colorenv = false;
+                                                        });
                                                       },
                                                       child: SizedBox(
                                                         width: displayWidth(
