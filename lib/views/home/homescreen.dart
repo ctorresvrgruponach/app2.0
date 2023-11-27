@@ -16,90 +16,13 @@ class _HomeScreenState extends State<HomeScreen> {
             //show confirm dialogue
             //the return value will be from "Yes" or "No" options
             context: context,
-            builder: (context) => SingleChildScrollView(
-              child: AlertDialog(
-                content: Stack(
-                  alignment: Alignment.center,
-                  children: <Widget>[
-                    Container(
-                      width: displayWidth(context) * 0.61,
-                      height: displayWidth(context) * 0.61,
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage(
-                              "assets/images/fondo_blanco.png",
-                            ),
-                            fit: BoxFit.cover),
-                      ),
-                    ),
-                    SizedBox(
-                      width: displayWidth(context) * 0.61,
-                      height: displayWidth(context) * 0.61,
-                      child: Column(
-                        children: [
-                          Container(
-                            color: const Color.fromARGB(255, 5, 50, 91),
-                            child:
-                                Image.asset("assets/images/NACHlogotipo.png"),
-                          ),
-                          SizedBox(
-                            child: Text(
-                              '¿Salir de la aplicación?',
-                              style: TextStyle(
-                                fontSize: displayWidth(context) * 0.04,
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            child: Text(
-                              '¿Deseas salir de la aplicación?',
-                              style: TextStyle(
-                                fontSize: displayWidth(context) * 0.03,
-                              ),
-                            ),
-                          ),
-                          Row(
-                            children: [
-                              Container(
-                                width: displayWidth(context) * 0.20,
-                              ),
-                              //  DialogButton(
-                              //    width: displayWidth(context) * 0.15,
-                              //    onPressed: () =>
-                              //        Navigator.pushNamedAndRemoveUntil(
-                              //            context, '/', (route) => false),
-                              //    color: const Color.fromARGB(255, 5, 50, 91),
-                              //    radius: BorderRadius.circular(
-                              //        displayWidth(context) * 0.03),
-                              //    child: Text(
-                              //      "Si",
-                              //      style: TextStyle(
-                              //          color: Colors.white,
-                              //          fontSize: displayWidth(context) * 0.04),
-                              //    ),
-                              //  ),
-                              //  DialogButton(
-                              //    width: displayWidth(context) * 0.15,
-                              //    onPressed: () => Navigator.pop(context),
-                              //    color: const Color.fromARGB(255, 5, 50, 91),
-                              //    radius: BorderRadius.circular(
-                              //        displayWidth(context) * 0.03),
-                              //    child: Text(
-                              //      "No",
-                              //      style: TextStyle(
-                              //          color: Colors.white,
-                              //          fontSize: displayWidth(context) * 0.04),
-                              //    ),
-                              //  ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
+            builder: (context) => const SingleChildScrollView(
+                child: Salirdeapp(
+              message: 'salir',
+              title: 'salir',
+              icon: Icons.exit_to_app,
+              color: Color.fromARGB(221, 255, 0, 0),
+            )),
           ) ??
           false; //if showDialouge had returned null, then return false
     }

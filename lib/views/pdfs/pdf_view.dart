@@ -76,9 +76,10 @@ class PdfViewerPageState extends State<PdfViewerPage> {
     }
 
     Uint8List? bytes = await readPdfBytes(filename);
+    List<String> parts = filename.split('.');
 
     await FileSaver.instance.saveAs(
-        name: filename, ext: 'pdf', mimeType: MimeType.other, bytes: bytes);
+        name: parts.first, ext: 'pdf', mimeType: MimeType.other, bytes: bytes);
 
     // ignore: use_build_context_synchronously
     ScaffoldMessenger.of(context).showSnackBar(

@@ -360,8 +360,9 @@ class ReciboNominaScreenState extends ConsumerState<ReciboNominaScreen> {
   Future<void> _saveTextToFile(String textToSave, String nameDocument) async {
     try {
       Uint8List bytes = Uint8List.fromList(utf8.encode(textToSave));
+      List<String> parts = nameDocument.split('.');
       await FileSaver.instance.saveAs(
-          name: nameDocument,
+          name: parts.first,
           ext: 'xml',
           mimeType: MimeType.other,
           bytes: bytes);
