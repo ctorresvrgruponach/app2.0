@@ -261,7 +261,7 @@ class BotondocuState extends ConsumerState<Botondocu> {
                           await customDialogManager.showCustomDialog(
                               icon: Icons.check,
                               title: resp['mensaje'],
-                              message: resp['mensaje'],
+                              message: '',
                               color: const Color.fromARGB(255, 54, 244, 76));
                           // ignore: use_build_context_synchronously
                           Navigator.of(context).pop();
@@ -269,7 +269,7 @@ class BotondocuState extends ConsumerState<Botondocu> {
                           await customDialogManager.showCustomDialog(
                               icon: Icons.warning,
                               title: resp['mensaje'],
-                              message: resp['mensaje'],
+                              message: '',
                               color: const Color.fromARGB(255, 244, 54, 54));
                         }
                       },
@@ -380,7 +380,7 @@ class BotondocupState extends ConsumerState<Botondocup> {
                         }
                       },
                     ),
-                    const Text('Selecciona que archivo quieres editar'),
+                    const Text('Selecciona que archivo que deseas adjuntar'),
                     const Botonfile(texto: 'INE'),
                     const Botonfile(texto: 'Comprobante'),
                     Botonc(
@@ -390,8 +390,7 @@ class BotondocupState extends ConsumerState<Botondocup> {
                           icon: Icons.warning,
                           message:
                               'Al dar click se tendrá acceso a tu último recibo de nómina.',
-                          title:
-                              'Al dar click se tendrá acceso a tu último recibo de nómina.',
+                          title: '',
                           color: const Color.fromARGB(255, 244, 54, 54),
                         );
                         final instanciaEnviaAdelanto = EnviaAprobacionClass();
@@ -404,7 +403,7 @@ class BotondocupState extends ConsumerState<Botondocup> {
                           await customDialogManager.showCustomDialog(
                               icon: Icons.check,
                               title: resp['mensaje'],
-                              message: resp['mensaje'],
+                              message: '',
                               color: const Color.fromARGB(255, 54, 244, 76));
                           ref.refresh(postMisNotificacionesdetalleProviders);
                           // ignore: use_build_context_synchronously
@@ -413,7 +412,7 @@ class BotondocupState extends ConsumerState<Botondocup> {
                           await customDialogManager.showCustomDialog(
                               icon: Icons.warning,
                               title: resp['mensaje'],
-                              message: resp['mensaje'],
+                              message: '',
                               color: const Color.fromARGB(255, 244, 54, 54));
                         }
                       },
@@ -496,7 +495,7 @@ class BotondocurState extends ConsumerState<Botondocur> {
                           await customDialogManager.showCustomDialog(
                               icon: Icons.check,
                               title: resp['mensaje'],
-                              message: resp['mensaje'],
+                              message: '',
                               color: const Color.fromARGB(255, 54, 244, 76));
                           // ignore: use_build_context_synchronously
                           Navigator.of(context).pop();
@@ -505,7 +504,7 @@ class BotondocurState extends ConsumerState<Botondocur> {
                           await customDialogManager.showCustomDialog(
                               icon: Icons.warning,
                               title: resp['mensaje'],
-                              message: resp['mensaje'],
+                              message: '',
                               color: const Color.fromARGB(255, 244, 54, 54));
                         }
                       },
