@@ -10,6 +10,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    List<dynamic> argumentos = ['home'];
+    final navegador = NavegadorDeRuta(context, argumentos);
     // var datos = getdatos();
     Future<bool> showExitPopup() async {
       return await showDialog(
@@ -280,7 +282,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             BorderRadius.circular(displayWidth(context) * 0.02),
                       ), // This is what you need!
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+                      await navegador.algunlugar('actualizaempleado');
+                    },
                     child: SizedBox(
                       width: displayWidth(context) * 0.8,
                       child: Center(

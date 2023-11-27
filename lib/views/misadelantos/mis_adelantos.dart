@@ -569,6 +569,8 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                                 texto: 'Ver',
                                                 indiceadelanto:
                                                     '${rowData['id']}',
+                                                idoperacion:
+                                                    '${rowData['id_operacion']}',
                                                 someAvalesMap: rowsavales,
                                               ),
                                             ),
