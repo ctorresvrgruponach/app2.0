@@ -485,6 +485,7 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                             final rowsavales =
                                 (data['adelantos']['resultados3'] as List?)
                                     ?.cast<Map<String, dynamic>>();
+                            SharedPreferencesHelper.getdatos('idoperacionid');
 
                             //  print(avales.length);
 

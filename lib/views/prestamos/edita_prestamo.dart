@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import '../../libs/lib.dart';
 import '../../ui/input.dart';
 
-
 class IdOperacionNotifier extends StateNotifier<String> {
   IdOperacionNotifier() : super('');
   void updateIdOperacion(String newValue) {
@@ -13,32 +12,30 @@ class IdOperacionNotifier extends StateNotifier<String> {
 }
 
 class EditaPrestamo extends ConsumerStatefulWidget {
-  const EditaPrestamo({super.key, required this.data});
+  const EditaPrestamo(
+      {super.key, required this.data, required this.idoperacion});
   // ignore: prefer_typing_uninitialized_variables
   final data;
+  final idoperacion;
 
   @override
   EditaPrestamoState createState() => EditaPrestamoState();
 }
 
 class EditaPrestamoState extends ConsumerState<EditaPrestamo> {
-
-  Map<int, int> idavales        = {};
-  List<String>  filteredValues  = [];
-  int?          selectedValue   = 1; //
-  int           x               = 0;
-  int           diferencia      = 0;
-  int           montoMaximoAval = 8000;
-  int           avalesn         = 0;
-  bool          btnGuardar      = false;
-  bool          showForm        = false;
+  Map<int, int> idavales = {};
+  List<String> filteredValues = [];
+  int? selectedValue = 1; //
+  int x = 0;
+  int diferencia = 0;
+  int montoMaximoAval = 8000;
+  int avalesn = 0;
+  bool btnGuardar = false;
+  bool showForm = false;
   int idPrestamoSolicitado = 0;
   bool ocultaBtn = true;
 
-
-
-
- List<int> montoavales = [];
+  List<int> montoavales = [];
   int get totalAmount => montoavales.fold(0, (prev, amount) => prev + amount);
   @override
   void initState() {
@@ -60,163 +57,191 @@ class EditaPrestamoState extends ConsumerState<EditaPrestamo> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
 //PETIION EDICION SE  PRESTAMOS
-        String idPrestamo = widget.data;
-        // print('ID DEL PRESTAMO $idPrestamo');
-final editaPrestamo = FutureProvider.autoDispose<Map<String, dynamic>>((ref) async {
+    String idPrestamo = widget.data;
+    // print('ID DEL PRESTAMO $idPrestamo');
+    final editaPrestamo =
+        FutureProvider.autoDispose<Map<String, dynamic>>((ref) async {
+      final token = await SharedPreferencesHelper.getdatos('token');
+      final idEmpleado = await SharedPreferencesHelper.getdatos('empleado');
+      final idOperacionid =
+          await SharedPreferencesHelper.getdatos('idoperacionid');
+      // print(idOperacionid);
+      final postDatas = {
+        "idEmpleado": idEmpleado,
+        "token": token,
+        "idOperacion": idOperacionid,
+        "idPrestamo": idPrestamo,
+      };
 
-  final token         = await SharedPreferencesHelper.getdatos('token');
-  final idEmpleado    = await SharedPreferencesHelper.getdatos('empleado');
-  final idOperacionid = await SharedPreferencesHelper.getdatos('idoperacionid');
-  // print(idOperacionid);
-  final postDatas = {
-    "idEmpleado"  : idEmpleado,
-    "token"       : token,
-    "idOperacion" : idOperacionid,
-    "idPrestamo"  : idPrestamo,
-  };
+      final dynamic dataEditaPrestamo = await fetchPostData(
+          modo, completeUrldev, baseUrl, solicitaPrestamoEdit, postDatas);
 
-  final dynamic dataEditaPrestamo = await fetchPostData(
-      modo, completeUrldev, baseUrl, solicitaPrestamoEdit, postDatas);
+      if (dataEditaPrestamo is Map<String, dynamic> &&
+          dataEditaPrestamo["success"] != null) {
+        if (dataEditaPrestamo["success"]) {
+        } else {}
+      } else {
+        if (kDebugMode) {
+          print(
+              'Error: dataAdelantos no es un mapa válido o "success" no está presente.');
+        }
+        // Manejar el caso en el que dataAdelantos no es un mapa válido o cuando "success" no está presente.
+      }
 
-  if (dataEditaPrestamo is Map<String, dynamic> &&
-      dataEditaPrestamo["success"] != null) {
-    if (dataEditaPrestamo["success"]) {
-    } else {}
-  } else {
-    if (kDebugMode) {
-      print(
-          'Error: dataAdelantos no es un mapa válido o "success" no está presente.');
-    }
-    // Manejar el caso en el que dataAdelantos no es un mapa válido o cuando "success" no está presente.
-  }
+      return dataEditaPrestamo;
+    });
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 5, 50, 91),
+        title: const Text('Editar avales '),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const SizedBox(height: 25),
+            FutureBuilder<Map<String, dynamic>>(
+              future: ref.watch(editaPrestamo.future),
+              builder: (context, snapshot) {
+                if (snapshot.hasData && snapshot.data!['prestamo'] != null) {
+                  final avalesConfirmados =
+                      snapshot.data!['avales_confirmados'];
+                  final avales = snapshot.data!['avales'];
+                  final montoSolicitado =
+                      snapshot.data!['prestamo']['monto_prestamo'];
+                  // final saldoPendiente    = snapshot.data!['prestamo']['saldo_pendiente'];
+                  final idPrestamo = snapshot.data!['prestamo']['id'];
+                  SharedPreferencesHelper.setdatos('avales', '$idPrestamo');
 
-  return dataEditaPrestamo;
-});
-return Scaffold(
-    appBar: AppBar(
-      backgroundColor:  const Color.fromARGB(255, 5, 50, 91),
-      title: const Text('Editar avales '),
-    ),
-    body: SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget> [
-          const SizedBox(height: 25),
-          FutureBuilder<Map<String, dynamic>>(
-            future: ref.watch(editaPrestamo.future),
-            builder: (context, snapshot) {
-              if (snapshot.hasData && snapshot.data!['prestamo'] != null) {
-                final avalesConfirmados = snapshot.data!['avales_confirmados'];
-                final avales            = snapshot.data!['avales'];
-                final montoSolicitado   = snapshot.data!['prestamo']['monto_prestamo'];
-                // final saldoPendiente    = snapshot.data!['prestamo']['saldo_pendiente'];
-                final idPrestamo        = snapshot.data!['prestamo']['id'];
-                SharedPreferencesHelper.setdatos('avales', '$idPrestamo');
-          
                   double prestamoSolicitado = double.parse(montoSolicitado);
                   int prestamo = prestamoSolicitado.toInt();
-                  
+
                   // double pendienteSaldo = double.parse(saldoPendiente);
                   // int saldo = pendienteSaldo.toInt();
-                  List<Map<String, dynamic>> confirmados =(avalesConfirmados as List<dynamic>).map((item) =>item as Map<String, dynamic>).toList();
-                    double sumaTotalAvalesCondirmados = obtenerSumaIdEmpleado(confirmados);
-                    // print('La suma de id_empleado es: $sumaTotalAvalesCondirmados');
-                    int avalesConfirmadosSumoTotal = sumaTotalAvalesCondirmados.toInt();
-                    // print(avalesConfirmadosSumoTotal);
-                    // print(avalesConfirmadosSumoTotal.runtimeType);
-                      if( prestamo <= montoMaximoAval ){
-                        diferencia = 1;
-                      }else{
-                        var  faltante = prestamo -avalesConfirmadosSumoTotal ;
-                        int navales   = (faltante / montoMaximoAval).ceil();
-                        diferencia    = navales;
-                    }
-                      String formatCurrency(dynamic amount) {
-                  NumberFormat currencyFormat =
-                      NumberFormat.currency(locale: 'es_MX', symbol: '\$');
-                  return currencyFormat.format(amount);
-                }
-          
-                String formattedMonoto = formatCurrency(prestamo);
-                    // actualizarEstado();
-                  return  Column(
-                  // mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(avalesConfirmados.isNotEmpty ? 'Mis avales': 'Selecciona nuevamente a tu aval',
-                      style: const TextStyle(fontWeight: FontWeight.w600),
-                    ),
-                    Visibility(
-                      visible: avalesConfirmados.isNotEmpty ? true : false,
-                      child: DataTable(
-                      columns: const [
-                        DataColumn(label: Text('Nombre')),
-                        DataColumn(label: Text('Monto')),
-                        DataColumn(label: Text('Estatus')),
-                      ],
-                      rows: confirmados.map((mapa) {
-                        return DataRow(cells: [
-                          DataCell(Text(mapa['nombre_completo'].toString(),style: const TextStyle(fontSize: 12),)),
-                          // DataCell(Text(mapa['monto'].toString())),
-                          DataCell(Text('\$${mapa['monto']}')),
+                  List<Map<String, dynamic>> confirmados =
+                      (avalesConfirmados as List<dynamic>)
+                          .map((item) => item as Map<String, dynamic>)
+                          .toList();
+                  double sumaTotalAvalesCondirmados =
+                      obtenerSumaIdEmpleado(confirmados);
+                  // print('La suma de id_empleado es: $sumaTotalAvalesCondirmados');
+                  int avalesConfirmadosSumoTotal =
+                      sumaTotalAvalesCondirmados.toInt();
+                  // print(avalesConfirmadosSumoTotal);
+                  // print(avalesConfirmadosSumoTotal.runtimeType);
+                  if (prestamo <= montoMaximoAval) {
+                    diferencia = 1;
+                  } else {
+                    var faltante = prestamo - avalesConfirmadosSumoTotal;
+                    int navales = (faltante / montoMaximoAval).ceil();
+                    diferencia = navales;
+                  }
+                  String formatCurrency(dynamic amount) {
+                    NumberFormat currencyFormat =
+                        NumberFormat.currency(locale: 'es_MX', symbol: '\$');
+                    return currencyFormat.format(amount);
+                  }
 
-                          DataCell(Text(mapa['estatus'] ==  0 ? 'Notificado' : 'Aceptado',style: const TextStyle(fontSize: 12))),
-                          // DataCell(Text(mapa['no_empleado'].toString())),
-                        ]);
-                      }).toList(), // <-- Importante: Usa toList() aquí
-                    ),),
-                    const SizedBox(height: 20,),
-                    Text('Prestamo solicitado $formattedMonoto'),
-                    if (ocultaBtn)
-                    Visibility(
-                      visible:diferencia == 1 ? true : false,
-                      child: ElevatedButton(onPressed: (){
-                        setState(() {
-                          showForm = true;
-                          idPrestamoSolicitado = idPrestamo;
-                          ocultaBtn = false;
-                          actualizarEstado();
-                        });
-                      },
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>( const Color.fromARGB(255, 5, 50, 91))
-                        ), // Color de fondo azul
-                      child: const Text('Continuar')),
-                    ),
-                    Visibility(
-                      visible:  showForm,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                          child: generaAvales( avales, diferencia, montoSolicitado,sumaTotalAvalesCondirmados,avalesConfirmados),),
-                    ),
-                  ],
-                );
-              } else if (snapshot.hasError) {
-                return const Text('Error de conexion');
-                // return Text(snapshot.error.toString());
-              } else if (snapshot.hasData &&
-                  snapshot.data!['mensaje'] != null) {
-                      return alerterror(
-                          message: snapshot.data!['mensaje'],
-                          title: 'Notificación',
-                          icon: Icons.notification_add,
-                          color: Colors.white);
-                  
-                //  return Text(snapshot.error.toString());
-              }
-              // By default show a loading spinner.
-              return const Cargando();
-            },
-          ),
-        ],
+                  String formattedMonoto = formatCurrency(prestamo);
+                  // actualizarEstado();
+                  return Column(
+                    // mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        avalesConfirmados.isNotEmpty
+                            ? 'Mis avales'
+                            : 'Selecciona nuevamente a tu aval',
+                        style: const TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                      Visibility(
+                        visible: avalesConfirmados.isNotEmpty ? true : false,
+                        child: DataTable(
+                          columns: const [
+                            DataColumn(label: Text('Nombre')),
+                            DataColumn(label: Text('Monto')),
+                            DataColumn(label: Text('Estatus')),
+                          ],
+                          rows: confirmados.map((mapa) {
+                            return DataRow(cells: [
+                              DataCell(Text(
+                                mapa['nombre_completo'].toString(),
+                                style: const TextStyle(fontSize: 12),
+                              )),
+                              // DataCell(Text(mapa['monto'].toString())),
+                              DataCell(Text('\$${mapa['monto']}')),
+
+                              DataCell(Text(
+                                  mapa['estatus'] == 0
+                                      ? 'Notificado'
+                                      : 'Aceptado',
+                                  style: const TextStyle(fontSize: 12))),
+                              // DataCell(Text(mapa['no_empleado'].toString())),
+                            ]);
+                          }).toList(), // <-- Importante: Usa toList() aquí
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Text('Prestamo solicitado $formattedMonoto'),
+                      if (ocultaBtn)
+                        Visibility(
+                          visible: diferencia == 1 ? true : false,
+                          child: ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  showForm = true;
+                                  idPrestamoSolicitado = idPrestamo;
+                                  ocultaBtn = false;
+                                  actualizarEstado();
+                                });
+                              },
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          const Color.fromARGB(255, 5, 50,
+                                              91))), // Color de fondo azul
+                              child: const Text('Continuar')),
+                        ),
+                      Visibility(
+                        visible: showForm,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: generaAvales(
+                              avales,
+                              diferencia,
+                              montoSolicitado,
+                              sumaTotalAvalesCondirmados,
+                              avalesConfirmados),
+                        ),
+                      ),
+                    ],
+                  );
+                } else if (snapshot.hasError) {
+                  return const Text('Error de conexion');
+                  // return Text(snapshot.error.toString());
+                } else if (snapshot.hasData &&
+                    snapshot.data!['mensaje'] != null) {
+                  return alerterror(
+                      message: snapshot.data!['mensaje'],
+                      title: 'Notificación',
+                      icon: Icons.notification_add,
+                      color: Colors.white);
+
+                  //  return Text(snapshot.error.toString());
+                }
+                // By default show a loading spinner.
+                return const Cargando();
+              },
+            ),
+          ],
+        ),
       ),
-    ),
-  );
+    );
   }
-  
 
   void validaavales(int value) {
     if (value > 8000) {
@@ -224,8 +249,7 @@ return Scaffold(
         context: context,
         builder: (BuildContext context) {
           return const CustomAlertDialog(
-              message:
-                  'El monto por Aval no puede ser mayor a \$8,000.00',
+              message: 'El monto por Aval no puede ser mayor a \$8,000.00',
               title: 'Atención',
               icon: Icons.error_outline,
               color: Colors.amber);
@@ -234,21 +258,19 @@ return Scaffold(
     }
   }
 
+  void actualizarEstado() {
+    setState(() {
+      avalesn = diferencia;
+      actualizarNavales();
+    });
+  }
 
-void actualizarEstado() {
-  setState(() {
-    avalesn = diferencia;
-    actualizarNavales();
-  });
-}
+  double obtenerSumaIdEmpleado(List<Map<String, dynamic>> confirmados) {
+    return confirmados.fold(0, (suma, mapa) => suma + (mapa['monto'] ?? 0));
+  }
 
-double obtenerSumaIdEmpleado(List<Map<String, dynamic>> confirmados) {
-  return confirmados.fold(0, (suma, mapa) => suma + (mapa['monto'] ?? 0));
-}
-  
-
-  Widget generaAvales(avales, diferencia, montoSolicitado,sumaTotalAvalesCondirmados,avalesConfirmados) {
-
+  Widget generaAvales(avales, diferencia, montoSolicitado,
+      sumaTotalAvalesCondirmados, avalesConfirmados) {
     double montoFaltanteAval = double.parse(montoSolicitado);
     double montoRestante = montoFaltanteAval - sumaTotalAvalesCondirmados;
     final enviaNuevosAvales = ActualizaAvales();
@@ -285,6 +307,7 @@ double obtenerSumaIdEmpleado(List<Map<String, dynamic>> confirmados) {
         return [];
       }
     }
+
     return Center(
       child: Container(
         padding: const EdgeInsets.all(8.0),
@@ -298,7 +321,7 @@ double obtenerSumaIdEmpleado(List<Map<String, dynamic>> confirmados) {
             // Text('Monto del prestamo solicitado $montoSolicitado'),
             // Text('Monto faltante ($montoSolicitado - $sumaTotalAvalesCondirmados)'),
             for (var i = 0; i < diferencia; i++)
-            Column(
+              Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   CustomDropdown.searchRequest(
@@ -394,52 +417,59 @@ double obtenerSumaIdEmpleado(List<Map<String, dynamic>> confirmados) {
 
             //     Text('FALTANTE $montoRestante'),
             //     Text(totalAmount == montoRestante ? 'Valido ': 'No valido'),
-                  Visibility(
-                  visible: avalesConfirmados.isNotEmpty ? true : false,
-                    child: ElevatedButton(
-                      onPressed: btnGuardar ? null : () async {
-                        if(montoRestante == totalAmount && idavales.length == diferencia ){
-                          Map<int, Map<String, int>> nuevosAvalesSeleccionados = {};
-                              idavales.forEach((key, value) {
-                                if (montoavales.length > key) {
-                                  nuevosAvalesSeleccionados[key] = {
-                                    'idEmpleado': value,
-                                    'monto_aval': montoavales[key],
-                                  };
-                                }
-                              });
-                                SharedPreferencesHelper.setdatos('avales', '$nuevosAvalesSeleccionados');
-                                SharedPreferencesHelper.setdatos('idPrestamo', '$idPrestamoSolicitado');
-                                setState(() {
-                                  btnGuardar = true;
-                                });
-                                final respuesta = await enviaNuevosAvales.actualizaAvales();
-                                  if (respuesta['estatus'] == 200) {
-                                    //ignore: use_build_context_synchronously
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return alersuccess(
-                                            message: respuesta['mensaje'],
-                                            title: 'Éxito',
-                                            icon: Icons.check,
-                                            color: Colors.green);
-                                      },
-                                    );
-                                  } else if (respuesta['estatus'] == 201) {
-                                    // ignore: use_build_context_synchronously
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return CustomAlertDialog(
-                                            message: respuesta['mensaje'],
-                                            title: 'Error',
-                                            icon: Icons.error_outline,
-                                            color: Colors.red);
-                                      },
-                                    );
-                                  }
-                        }else if(idavales.length < diferencia ){
+            Visibility(
+              visible: avalesConfirmados.isNotEmpty ? true : false,
+              child: ElevatedButton(
+                  onPressed: btnGuardar
+                      ? null
+                      : () async {
+                          if (montoRestante == totalAmount &&
+                              idavales.length == diferencia) {
+                            Map<int, Map<String, int>>
+                                nuevosAvalesSeleccionados = {};
+                            idavales.forEach((key, value) {
+                              if (montoavales.length > key) {
+                                nuevosAvalesSeleccionados[key] = {
+                                  'idEmpleado': value,
+                                  'monto_aval': montoavales[key],
+                                };
+                              }
+                            });
+                            SharedPreferencesHelper.setdatos(
+                                'avales', '$nuevosAvalesSeleccionados');
+                            SharedPreferencesHelper.setdatos(
+                                'idPrestamo', '$idPrestamoSolicitado');
+                            setState(() {
+                              btnGuardar = true;
+                            });
+                            final respuesta =
+                                await enviaNuevosAvales.actualizaAvales();
+                            if (respuesta['estatus'] == 200) {
+                              //ignore: use_build_context_synchronously
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return alersuccess(
+                                      message: respuesta['mensaje'],
+                                      title: 'Éxito',
+                                      icon: Icons.check,
+                                      color: Colors.green);
+                                },
+                              );
+                            } else if (respuesta['estatus'] == 201) {
+                              // ignore: use_build_context_synchronously
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return CustomAlertDialog(
+                                      message: respuesta['mensaje'],
+                                      title: 'Error',
+                                      icon: Icons.error_outline,
+                                      color: Colors.red);
+                                },
+                              );
+                            }
+                          } else if (idavales.length < diferencia) {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) {
@@ -450,30 +480,31 @@ double obtenerSumaIdEmpleado(List<Map<String, dynamic>> confirmados) {
                                     color: Colors.amber);
                               },
                             );
-                        }else if( totalAmount < montoRestante || totalAmount > montoRestante){
-                          showDialog(
+                          } else if (totalAmount < montoRestante ||
+                              totalAmount > montoRestante) {
+                            showDialog(
                               context: context,
                               builder: (BuildContext context) {
                                 return const CustomAlertDialog(
-                                    message: 'Por favor verifica tus montos ingresados por aval.',
+                                    message:
+                                        'Por favor verifica tus montos ingresados por aval.',
                                     title: 'Atención',
                                     icon: Icons.error_outline,
                                     color: Colors.amber);
                               },
-                          );
-                        }
-                    },
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>( const Color.fromARGB(255, 5, 50, 91))
-                        ),
-                      child: const Text('Guardar')),
-                  )
+                            );
+                          }
+                        },
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          const Color.fromARGB(255, 5, 50, 91))),
+                  child: const Text('Guardar')),
+            )
           ],
         ),
       ),
     );
   }
-  
+
   algo() {}
 }
-

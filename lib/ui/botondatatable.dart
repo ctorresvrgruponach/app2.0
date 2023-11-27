@@ -289,13 +289,15 @@ class BotondocuState extends ConsumerState<Botondocu> {
 class Botondocup extends ConsumerStatefulWidget {
   final String texto;
   final String? indiceadelanto;
+  final String? idoperacion;
   final List<Map<String, dynamic>>? someAvalesMap;
 
   const Botondocup(
       {Key? key,
       required this.texto,
       required this.indiceadelanto,
-      this.someAvalesMap})
+      this.someAvalesMap,
+      this.idoperacion})
       : super(key: key);
 
   @override
@@ -335,6 +337,9 @@ class BotondocupState extends ConsumerState<Botondocup> {
       );
     }).toList();
     var numeroavales = (widget.someAvalesMap?.length);
+    if (kDebugMode) {
+      print(numeroavales);
+    }
     final customDialogManager = CustomDialogManager(context);
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
@@ -361,15 +366,16 @@ class BotondocupState extends ConsumerState<Botondocup> {
                     Botonc(
                       texto: 'selecciona nuevos avales',
                       onPressed: () {
-                        if (kDebugMode) {
-                        }
+                        if (kDebugMode) {}
                         if (kDebugMode) {
                           String? idPrestamo = widget.indiceadelanto;
+                          String? idoperacion = widget.idoperacion;
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>  EditaPrestamo(data:  idPrestamo,),
-                              ),
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditaPrestamo(
+                                  data: idPrestamo, idoperacion: idoperacion),
+                            ),
                           );
                         }
                       },
