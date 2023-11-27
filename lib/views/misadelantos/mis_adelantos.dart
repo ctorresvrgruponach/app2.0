@@ -498,7 +498,7 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                         MediaQuery.of(context).size.width * 3,
                                     height: 100,
                                     child: const Text(
-                                      "Prestamos",
+                                      "ttamos",
                                       style: TextStyle(
                                         color: Color.fromARGB(255, 0, 36, 66),
                                         fontSize: 40,
@@ -512,28 +512,28 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                     child: DataTable(
                                       columns: const [
                                         DataColumn(
-                                          label: Text('id'),
+                                          label: Text('ID'),
                                         ),
                                         DataColumn(
-                                          label: Text('no_empleado'),
+                                          label: Text('No Empleado'),
                                         ),
                                         DataColumn(
-                                          label: Text('nombre_completo'),
+                                          label: Text('Nombre Completo'),
                                         ),
                                         DataColumn(
-                                          label: Text('operaciones'),
+                                          label: Text('Operación'),
                                         ),
                                         DataColumn(
-                                          label: Text('monto_prestamo'),
+                                          label: Text('Monto Prestamo'),
                                         ),
                                         DataColumn(
-                                          label: Text('pago_interes'),
+                                          label: Text('Pago Interés'),
                                         ),
                                         DataColumn(
                                           label: Text('pago'),
                                         ),
                                         DataColumn(
-                                          label: Text('editar'),
+                                          label: Text('Acciones'),
                                         ),
                                         // Agrega más DataColumn según sea necesario
                                       ],
@@ -566,7 +566,7 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                             ),
                                             DataCell(
                                               Botondocup(
-                                                texto: 'Editar',
+                                                texto: 'Ver',
                                                 indiceadelanto:
                                                     '${rowData['id']}',
                                                 someAvalesMap: rowsavales,

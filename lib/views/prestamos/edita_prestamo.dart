@@ -61,18 +61,18 @@ class EditaPrestamoState extends ConsumerState<EditaPrestamo> {
   Widget build(BuildContext context) {
 //PETIION EDICION SE  PRESTAMOS
     String idPrestamo = widget.data;
+    String idoperacion = widget.idoperacion;
     // print('ID DEL PRESTAMO $idPrestamo');
     final editaPrestamo =
         FutureProvider.autoDispose<Map<String, dynamic>>((ref) async {
       final token = await SharedPreferencesHelper.getdatos('token');
       final idEmpleado = await SharedPreferencesHelper.getdatos('empleado');
-      final idOperacionid =
-          await SharedPreferencesHelper.getdatos('idoperacionid');
+      // final idOperacionid =await SharedPreferencesHelper.getdatos('idoperacionid');
       // print(idOperacionid);
       final postDatas = {
         "idEmpleado": idEmpleado,
         "token": token,
-        "idOperacion": idOperacionid,
+        "idOperacion": idoperacion,
         "idPrestamo": idPrestamo,
       };
 
@@ -189,7 +189,7 @@ class EditaPrestamoState extends ConsumerState<EditaPrestamo> {
                       Text('Prestamo solicitado $formattedMonoto'),
                       if (ocultaBtn)
                         Visibility(
-                          visible: diferencia == 1 ? true : false,
+                          visible:(avalesConfirmados.isNotEmpty) ? true :  (diferencia  > 1 ) ? true : false,
                           child: ElevatedButton(
                               onPressed: () {
                                 setState(() {
@@ -418,7 +418,7 @@ class EditaPrestamoState extends ConsumerState<EditaPrestamo> {
             //     Text('FALTANTE $montoRestante'),
             //     Text(totalAmount == montoRestante ? 'Valido ': 'No valido'),
             Visibility(
-              visible: avalesConfirmados.isNotEmpty ? true : false,
+            visible:( avalesConfirmados.isNotEmpty) ? true :  (diferencia  >= 1 ) ? true : false,
               child: ElevatedButton(
                   onPressed: btnGuardar
                       ? null
