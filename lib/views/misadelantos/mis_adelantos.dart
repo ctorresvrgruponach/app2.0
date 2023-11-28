@@ -498,7 +498,7 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                         MediaQuery.of(context).size.width * 3,
                                     height: 100,
                                     child: const Text(
-                                      "ttamos",
+                                      "Prestamos",
                                       style: TextStyle(
                                         color: Color.fromARGB(255, 0, 36, 66),
                                         fontSize: 40,
