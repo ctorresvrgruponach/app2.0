@@ -62,7 +62,19 @@ class PrestamoState extends ConsumerState<Prestamo> {
       //     },
       //    ),
       //  );
-       await navegador.algunlugar('actualizaempleado');
+      final customDialogManager = CustomDialogManager(context);
+      final mensaje = await SharedPreferencesHelper.getdatos('circuloacepta');
+
+      if (mensaje.toString() == '') {
+        SharedPreferencesHelper.setdatos("circuloacepta", "Aceptado");
+        await customDialogManager.showCustomDialog(
+          icon: Icons.airlines_rounded,
+          message: 'Se consultará círculo de crédito',
+          title: 'Se consultará círculo de crédito',
+          color: const Color.fromARGB(255, 244, 54, 54),
+        );
+      }
+        await navegador.algunlugar('actualizaempleado');
 
       // Navigator.pushNamedAndRemoveUntil(
       //     context, 'solicita_prestamo', (route) => false);
