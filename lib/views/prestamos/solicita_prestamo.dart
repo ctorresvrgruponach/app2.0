@@ -68,6 +68,9 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
   bool btnsolicitaPrestamo = false;
   String? nuevo; //
   bool mostrarCard = true;
+  int catorcenal = 26;
+  int quincenal  = 24;
+  int semanal    = 56;
 
 //PARA LOS AVALES
 
@@ -163,6 +166,7 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                 // print('object');
                 if (snapshot.hasData && snapshot.data!['empleado'] != null) {
                   if (kDebugMode) {}
+                  // print(snapshot.data!['empleado']);
                   final avales = snapshot.data!['avales'];
                   final montoMaximo = snapshot.data!['monto_maximo'];
                   // print('El monto bb $montoMaximo');
@@ -278,13 +282,10 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                                                   return 'Ingresa el monto';
                                                 }
 
-                                                var valor = int.tryParse(
-                                                    value); // Intenta convertir a entero
-                                                if (valor == null ||
-                                                    valor < 1000) {
-                                                  return 'Monto mínimo \$1000';
+                                                var valor = int.tryParse( value); // Intenta convertir a entero
+                                                if (valor == null || valor < 5000) {
+                                                  return 'Monto mínimo \$5,000.00';
                                                 }
-                                                // Si no hay errores, retorna null
                                                 return null;
                                               },
                                             )),
@@ -308,17 +309,26 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                                                   labelText: 'Plazos'),
                                           enabled: !_inputs,
                                           validator: (value) {
-                                            if (value == null ||
-                                                value.isEmpty) {
+                                            if (value == null || value.isEmpty) {
                                               return 'Por favor, ingresa los plazos';
                                             }
+                                            var valor = int.tryParse(value); // Intenta convertir a entero
+                                            if(plazosRestantes == catorcenal || plazosRestantes == quincenal){
+                                              if (valor == null || valor < 4) {
+                                                return 'Minimo 4 plazos ';
+                                              }
+                                              return null;
+                                              }else if(plazosRestantes == semanal){
+                                                if (valor == null || valor < 8) {
+                                                  return 'Minimo 8 plazos ';
+                                                }
+                                              return null;
+                                              }
 
-                                            var valor = int.tryParse(
-                                                value); // Intenta convertir a entero
-                                            if (valor == null || valor < 6) {
-                                              return 'Minimo 6 plazos ';
-                                            }
-                                            // Si no hay errores, retorna null
+                                            // if (valor == null || valor < 6) {
+                                            //   return 'Minimo 6 plazos ';
+                                            // }
+                                            // // Si no hay errores, retorna null
                                             return null;
                                           },
                                           onChanged: (_) {
@@ -576,7 +586,7 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                 ListTile(
                   title: const Text('Nota'),
                   subtitle: Text(
-                    'El máximo que se te puede prestar es de $formattedMonoto pesos mexicanos y el monto mínimo que puedes solicitar es de \$1,000.00 pesos mexicanos.',
+                    'El máximo que se te puede prestar es de $formattedMonoto pesos mexicanos y el monto mínimo que puedes solicitar es de \$5,000.00 pesos mexicanos.',
                     textAlign: TextAlign.justify,
                   ),
                 ),
