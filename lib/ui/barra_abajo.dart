@@ -193,10 +193,12 @@ class MyBottomNavigationBarState extends ConsumerState<MyBottomNavigationBar> {
                         PopupMenuItem<String>(
                             child: ElevatedButton(
                           onPressed: () async {
-                            await SharedPreferencesHelper.borrashared().then(
-                                Navigator.pushNamedAndRemoveUntil(
-                                    context, '/', (route) => false));
+                            await SharedPreferencesHelper.borrashared();
+                            SharedPreferencesHelper.setdatos('cerrar', 'si');
+
                             // ignore: use_build_context_synchronously
+                            Navigator.pushNamedAndRemoveUntil(
+                                context, '/', (route) => false);
                           },
                           style: ElevatedButton.styleFrom(
                               backgroundColor:

@@ -41,6 +41,8 @@ class LoginState extends ConsumerState<Login> {
 
     String noEmpleado;
     String empleadoIMSS;
+    String cerrar = '';
+
     isAuthenticating = true;
     final LocalAuthentication auth = LocalAuthentication();
     final isBiometricAvailable = await auth.canCheckBiometrics;
@@ -105,9 +107,10 @@ class LoginState extends ConsumerState<Login> {
       final imssController = ref.read(imssControllerProvider);
       noEmpleado = employeeNumberController.text;
       empleadoIMSS = imssController.text;
+      cerrar = await SharedPreferencesHelper.getdatos('cerrar');
     }
     // print(empleadoIMSS);
-    if (noEmpleado.isNotEmpty && empleadoIMSS.isNotEmpty) {
+    if (noEmpleado.isNotEmpty && empleadoIMSS.isNotEmpty && cerrar != 'si') {
       final postDatas = {
         'no_empleado': noEmpleado,
         'imss': empleadoIMSS,
@@ -365,6 +368,8 @@ class LoginState extends ConsumerState<Login> {
                                 child: InkWell(
                                   onTap: () {
                                     SharedPreferencesHelper.borrashared();
+                                    SharedPreferencesHelper.setdatos(
+                                        'cerrar', '');
                                     // Your action or function to be executed on tap goes here
                                     somealgo();
                                   },
