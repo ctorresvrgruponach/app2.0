@@ -565,17 +565,18 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                               Text('${rowData['pago']}'),
                                             ),
                                             DataCell(
-                                              rowsavales!.isNotEmpty
-                                                  ? Botondocup(
-                                                      texto: 'Ver',
+                                              rowData['estatus_prestamo'] == 1
+                                                  ? const Text(
+                                                      'Activo')
+                                                  :(rowsavales!.isEmpty ) || rowData['estatus_prestamo'] == 0 ?   Botondocup(
+                                                      texto: rowsavales!.isEmpty  ? 'Ver vales' : 'Agrega nuevo aval',
                                                       indiceadelanto:
                                                           '${rowData['id']}',
                                                       idoperacion:
                                                           '${rowData['id_operacion']}',
                                                       someAvalesMap: rowsavales,
-                                                    )
-                                                  : const Text(
-                                                      'Pendiente de aporbacion'),
+                                                    ) : const Text(
+                                                      'Pendiente de aprobacion') ,
                                             ),
                                             // Agrega más DataCell según sea necesario
                                           ],

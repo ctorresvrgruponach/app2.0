@@ -195,21 +195,24 @@ class EditaPrestamoState extends ConsumerState<EditaPrestamo> {
                               : (diferencia >= 1)
                                   ? true
                                   : false,
-                          child: ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  showForm = true;
-                                  idPrestamoSolicitado = idPrestamo;
-                                  ocultaBtn = false;
-                                  actualizarEstado();
-                                });
-                              },
-                              style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          const Color.fromARGB(255, 5, 50,
-                                              91))), // Color de fondo azul
-                              child: const Text('Continuar')),
+                          child: Visibility(
+                            visible: diferencia >= 1,
+                            child: ElevatedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    showForm = true;
+                                    idPrestamoSolicitado = idPrestamo;
+                                    ocultaBtn = false;
+                                    actualizarEstado();
+                                  });
+                                },
+                                style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            const Color.fromARGB(255, 5, 50,
+                                                91))), // Color de fondo azul
+                                child: const Text('Continuar')),
+                          ),
                         ),
                       Visibility(
                         visible: showForm,
@@ -319,9 +322,11 @@ class EditaPrestamoState extends ConsumerState<EditaPrestamo> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'Selecciona a tus avales',
-              style: TextStyle(fontWeight: FontWeight.w900),
+            Visibility(
+              visible: diferencia > 1 ,
+              child: const Text('Selecciona a tus avales',
+                style: TextStyle(fontWeight: FontWeight.w900),
+              ),
             ),
             // Text('Monto del prestamo solicitado $montoSolicitado'),
             // Text('Monto faltante ($montoSolicitado - $sumaTotalAvalesCondirmados)'),
@@ -420,7 +425,7 @@ class EditaPrestamoState extends ConsumerState<EditaPrestamo> {
             //     Text('$totalAmount'),
             // Text('Total: $montoavales'),
 
-            Text('FALTANTE $diferencia'),
+            // Text('FALTANTE $diferencia'),
             // Text(totalAmount == montoRestante ? 'Valido ': 'No valido'),
             Visibility(
               // visible:( avalesConfirmados.isNotEmpty) ? true :  (diferencia  >= 1 ) ? true : false,
@@ -451,6 +456,8 @@ class EditaPrestamoState extends ConsumerState<EditaPrestamo> {
                             final respuesta =
                                 await enviaNuevosAvales.actualizaAvales();
                             if (respuesta['estatus'] == 200) {
+                              ref.refresh(postMisNotificacionesdetalleProviders);
+                              ref.refresh(postMisAdelantosProviders);
                               //ignore: use_build_context_synchronously
                               showDialog(
                                 context: context,
