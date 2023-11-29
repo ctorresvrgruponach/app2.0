@@ -6,33 +6,6 @@ class ReciboNominaScreen extends ConsumerStatefulWidget {
   ReciboNominaScreenState createState() => ReciboNominaScreenState();
 }
 
-final operacionesProvider =
-    FutureProvider.autoDispose<Map<String, dynamic>>((ref) async {
-  final token = await SharedPreferencesHelper.getdatos('token');
-  final empleadoId = await SharedPreferencesHelper.getdatos('empleado');
-  final postDatas = {
-    "idEmpleado": empleadoId,
-    "token": token,
-  };
-  final dynamic dataOperaciones = await fetchPostData(
-      modo, completeUrldev, baseUrl, endpointOperacionesRecibos, postDatas);
-  return dataOperaciones;
-});
-
-final periodosProvider = FutureProvider.family<Map<String, dynamic>, String>(
-    ((ref, idOperacion) async {
-  final token = await SharedPreferencesHelper.getdatos('token');
-  final empleadoId = await SharedPreferencesHelper.getdatos('empleado');
-  final postDatas = {
-    "idEmpleado": empleadoId,
-    "idOperacion": idOperacion,
-    "token": token,
-  };
-  final dynamic dataPeriodos = await fetchPostData(
-      modo, completeUrldev, baseUrl, endpointPeriodosRecibos, postDatas);
-  return dataPeriodos;
-}));
-
 fetchData(operacion, periodo, tipo) async {
   final token = await SharedPreferencesHelper.getdatos('token');
   final idEmpleado = await SharedPreferencesHelper.getdatos('empleado');
@@ -56,6 +29,33 @@ fetchData(operacion, periodo, tipo) async {
 
 class ReciboNominaScreenState extends ConsumerState<ReciboNominaScreen> {
   String? operacionValueSelected;
+
+  final operacionesProvider =
+    FutureProvider.autoDispose<Map<String, dynamic>>((ref) async {
+    final token = await SharedPreferencesHelper.getdatos('token');
+    final empleadoId = await SharedPreferencesHelper.getdatos('empleado');
+    final postDatas = {
+      "idEmpleado": empleadoId,
+      "token": token,
+    };
+    final dynamic dataOperaciones = await fetchPostData(
+        modo, completeUrldev, baseUrl, endpointOperacionesRecibos, postDatas);
+    return dataOperaciones;
+  });
+
+  final periodosProvider = FutureProvider.family<Map<String, dynamic>, String>(
+      ((ref, idOperacion) async {
+    final token = await SharedPreferencesHelper.getdatos('token');
+    final empleadoId = await SharedPreferencesHelper.getdatos('empleado');
+    final postDatas = {
+      "idEmpleado": empleadoId,
+      "idOperacion": idOperacion,
+      "token": token,
+    };
+    final dynamic dataPeriodos = await fetchPostData(
+        modo, completeUrldev, baseUrl, endpointPeriodosRecibos, postDatas);
+    return dataPeriodos;
+  }));
 
   @override
   Widget build(BuildContext context) {

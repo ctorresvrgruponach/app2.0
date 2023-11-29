@@ -363,12 +363,13 @@ class BotondocupState extends ConsumerState<Botondocup> {
                 Column(
                   children: [
                     ...avalesTextList,
-                    avalesTextList.isNotEmpty
-                        ? Botonc(
-                            texto: 'selecciona nuevos avales',
+                    // avalesTextList.isNotEmpty
+                    //     ? 
+                    Botonc(
+                            texto: avalesTextList.isNotEmpty ? 'Selecciona Nuevos Avales' : 'Ver Mis Avales',
                             onPressed: () {
                               if (kDebugMode) {}
-                              if (kDebugMode) {
+                              // if (kDebugMode) {
                                 String? idPrestamo = widget.indiceadelanto;
                                 String? idoperacion = widget.idoperacion;
                                 Navigator.push(
@@ -379,10 +380,11 @@ class BotondocupState extends ConsumerState<Botondocup> {
                                         idoperacion: idoperacion),
                                   ),
                                 );
-                              }
+                              // }
                             },
-                          )
-                        : const Text(''),
+                          ),
+                        // :
+                         const Text(''),
                     const Text('Selecciona que archivo que deseas adjuntar'),
                     const Botonfile(texto: 'INE'),
                     const Botonfile(texto: 'Comprobante'),
