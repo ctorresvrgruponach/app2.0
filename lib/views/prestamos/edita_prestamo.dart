@@ -15,8 +15,9 @@ class EditaPrestamo extends ConsumerStatefulWidget {
   const EditaPrestamo(
       {super.key, required this.data, required this.idoperacion});
   // ignore: prefer_typing_uninitialized_variables
-  final data;
   final idoperacion;
+  // ignore: prefer_typing_uninitialized_variables
+  final data;
 
   @override
   EditaPrestamoState createState() => EditaPrestamoState();
@@ -189,7 +190,11 @@ class EditaPrestamoState extends ConsumerState<EditaPrestamo> {
                       Text('Prestamo solicitado $formattedMonoto'),
                       if (ocultaBtn)
                         Visibility(
-                          visible:(avalesConfirmados.isNotEmpty) ? true :  (diferencia  >= 1 ) ? true : false,
+                          visible: (avalesConfirmados.isNotEmpty)
+                              ? true
+                              : (diferencia >= 1)
+                                  ? true
+                                  : false,
                           child: ElevatedButton(
                               onPressed: () {
                                 setState(() {
@@ -415,11 +420,11 @@ class EditaPrestamoState extends ConsumerState<EditaPrestamo> {
             //     Text('$totalAmount'),
             // Text('Total: $montoavales'),
 
-                 Text('FALTANTE $diferencia'),
-                // Text(totalAmount == montoRestante ? 'Valido ': 'No valido'),
+            Text('FALTANTE $diferencia'),
+            // Text(totalAmount == montoRestante ? 'Valido ': 'No valido'),
             Visibility(
-            // visible:( avalesConfirmados.isNotEmpty) ? true :  (diferencia  >= 1 ) ? true : false,
-            visible: diferencia == 0 ? false : true,
+              // visible:( avalesConfirmados.isNotEmpty) ? true :  (diferencia  >= 1 ) ? true : false,
+              visible: diferencia == 0 ? false : true,
               child: ElevatedButton(
                   onPressed: btnGuardar
                       ? null

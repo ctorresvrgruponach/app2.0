@@ -83,6 +83,9 @@ class LoginState extends ConsumerState<Login> {
           }
         }
       } else {
+        await SharedPreferencesHelper.remove('token');
+        await SharedPreferencesHelper.remove('imss');
+        await SharedPreferencesHelper.remove('empleadoId');
         await customDialogManager.showCustomDialog(
           icon: Icons.abc,
           message: 'El biométrico no está disponible en este dispositivo',
@@ -94,6 +97,9 @@ class LoginState extends ConsumerState<Login> {
         empleadoIMSS = '';
       }
     } else {
+      await SharedPreferencesHelper.remove('token');
+      await SharedPreferencesHelper.remove('imss');
+      await SharedPreferencesHelper.remove('empleadoId');
       final employeeNumberController =
           ref.read(employeeNumberControllerProvider);
       final imssController = ref.read(imssControllerProvider);
@@ -358,6 +364,7 @@ class LoginState extends ConsumerState<Login> {
                             : Center(
                                 child: InkWell(
                                   onTap: () {
+                                    SharedPreferencesHelper.borrashared();
                                     // Your action or function to be executed on tap goes here
                                     somealgo();
                                   },

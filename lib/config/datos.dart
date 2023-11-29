@@ -28,14 +28,15 @@ const String endpointOperacionesRecibos = '/recibos_nomina';
 const String endpointPeriodosRecibos = '/recibos_periodos';
 const String endpointRecibosBase64 = '/descarga_recibo_nomina';
 const String endpointMisNotificaciones = '/notifica_aval';
+const String endpointcajaahorro = '/caja_ahorro';
+const String endpointDatosCaja = '/solicita_caja_ahorro';
 
 //PRESTAMOS NOMINA
-const String prestamo             = '/prestamo_nomina';
-const String solicitaPrestamo     = '/solicita_prestamo_nomina';
-const String calculaPrestamo      = '/calcula_prestamo';
-const String confirmaPrestamo     = '/guarda_prestamo';
+const String prestamo = '/prestamo_nomina';
+const String solicitaPrestamo = '/solicita_prestamo_nomina';
+const String calculaPrestamo = '/calcula_prestamo';
+const String confirmaPrestamo = '/guarda_prestamo';
 const String solicitaPrestamoEdit = '/edita_prestamo_nomina';
-
 
 List<String> myList = ['Identificación (INE)', 'INE'];
 

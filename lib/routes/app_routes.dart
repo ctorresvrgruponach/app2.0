@@ -1,6 +1,9 @@
 // app_routes.dart
 
-import 'package:com.gruponach.nach_empleado/views/prestamos/solicita_prestamo.dart';
+import 'package:com.gruponach.nach_empleado/views/cajadeahorro/valorescaja.dart';
+
+import '../views/cajadeahorro/cajaoperacionscreen.dart';
+import '../views/prestamos/solicita_prestamo.dart';
 
 import '../config/vistas.dart';
 import '../views/prestamos/prestamo_nomina.dart';
@@ -21,9 +24,11 @@ class AppRoutes {
   static const String pdf = 'pdf';
   static const String reviewSignaturePage = 'reviewSignaturePage';
   static const String xml = 'xml';
-
+  static const String solicitudes = 'solicitudes';
+  static const String cajaopereciones = 'cajaopereciones';
+  static const String cajavalores = 'cajavalores';
   //Prestamos
-  static const String prestamo         = 'prestamo';
+  static const String prestamo = 'prestamo';
   static const String solicitaPrestamo = 'solicita_prestamo';
 
   // Agrega la definición de initialRoute
@@ -37,6 +42,7 @@ class AppRoutes {
     otraPantalla: (context) => const OtraPantalla(),
     firma: (context) => const Firma(),
     servicios: (context) => const ServiciosScreen(),
+    solicitudes: (context) => const SolicitudesScreen(),
     misAdelantos: (context) => const MisAdelantos(),
     adelantoNomina: (context) => const AdelantoScreen(),
     actualizaempleado: (context) => const ActualizaEmpleadoScreen(),
@@ -46,9 +52,11 @@ class AppRoutes {
     pdf: (context) => const PdfViewerPage(),
     reviewSignaturePage: (context) => const ReviewSignaturePage(),
     xml: (context) => const XmlDownloadPage(),
+    cajaopereciones: (context) => const CajaDeAhorroScreen(),
+    cajavalores: (context) => const ValoresPedirCajaScreen(),
 
     // Prestamos
-    prestamo:         (context) => const Prestamo(),
+    prestamo: (context) => const Prestamo(),
     solicitaPrestamo: (context) => const SolicitaPrestamo(),
   };
 }

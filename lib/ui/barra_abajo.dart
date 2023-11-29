@@ -192,8 +192,9 @@ class MyBottomNavigationBarState extends ConsumerState<MyBottomNavigationBar> {
                       items: <PopupMenuItem<String>>[
                         PopupMenuItem<String>(
                             child: ElevatedButton(
-                          onPressed: () {
-                            SharedPreferencesHelper.borrashared();
+                          onPressed: () async {
+                            await SharedPreferencesHelper.borrashared();
+                            // ignore: use_build_context_synchronously
                             Navigator.pushNamedAndRemoveUntil(
                                 context, '/', (route) => false);
                           },

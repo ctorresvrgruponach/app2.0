@@ -343,7 +343,7 @@ class BotondocupState extends ConsumerState<Botondocup> {
     final customDialogManager = CustomDialogManager(context);
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Color.fromARGB(filterColor ? 255 : 50, 54, 244, 76),
+        backgroundColor: Color.fromARGB(filterColor ? 255 : 50, 76, 175, 80),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(displayWidth(context) * 0.02),
         ),
@@ -363,23 +363,26 @@ class BotondocupState extends ConsumerState<Botondocup> {
                 Column(
                   children: [
                     ...avalesTextList,
-                    Botonc(
-                      texto: 'selecciona nuevos avales',
-                      onPressed: () {
-                        if (kDebugMode) {}
-                        if (kDebugMode) {
-                          String? idPrestamo = widget.indiceadelanto;
-                          String? idoperacion = widget.idoperacion;
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => EditaPrestamo(
-                                  data: idPrestamo, idoperacion: idoperacion),
-                            ),
-                          );
-                        }
-                      },
-                    ),
+                    avalesTextList.isNotEmpty
+                        ? Botonc(
+                            texto: 'selecciona nuevos avales',
+                            onPressed: () {
+                              if (kDebugMode) {}
+                              if (kDebugMode) {
+                                String? idPrestamo = widget.indiceadelanto;
+                                String? idoperacion = widget.idoperacion;
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => EditaPrestamo(
+                                        data: idPrestamo,
+                                        idoperacion: idoperacion),
+                                  ),
+                                );
+                              }
+                            },
+                          )
+                        : const Text(''),
                     const Text('Selecciona que archivo que deseas adjuntar'),
                     const Botonfile(texto: 'INE'),
                     const Botonfile(texto: 'Comprobante'),

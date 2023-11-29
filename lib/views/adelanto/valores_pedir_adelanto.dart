@@ -595,19 +595,6 @@ class ValoresPedirAdelantoScreenState
       ),
     );
   }
-
-  alerta() async {
-    final customDialogManager =
-        // ignore: use_build_context_synchronously
-        CustomDialogManager(context);
-
-    await customDialogManager.showCustomDialog(
-      icon: Icons.airlines_rounded,
-      message: 'descuentos',
-      title: 'des',
-      color: const Color.fromARGB(255, 244, 54, 54),
-    );
-  }
 }
 
 //void datos(codigoPostal) {
