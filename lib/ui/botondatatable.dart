@@ -290,6 +290,7 @@ class Botondocup extends ConsumerStatefulWidget {
   final String texto;
   final String? indiceadelanto;
   final String? idoperacion;
+  final int notificacion;
   final List<Map<String, dynamic>>? someAvalesMap;
 
   const Botondocup(
@@ -297,7 +298,8 @@ class Botondocup extends ConsumerStatefulWidget {
       required this.texto,
       required this.indiceadelanto,
       this.someAvalesMap,
-      this.idoperacion})
+      this.idoperacion,
+      required this.notificacion})
       : super(key: key);
 
   @override
@@ -365,24 +367,27 @@ class BotondocupState extends ConsumerState<Botondocup> {
                     ...avalesTextList,
                     // avalesTextList.isNotEmpty
                     //     ? 
-                    Botonc(
-                            texto: avalesTextList.isNotEmpty ? 'Selecciona Nuevos Avales' : 'Ver Mis Avales',
-                            onPressed: () {
-                              if (kDebugMode) {}
-                              // if (kDebugMode) {
-                                String? idPrestamo = widget.indiceadelanto;
-                                String? idoperacion = widget.idoperacion;
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => EditaPrestamo(
-                                        data: idPrestamo,
-                                        idoperacion: idoperacion),
-                                  ),
-                                );
-                              // }
-                            },
-                          ),
+                    Visibility(
+                      visible:  widget.notificacion == 0 ? false : true,
+                      child: Botonc(
+                              texto: avalesTextList.isNotEmpty ? 'Selecciona Nuevos Avales' : 'Ver Mis Avales',
+                              onPressed: () {
+                                if (kDebugMode) {}
+                                // if (kDebugMode) {
+                                  String? idPrestamo = widget.indiceadelanto;
+                                  String? idoperacion = widget.idoperacion;
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => EditaPrestamo(
+                                          data: idPrestamo,
+                                          idoperacion: idoperacion),
+                                    ),
+                                  );
+                                // }
+                              },
+                            ),
+                    ),
                         // :
                          const Text(''),
                     const Text('Selecciona que archivo que deseas adjuntar'),
