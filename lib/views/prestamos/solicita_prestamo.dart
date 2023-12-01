@@ -941,9 +941,6 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                                 'avales', '$avales'); //avales
                             setState(() {
                               btnsolicitaPrestamo = true;
-                              montosolicitado.clear();
-                              plazoseleccionado.clear();
-                              someMap.clear();
                             });
                             final respuesta =
                                 await enviarPrestamo.confirmaprestamo();
