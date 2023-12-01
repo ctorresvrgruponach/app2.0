@@ -127,6 +127,7 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                 onTap: () {
                                   ref.refresh(
                                       postMisNotificacionesdetalleProviders);
+                                  ref.refresh(postMisAdelantosProviders);
                                 },
                                 child: Align(
                                   alignment: Alignment.centerRight,
@@ -592,7 +593,7 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                                       someAvalesMap: rowsavales,
                                                       notificacion: 1,
                                                     ) : rowData['estatus_prestamo'] == 4 ? const Text(
-                                                      'Rechazado'): const Text('Pendiente por aprobacion'),
+                                                      'Rechazado'): const Text('Pendiente de aprobación'),
                                               ),
 
                                           ],

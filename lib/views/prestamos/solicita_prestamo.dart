@@ -108,6 +108,12 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
     final montosolicitado = ref.read(montoinputControllerProvider);
     final plazoseleccionado = ref.read(plazosControllerProvider);
 
+  void limpiarCampos() {
+    setState(() {
+      montosolicitado.clear();
+      plazoseleccionado.clear();
+    });
+  }
     fetchData() async {
       final token = await SharedPreferencesHelper.getdatos('token');
       final idEmpleado = await SharedPreferencesHelper.getdatos('empleado');
@@ -152,6 +158,11 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
           IconButton(
             icon: const Icon(Icons.home),
             onPressed: () {
+              setState(() {
+                someMap.clear();
+              });
+                limpiarCampos();
+
               Navigator.pushNamed(context, 'home');
             },
           ),
@@ -394,7 +405,7 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                                                         (BuildContext context) {
                                                       return AlertDialog(
                                                         title: const Text(
-                                                            'Error...'),
+                                                            'HAY UN ERROR...'),
                                                         content: Text(
                                                             error.toString()),
                                                         actions: <Widget>[
@@ -819,8 +830,11 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    montosolicitado.text = '';
-                    plazoseleccionado.text = '';
+                    setState(() {
+                      montosolicitado.clear();
+                      plazoseleccionado.clear();
+                      someMap.clear();
+                    });
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
@@ -931,6 +945,9 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                             final respuesta =
                                 await enviarPrestamo.confirmaprestamo();
                             if (respuesta['estatus'] == 200) {
+                              setState(() {
+                                someMap.clear();
+                              });
                               //ignore: use_build_context_synchronously
                               showDialog(
                                 context: context,
