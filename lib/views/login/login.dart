@@ -386,7 +386,7 @@ class LoginState extends ConsumerState<Login> {
                         Padding(
                           padding: EdgeInsets.only(
                               top: displayWidth(context) * 0.07),
-                          child: ElevatedButton(
+                          child: labelText ? ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor:
                                   const Color.fromARGB(255, 5, 50, 91),
@@ -410,7 +410,8 @@ class LoginState extends ConsumerState<Login> {
                                     )),
                               ),
                             ),
-                          ),
+                          )
+                          : const Text(''),
                         ),
                       ],
                     ),
