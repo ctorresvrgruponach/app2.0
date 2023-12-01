@@ -61,14 +61,14 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                         label: Text('Número de prestamo'),
                                       ),
                                       DataColumn(
-                                        label: Text('monto'),
+                                        label: Text('Monto'),
                                       ),
                                       DataColumn(
-                                        label: Text('nombre_solicitante'),
+                                        label: Text('Solicitante'),
                                       ),
 
                                       DataColumn(
-                                        label: Text('estatus'),
+                                        label: Text('Estatus'),
                                       ),
                                       DataColumn(
                                         label: Text('Aprobar'),
@@ -101,6 +101,8 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                               texto: 'APROBAR',
                                               indiceadelanto:
                                                   '${rowData['id_prestamo']}',
+                                              notificacion:
+                                                  0,
                                               someAvalesMap: rowsavales,
                                             ),
                                           ),
@@ -564,21 +566,35 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                             DataCell(
                                               Text('${rowData['pago']}'),
                                             ),
-                                            DataCell(
-                                              rowData['estatus_prestamo'] == 1
-                                                  ? const Text(
-                                                      'Activo')
-                                                  :(rowsavales!.isEmpty ) || rowData['estatus_prestamo'] == 0 ?   Botondocup(
-                                                      texto: rowsavales!.isEmpty  ? 'Ver vales' : 'Agrega nuevo aval',
+                                            // DataCell(
+                                            //   rowData['estatus_prestamo'] == 1
+                                            //       ? const Text(
+                                            //           'Activo')
+                                            //       :(rowsavales!.isEmpty ) || rowData['estatus_prestamo'] == 0 ?   Botondocup(
+                                            //           texto: rowsavales!.isEmpty  ? 'Ver vales' : 'Agrega nuevo aval',
+                                            //           indiceadelanto:
+                                            //               '${rowData['id']}',
+                                            //           idoperacion:
+                                            //               '${rowData['id_operacion']}',
+                                            //           notificacion:
+                                            //               1,
+                                            //           someAvalesMap: rowsavales,
+                                            //         ) : const Text(
+                                            //           'Pendiente de aprobacion') ,
+                                            // ),
+                                            // Agrega más DataCell según sea necesario
+                                            DataCell( rowData['estatus_prestamo'] == 1 ? const Text('Activo') : rowData['estatus_prestamo'] == 0 ?   Botondocup(
+                                                      texto: rowsavales!.isEmpty  ? 'Ver avales' : 'Agrega nuevo aval',
                                                       indiceadelanto:
                                                           '${rowData['id']}',
                                                       idoperacion:
                                                           '${rowData['id_operacion']}',
                                                       someAvalesMap: rowsavales,
-                                                    ) : const Text(
-                                                      'Pendiente de aprobacion') ,
-                                            ),
-                                            // Agrega más DataCell según sea necesario
+                                                      notificacion: 1,
+                                                    ) : rowData['estatus_prestamo'] == 4 ? const Text(
+                                                      'Rechazado'): const Text('Pendiente por aprobacion'),
+                                              ),
+
                                           ],
                                         );
                                       }).toList(),
