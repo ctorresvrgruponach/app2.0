@@ -416,6 +416,7 @@ class BotondocupState extends ConsumerState<Botondocup> {
                               message: '',
                               color: const Color.fromARGB(255, 54, 244, 76));
                           ref.refresh(postMisNotificacionesdetalleProviders);
+                          ref.refresh(postMisAdelantosProviders);
                           // ignore: use_build_context_synchronously
                           Navigator.of(context).pop();
                         } else {
@@ -510,6 +511,7 @@ class BotondocurState extends ConsumerState<Botondocur> {
                           // ignore: use_build_context_synchronously
                           Navigator.of(context).pop();
                           ref.refresh(postMisNotificacionesdetalleProviders);
+                          ref.refresh(postMisAdelantosProviders);
                         } else {
                           await customDialogManager.showCustomDialog(
                               icon: Icons.warning,
