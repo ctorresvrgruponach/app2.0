@@ -157,12 +157,14 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
         actions: [
           IconButton(
             icon: const Icon(Icons.home),
-            onPressed: () {
+            onPressed: () async {
               setState(() {
                 someMap.clear();
               });
                 limpiarCampos();
-
+              await SharedPreferencesHelper.remove('Identificación (INE)');
+              await SharedPreferencesHelper.remove('Comprobante (DOMICILIO)');
+              // ignore: use_build_context_synchronously
               Navigator.pushNamed(context, 'home');
             },
           ),
@@ -829,12 +831,15 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     setState(() {
                       montosolicitado.clear();
                       plazoseleccionado.clear();
                       someMap.clear();
                     });
+                    await SharedPreferencesHelper.remove('Identificación (INE)');
+                    await SharedPreferencesHelper.remove('Comprobante (DOMICILIO)');
+                    // ignore: use_build_context_synchronously
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
@@ -947,7 +952,11 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                             if (respuesta['estatus'] == 200) {
                               setState(() {
                                 someMap.clear();
+                                montosolicitado.clear();
+                                plazoseleccionado.clear();
                               });
+                              await SharedPreferencesHelper.remove('Identificación (INE)');
+                              await SharedPreferencesHelper.remove('Comprobante (DOMICILIO)');
                               //ignore: use_build_context_synchronously
                               showDialog(
                                 context: context,
