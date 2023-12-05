@@ -509,9 +509,23 @@ class EditaPrestamoState extends ConsumerState<EditaPrestamo> {
                           }
                         },
                   style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                          const Color.fromARGB(255, 5, 50, 91))),
-                  child: const Text('Guardar')),
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                      btnGuardar
+                            ? const Color.fromARGB(255, 23, 23, 23)
+                            : const Color.fromARGB(
+                                255, 5, 50, 91)),  // Color de fondo azul
+                    // Color de fondo azul
+                  ),
+                  child: btnGuardar
+                  ? const Text('Procesando')
+                  : const Text(
+                      'Guardar',
+                      style: TextStyle(
+                        color:  Color.fromARGB(255, 255, 255, 255),
+                      ),
+                    ),
+
+                  ),
             )
           ],
         ),
