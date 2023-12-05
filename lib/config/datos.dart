@@ -30,6 +30,7 @@ const String endpointRecibosBase64 = '/descarga_recibo_nomina';
 const String endpointMisNotificaciones = '/notifica_aval';
 const String endpointcajaahorro = '/caja_ahorro';
 const String endpointDatosCaja = '/solicita_caja_ahorro';
+const String endpointPeriodosRecibosTransitorios = '/recibos_periodos_transitorios';
 
 //PRESTAMOS NOMINA
 const String prestamo = '/prestamo_nomina';

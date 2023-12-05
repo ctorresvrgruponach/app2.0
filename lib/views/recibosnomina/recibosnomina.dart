@@ -29,6 +29,7 @@ fetchData(operacion, periodo, tipo) async {
 
 class ReciboNominaScreenState extends ConsumerState<ReciboNominaScreen> {
   String? operacionValueSelected;
+  String? operacionTransitoriasValueSelected;
 
   final operacionesProvider =
     FutureProvider.autoDispose<Map<String, dynamic>>((ref) async {
@@ -55,6 +56,20 @@ class ReciboNominaScreenState extends ConsumerState<ReciboNominaScreen> {
     final dynamic dataPeriodos = await fetchPostData(
         modo, completeUrldev, baseUrl, endpointPeriodosRecibos, postDatas);
     return dataPeriodos;
+  }));
+  
+  final periodosTransitoriosProvider = FutureProvider.family<Map<String, dynamic>, String>(
+      ((ref, idOperacion) async {
+    final token = await SharedPreferencesHelper.getdatos('token');
+    final empleadoId = await SharedPreferencesHelper.getdatos('empleado');
+    final postDatas = {
+      "idEmpleado": empleadoId,
+      "idOperacionTransitorio": idOperacion,
+      "token": token,
+    };
+    final dynamic dataPeriodosTrancitorios = await fetchPostData(
+        modo, completeUrldev, baseUrl, endpointPeriodosRecibosTransitorios, postDatas);
+    return dataPeriodosTrancitorios;
   }));
 
   @override
@@ -88,12 +103,24 @@ class ReciboNominaScreenState extends ConsumerState<ReciboNominaScreen> {
                         operacionesSinDuplicados.add(operacion);
                       }
                     }
-                    final contadorOperaciones = operaciones.length;
+                    final contadorOperaciones = operacionesSinDuplicados.length;
                     if (contadorOperaciones == 1) {
                       operacionValueSelected =
                           operaciones[0]['id_operacion'].toString();
                     }
-                    return Column(
+
+                    int contadorOperacionesTransitorias = 0;
+                    List<dynamic> operacionesTransitoriasList = [];
+                    final operacionesTransitorias = operacionesSnapshot.data!['operacionesTransitorias'];
+                    if(operacionesTransitorias != null){
+                      operacionesTransitoriasList = operacionesSnapshot.data!['operacionesTransitorias'];
+                      contadorOperacionesTransitorias = operacionesTransitoriasList.length;
+                      if (contadorOperacionesTransitorias == 1) {
+                        operacionTransitoriasValueSelected = operacionesTransitorias[0]['id_operacion'].toString();
+                      }
+                    }
+
+                    return operacionesTransitorias == null ? Column(
                       children: [
                         Visibility(
                           visible: contadorOperaciones == 1,
@@ -305,6 +332,217 @@ class ReciboNominaScreenState extends ConsumerState<ReciboNominaScreen> {
                                                 ),
                                               ),
                                               child: const Text('XML'),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    }).toList(),
+                                  );
+                                } else if (snapshot.hasError) {
+                                  return Center(
+                                      child: Text('Error: ${snapshot.error}'));
+                                }
+                                return const Text(
+                                  'No hay datos a mostrar',
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color.fromARGB(255, 2, 9, 72),
+                                  ),
+                                );
+                              },
+                            ),
+                          )
+                        else if (operacionValueSelected == null)
+                          Visibility(
+                            visible: operacionValueSelected == null,
+                            child: const Center(
+                                child: Text(
+                              'Selecciona una operación',
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Color.fromARGB(255, 2, 9, 72),
+                              ),
+                            )),
+                          )
+                      ],
+                    ):Column(
+                      children: [
+                        Visibility(
+                          visible: contadorOperacionesTransitorias == 1,
+                          child: Padding(
+                            padding: const EdgeInsets.all(22.0),
+                            child: Text(
+                              operacionesTransitoriasList[0]['nombre_operacion'].toString(),
+                              style: TextStyle(
+                                fontSize: displayWidth(context) * 0.05,
+                                fontWeight: FontWeight.bold,
+                                color: const Color.fromARGB(255, 2, 9, 72),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Visibility(
+                          visible: contadorOperacionesTransitorias > 1,
+                          child: Padding(
+                            padding: const EdgeInsets.all(22.0),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 20.0),
+                                  child: Text(
+                                    'Selecciona una operación',
+                                    style: TextStyle(
+                                      fontSize: displayWidth(context) * 0.05,
+                                      fontWeight: FontWeight.bold,
+                                      color:
+                                          const Color.fromARGB(255, 2, 9, 72),
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  width: displayWidth(context) *
+                                      0.8, // Establece el ancho deseado
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Colors.grey,
+                                    ),
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12.0),
+                                  child: DropdownButton<String>(
+                                    value: operacionTransitoriasValueSelected,
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: displayWidth(context) * 0.04,
+                                    ),
+                                    icon: Padding(
+                                      padding: EdgeInsets.only(
+                                          left: displayWidth(context) * 0.09),
+                                      child: const Icon(
+                                        Icons.keyboard_arrow_down_sharp,
+                                        color: Color.fromARGB(255, 2, 9, 72),
+                                      ),
+                                    ),
+                                    items: [
+                                      DropdownMenuItem<String>(
+                                        value: null,
+                                        child: Container(
+                                          constraints: BoxConstraints(
+                                              maxWidth:
+                                                  displayWidth(context) * 0.6),
+                                          child: const Text(
+                                              'Selecciona una opción'),
+                                        ),
+                                      ),
+                                      ...operacionesTransitoriasList
+                                          .map<DropdownMenuItem<String>>(
+                                        (elemento) {
+                                          return DropdownMenuItem<String>(
+                                            value: elemento["id_operacion"]
+                                                .toString(),
+                                            child: Container(
+                                              constraints: BoxConstraints(
+                                                  maxWidth:
+                                                      displayWidth(context) *
+                                                          0.6),
+                                              child: Text(
+                                                elemento["nombre_operacion"],
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  fontSize: Tween<double>(
+                                                    begin:
+                                                        displayWidth(context) *
+                                                            0.03,
+                                                    end: displayWidth(context) *
+                                                        0.04,
+                                                    // ignore: invalid_use_of_protected_member
+                                                  ).lerp(0.5),
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ).toList(),
+                                    ],
+                                    onChanged: (value) {
+                                      if (kDebugMode) {
+                                        print(value);
+                                      }
+                                      setState(() {
+                                        operacionTransitoriasValueSelected = value;
+                                      });
+                                      if (operacionTransitoriasValueSelected != null) {
+                                        ref.read(periodosTransitoriosProvider(
+                                            operacionTransitoriasValueSelected!));
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        if (operacionTransitoriasValueSelected != null)
+                          Visibility(
+                            visible: operacionTransitoriasValueSelected != null,
+                            child: // ...
+                                FutureBuilder(
+                              future: operacionTransitoriasValueSelected != null
+                                  ? ref.read(periodosTransitoriosProvider(operacionTransitoriasValueSelected!).future)
+                                  : null,
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  // Si la petición está en curso, muestra un indicador de carga.
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                } else if (snapshot.hasData &&
+                                    snapshot.data?['success']) {
+                                  // Si la petición ha tenido éxito, muestra la DataTable.
+                                  final periodos = snapshot.data!['periodos'];
+                                  List<Map<String, dynamic>> periodosData =
+                                      (periodos as List<dynamic>)
+                                          .map((item) =>item as Map<String, dynamic>)
+                                          .toList();
+                                  return DataTable(
+                                    columns: const [
+                                      DataColumn(label: Text('Período')),
+                                      DataColumn(label: Text('     ')),
+                                      DataColumn(label: Text('    PDF')),
+                                    ],
+                                    rows: periodosData.map((periodo) {
+                                      return DataRow(
+                                        cells: [
+                                          DataCell(Text(periodo['periodo'].toString())),
+                                          const DataCell(Text('')),
+                                          DataCell(
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                String url = "";
+                                                if(modo == 'dev'){
+                                                  url =
+                                                    "http://138.197.222.29/miportal/download_recibo_total_app?id_empleado_trans=${periodo['id_empleado_transitorio']}&periodo=${periodo['periodo']}&id_operacion=$operacionTransitoriasValueSelected";
+                                                }else{
+                                                  url = 
+                                                  "http://nachservice.com.mx/miportal/download_recibo_total_app?id_empleado_trans=${periodo['id_empleado_transitorio']}&periodo=${periodo['periodo']}&id_operacion=$operacionTransitoriasValueSelected";
+                                                }
+                                                SharedPreferencesHelper
+                                                    .setdatos(
+                                                        "urlPdfVisor", url);
+                                                Navigator.pushNamed(
+                                                    context, 'pdf');
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: Colors.red,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          8.0),
+                                                ),
+                                              ),
+                                              child: const Text('PDF'),
                                             ),
                                           ),
                                         ],
