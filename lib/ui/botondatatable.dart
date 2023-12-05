@@ -367,7 +367,7 @@ class BotondocupState extends ConsumerState<Botondocup> {
             width: displayWidth(context) * 0.9,
             height: displayHeight(context) * 0.6,
             child: AlertDialog(
-              title:  widget.notificacion == 1 ? const Text('Para obtener más información, acerca del estatus de tus avales, presiona en ver mis avales.', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),) :  const Text("Adjuntar documentos"),
+              title:  widget.notificacion == 1 && avalesTextList.isNotEmpty == false ? const Text('Para obtener más información, acerca del estatus de tus avales, presiona en ver mis avales.', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),) : (widget.notificacion == 0 ? const Text("Adjuntar documentos") : const Text('')) ,
               actions: <Widget>[
                 Column(
                   children: [
@@ -395,8 +395,9 @@ class BotondocupState extends ConsumerState<Botondocup> {
                               },
                             ),
                     ),
-                        // :
+                      //   // :
                       // Text(widget.notificacion.toString()),
+                      // Text(avalesTextList.isNotEmpty .toString()),
                       Text(widget.notificacion  == 1  ? '' : 'Selecciona que archivo que deseas adjuntar'),
                       widget.notificacion  == 1 ? const  Text('') : const Botonfile(texto: 'INE'),
                     widget.notificacion == 1 ? const Text('') : const Botonfile(texto: 'Comprobante'),
