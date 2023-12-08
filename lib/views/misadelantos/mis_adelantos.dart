@@ -1,5 +1,6 @@
 import '../../libs/lib.dart';
 import '../../ui/botondatatable.dart';
+import '../prestamos/documentos.dart';
 
 class MisAdelantos extends ConsumerStatefulWidget {
   const MisAdelantos({super.key});
@@ -536,7 +537,10 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                           label: Text('pago'),
                                         ),
                                         DataColumn(
-                                          label: Text('Acciones'),
+                                          label: Text('Estatus'),
+                                        ),
+                                        DataColumn(
+                                          label: Text('Acciones', textAlign: TextAlign.center),
                                         ),
                                         // Agrega más DataColumn según sea necesario
                                       ],
@@ -567,6 +571,10 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                             DataCell(
                                               Text('${rowData['pago']}'),
                                             ),
+                                            DataCell(
+                                              rowData['estatus_prestamo'] == 1 ? const Text('Activo'):(rowData['estatus_prestamo'] == 4) ? const Text('Rechazado') : const Text('Pendiente de aprobación')
+                                              // Text('${rowData['estatus_prestamo']}'),
+                                            ),
                                             // DataCell(
                                             //   rowData['estatus_prestamo'] == 1
                                             //       ? const Text(
@@ -584,7 +592,27 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                             //           'Pendiente de aprobacion') ,
                                             // ),
                                             // Agrega más DataCell según sea necesario
-                                            DataCell( rowData['estatus_prestamo'] == 1 ? const Text('Activo') : rowData['estatus_prestamo'] == 0 ?   Botondocup(
+                                            // DataCell( rowData['estatus_prestamo'] == 1 ? Row(
+                                            //   children: [
+                                            //     const Text('Activo'),
+                                            //     const SizedBox(width:12),
+                                            //     ElevatedButton(onPressed: () {
+                                            //       print('ME TOCASTE');
+                                            //     }, child: const Text('Documentos'))
+                                            //   ],
+                                            // ) : rowData['estatus_prestamo'] == 0 ?   Botondocup(
+                                            //           texto: rowsavales!.isEmpty  ? 'Ver avales' : 'Agrega nuevo aval',
+                                            //           indiceadelanto:
+                                            //               '${rowData['id']}',
+                                            //           idoperacion:
+                                            //               '${rowData['id_operacion']}',
+                                            //           someAvalesMap: rowsavales,
+                                            //           notificacion: 1,
+                                            //         ) : rowData['estatus_prestamo'] == 4 ? const Text(
+                                            //           'Rechazado'): const Text('Pendiente de aprobación'),
+                                            //   ),
+                                            DataCell(
+                                              rowData['estatus_prestamo'] == 0 ? Botondocup(
                                                       texto: rowsavales!.isEmpty  ? 'Ver avales' : 'Agrega nuevo aval',
                                                       indiceadelanto:
                                                           '${rowData['id']}',
@@ -592,10 +620,21 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                                           '${rowData['id_operacion']}',
                                                       someAvalesMap: rowsavales,
                                                       notificacion: 1,
-                                                    ) : rowData['estatus_prestamo'] == 4 ? const Text(
-                                                      'Rechazado'): const Text('Pendiente de aprobación'),
-                                              ),
-
+                                                    )  :(rowData['estatus_prestamo'] == 1) ? ElevatedButton(onPressed: (){
+                                                      int idPrestamo =rowData['id'];
+                                                      int idoperacion =rowData['id_operacion'];
+                                                  
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) => VerDocumentos( data: idPrestamo, idoperacion: idoperacion),
+                                                        ),
+                                                      );
+                                                    },
+                                                    style: ButtonStyle(
+                                                    backgroundColor: MaterialStateProperty.all<Color>( const Color.fromARGB(255, 5, 50, 91)),
+                                                    ),child: const Text('Documentos')) : const Text('')
+                                            ),
                                           ],
                                         );
                                       }).toList(),

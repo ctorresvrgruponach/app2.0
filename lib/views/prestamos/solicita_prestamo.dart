@@ -71,6 +71,8 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
   int catorcenal = 26;
   int quincenal  = 24;
   int semanal    = 56;
+  bool btnDocumentos = false;
+  bool btnCambiaMonto = true;
 
 //PARA LOS AVALES
 
@@ -292,7 +294,7 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                                               validator: (value) {
                                                 if (value == null ||
                                                     value.isEmpty) {
-                                                  return 'Ingresa el monto';
+                                                  return 'Por favor, ingresa el monto';
                                                 }
 
                                                 var valor = int.tryParse( value); // Intenta convertir a entero
@@ -496,6 +498,21 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                                       ),
                                       const SizedBox(height: 20),
                                       // Text('observacion', style: TextStyle(fontSize: 20)),
+                                      SizedBox(
+                                        width: MediaQuery.of(context).size.width * 0.9,
+                                          child: ElevatedButton(onPressed: (){
+                                            SharedPreferencesHelper.setdatos('monto', '$montoinput'); //monto
+                                            SharedPreferencesHelper.setdatos('plazos', '$plazos'); //plazos
+                                            Navigator.pushNamed(context, 'documentos');
+                                            setState(() {
+                                              btnDocumentos = true;
+                                            });
+                                          },
+                                          style: ButtonStyle(
+                                          backgroundColor: MaterialStateProperty.all<Color>(
+                                              const Color.fromARGB(255, 5, 50, 91)),
+                                        ), child: const Text('Ver Documentos'),),
+                                      ),
                                       const Text(
                                         'La identificacion debe ser vigente , el comprobante de domicilio no puede ser mayor a 3 meses de antiguedad.',
                                         style: TextStyle(
@@ -830,228 +847,235 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(
-                  onPressed: () async {
-                    setState(() {
-                      montosolicitado.clear();
-                      plazoseleccionado.clear();
-                      someMap.clear();
-                    });
-                    await SharedPreferencesHelper.remove('Identificación (INE)');
-                    await SharedPreferencesHelper.remove('Comprobante (DOMICILIO)');
-                    // ignore: use_build_context_synchronously
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return const SolicitaPrestamo();
-                        },
-                      ),
-                    );
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        const Color.fromARGB(255, 5, 50, 91)),
+                Visibility(
+                  visible: btnCambiaMonto,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      setState(() {
+                        montosolicitado.clear();
+                        plazoseleccionado.clear();
+                        someMap.clear();
+                      });
+                      await SharedPreferencesHelper.remove('Identificación (INE)');
+                      await SharedPreferencesHelper.remove('Comprobante (DOMICILIO)');
+                      // ignore: use_build_context_synchronously
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return const SolicitaPrestamo();
+                          },
+                        ),
+                      );
+                    },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          const Color.fromARGB(255, 5, 50, 91)),
+                    ),
+                    child: const Text('Cambiar monto'),
                   ),
-                  child: const Text('Cambiar monto'),
                 ),
                 const SizedBox(
                   width: 10,
                 ),
-                ElevatedButton(
-                  onPressed: btnsolicitaPrestamo
-                      ? null
-                      : () async {
-                          final ine = await SharedPreferencesHelper.getdatos(
-                              'Identificación (INE)');
-                          final comprobante =
-                              await SharedPreferencesHelper.getdatos(
-                                  'Comprobante (DOMICILIO)');
-                          // print('VALOR PARA INE $ine');
-                          // print('VALOR PARA COMPROBANTE $comprobante');
-                          if (kDebugMode) {
-                            // print('ESTE ES EL VALOR $selectedValue');
-                          }
-                          if (selectedValue == 1 && (selectedValue == 0)) {
+                Visibility(
+                  visible: btnDocumentos,
+                  child: ElevatedButton(
+                    onPressed: btnsolicitaPrestamo
+                        ? null
+                        : () async {
+                            final ine = await SharedPreferencesHelper.getdatos(
+                                'Identificación (INE)');
+                            final comprobante =
+                                await SharedPreferencesHelper.getdatos(
+                                    'Comprobante (DOMICILIO)');
+                            // print('VALOR PARA INE $ine');
+                            // print('VALOR PARA COMPROBANTE $comprobante');
                             if (kDebugMode) {
-                              print(selectedValue);
+                              // print('ESTE ES EL VALOR $selectedValue');
                             }
-                            // ignore: use_build_context_synchronously
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return const CustomAlertDialog(
-                                    message:
-                                        'Por favor verifica que tus avales seleccionados no sean los mismos ',
-                                    title: 'Atención',
-                                    icon: Icons.error_outline,
-                                    color: Colors.red);
-                              },
-                            );
-                            return;
-                          }
-                          int monto = int.parse(montoinput.toString());
-                          // print('NUMERO DE AVALES GENERADOS $navales');
-                          // print('VALOR AVALA $selectedValue');
-                          if ((navales == 1
-                                  ? monto == cnatidadfinal
-                                  : totalAmount == cnatidadfinal) &&
-                              idavales.length == navales &&
-                              ine != '' &&
-                              comprobante != '') {
-                            //AQUI VAMOS A RESOLVER ESTE PEDOO
-                            // print(montoinput);
-                            // print(cnatidadfinal);
-                            // print('SE VALIDO TODOCORRECTO');
-                            // print(idavales);
-                            Map<int, Map<String, int>> avales = {};
-
-                            if (navales == 1) {
-                              Map<String, int> nuevoAval = {
-                                'idEmpleado': idavales[0]!,
-                                'monto_aval': monto
-                              };
-                              avales[0] = nuevoAval;
-                            } else {
-                              idavales.forEach((key, value) {
-                                if (montoavales.length > key) {
-                                  avales[key] = {
-                                    'idEmpleado': value,
-                                    'monto_aval': montoavales[key],
-                                  };
-                                }
-                              });
-                            }
-
-                            // final idEmpleado    =  SharedPreferencesHelper.getdatos('empleado');
-                            // final ine           =  SharedPreferencesHelper.getdatos('Identificación (INE)');
-                            // final comprobante =
-                            //     SharedPreferencesHelper.getdatos(
-                            //         'Comprobante (DOMICILIO)');
-                            final montosolicitado =
-                                ref.watch(montoinputControllerProvider);
-                            final plazoseleccionado =
-                                ref.watch(plazosControllerProvider);
-                            montoinput = montosolicitado.text;
-                            plazos = plazoseleccionado.text;
-                            SharedPreferencesHelper.setdatos(
-                                'monto', '$montoinput'); //monto
-                            SharedPreferencesHelper.setdatos(
-                                'plazos', '$plazos'); //plazos
-                            SharedPreferencesHelper.setdatos(
-                                'monto_pago', '${datos['abono']}'); //monto pago
-                            SharedPreferencesHelper.setdatos(
-                                'comision', '$comision'); //comision
-                            SharedPreferencesHelper.setdatos(
-                                'avales', '$avales'); //avales
-                            setState(() {
-                              btnsolicitaPrestamo = true;
-                            });
-                            final respuesta =
-                                await enviarPrestamo.confirmaprestamo();
-                            if (respuesta['estatus'] == 200) {
-                              setState(() {
-                                someMap.clear();
-                                montosolicitado.clear();
-                                plazoseleccionado.clear();
-                              });
-                              await SharedPreferencesHelper.remove('Identificación (INE)');
-                              await SharedPreferencesHelper.remove('Comprobante (DOMICILIO)');
-                              //ignore: use_build_context_synchronously
+                            if (selectedValue == 1 && (selectedValue == 0)) {
+                              if (kDebugMode) {
+                                print(selectedValue);
+                              }
+                              // ignore: use_build_context_synchronously
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
-                                  return alersuccess(
-                                      message: respuesta['mensaje'],
-                                      title: 'Éxito',
-                                      icon: Icons.check,
-                                      color: Colors.green);
+                                  return const CustomAlertDialog(
+                                      message:
+                                          'Por favor verifica que tus avales seleccionados no sean los mismos ',
+                                      title: 'Atención',
+                                      icon: Icons.error_outline,
+                                      color: Colors.red);
                                 },
                               );
-                            } else if (respuesta['estatus'] == 201) {
+                              return;
+                            }
+                            int monto = int.parse(montoinput.toString());
+                            // print('NUMERO DE AVALES GENERADOS $navales');
+                            // print('VALOR AVALA $selectedValue');
+                            if ((navales == 1
+                                    ? monto == cnatidadfinal
+                                    : totalAmount == cnatidadfinal) &&
+                                idavales.length == navales &&
+                                ine != '' &&
+                                comprobante != '') {
+                              //AQUI VAMOS A RESOLVER ESTE PEDOO
+                              // print(montoinput);
+                              // print(cnatidadfinal);
+                              // print('SE VALIDO TODOCORRECTO');
+                              // print(idavales);
+                              Map<int, Map<String, int>> avales = {};
+                
+                              if (navales == 1) {
+                                Map<String, int> nuevoAval = {
+                                  'idEmpleado': idavales[0]!,
+                                  'monto_aval': monto
+                                };
+                                avales[0] = nuevoAval;
+                              } else {
+                                idavales.forEach((key, value) {
+                                  if (montoavales.length > key) {
+                                    avales[key] = {
+                                      'idEmpleado': value,
+                                      'monto_aval': montoavales[key],
+                                    };
+                                  }
+                                });
+                              }
+                
+                              // final idEmpleado    =  SharedPreferencesHelper.getdatos('empleado');
+                              // final ine           =  SharedPreferencesHelper.getdatos('Identificación (INE)');
+                              // final comprobante =
+                              //     SharedPreferencesHelper.getdatos(
+                              //         'Comprobante (DOMICILIO)');
+                              final montosolicitado =
+                                  ref.watch(montoinputControllerProvider);
+                              final plazoseleccionado =
+                                  ref.watch(plazosControllerProvider);
+                              montoinput = montosolicitado.text;
+                              plazos = plazoseleccionado.text;
+                              SharedPreferencesHelper.setdatos(
+                                  'monto', '$montoinput'); //monto
+                              SharedPreferencesHelper.setdatos(
+                                  'plazos', '$plazos'); //plazos
+                              SharedPreferencesHelper.setdatos(
+                                  'monto_pago', '${datos['abono']}'); //monto pago
+                              SharedPreferencesHelper.setdatos(
+                                  'comision', '$comision'); //comision
+                              SharedPreferencesHelper.setdatos(
+                                  'avales', '$avales'); //avales
+                              setState(() {
+                                btnsolicitaPrestamo = true;
+                                btnCambiaMonto = false;
+                              });
+                              final respuesta =
+                                  await enviarPrestamo.confirmaprestamo();
+                              if (respuesta['estatus'] == 200) {
+                                setState(() {
+                                  someMap.clear();
+                                  montosolicitado.clear();
+                                  plazoseleccionado.clear();
+                                });
+                                await SharedPreferencesHelper.remove('Identificación (INE)');
+                                await SharedPreferencesHelper.remove('Comprobante (DOMICILIO)');
+                                //ignore: use_build_context_synchronously
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return alersuccess(
+                                        message: respuesta['mensaje'],
+                                        title: 'Éxito',
+                                        icon: Icons.check,
+                                        color: Colors.green);
+                                  },
+                                );
+                              } else if (respuesta['estatus'] == 201) {
+                                // ignore: use_build_context_synchronously
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return CustomAlertDialog(
+                                        message: respuesta['mensaje'],
+                                        title: 'Error',
+                                        icon: Icons.error_outline,
+                                        color: Colors.red);
+                                  },
+                                );
+                              }
+                
+                              const SizedBox(height: 20);
+                            } else if ((navales == 1
+                                    ? monto == cnatidadfinal
+                                    : totalAmount < cnatidadfinal) ||
+                                ine == '' ||
+                                comprobante == '') {
                               // ignore: use_build_context_synchronously
                               showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
                                   return CustomAlertDialog(
-                                      message: respuesta['mensaje'],
+                                      message: ine == ''
+                                          ? 'El INE no ha sido cargado.'
+                                          : (comprobante == ''
+                                              ? 'El comprobante no ha sido cargado.'
+                                              : 'Por favor Llena todos los campos solicitados'),
+                
+                                      // message:'La identificacion o el comprobante no han  sido cargado.' ,
+                
+                                      title: 'Atención',
+                                      icon: Icons.error_outline,
+                                      color: Colors.amber);
+                                },
+                              );
+                            } else if (selectedValue == 1 ||
+                                idavales.length < navales) {
+                              // ignore: use_build_context_synchronously
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return const CustomAlertDialog(
+                                      message: 'Selecciona a tus avales.',
+                                      title: 'Atención',
+                                      icon: Icons.error_outline,
+                                      color: Colors.amber);
+                                },
+                              );
+                            } else {
+                              if (kDebugMode) {
+                                print('Error');
+                              }
+                              // ignore: use_build_context_synchronously
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return const CustomAlertDialog(
+                                      message:
+                                          'No todos los campos son correctos. Por favor verifica que todos los campos esten llenos ',
                                       title: 'Error',
                                       icon: Icons.error_outline,
                                       color: Colors.red);
                                 },
                               );
                             }
-
-                            const SizedBox(height: 20);
-                          } else if ((navales == 1
-                                  ? monto == cnatidadfinal
-                                  : totalAmount < cnatidadfinal) ||
-                              ine == '' ||
-                              comprobante == '') {
-                            // ignore: use_build_context_synchronously
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return CustomAlertDialog(
-                                    message: ine == ''
-                                        ? 'El INE no ha sido cargado.'
-                                        : (comprobante == ''
-                                            ? 'El comprobante no ha sido cargado.'
-                                            : 'Por favor Llena todos los campos solicitados'),
-
-                                    // message:'La identificacion o el comprobante no han  sido cargado.' ,
-
-                                    title: 'Atención',
-                                    icon: Icons.error_outline,
-                                    color: Colors.amber);
-                              },
-                            );
-                          } else if (selectedValue == 1 ||
-                              idavales.length < navales) {
-                            // ignore: use_build_context_synchronously
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return const CustomAlertDialog(
-                                    message: 'Selecciona a tus avales.',
-                                    title: 'Atención',
-                                    icon: Icons.error_outline,
-                                    color: Colors.amber);
-                              },
-                            );
-                          } else {
-                            if (kDebugMode) {
-                              print('Error');
-                            }
-                            // ignore: use_build_context_synchronously
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return const CustomAlertDialog(
-                                    message:
-                                        'No todos los campos son correctos. Por favor verifica que todos los campos esten llenos ',
-                                    title: 'Error',
-                                    icon: Icons.error_outline,
-                                    color: Colors.red);
-                              },
-                            );
-                          }
-                        },
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(
-                        btnsolicitaPrestamo
-                            ? const Color.fromARGB(255, 23, 23, 23)
-                            : const Color.fromARGB(
-                                255, 5, 50, 91)), // Color de fondo azul
-                    // Color de fondo azul
-                  ),
-                  child: Text(
-                    btnsolicitaPrestamo
-                        ? 'Procesando...'
-                        : 'Solicitar Prestamo',
-                    style: TextStyle(
-                        color:
-                            btnsolicitaPrestamo ? Colors.white : Colors.white),
+                          },
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          btnsolicitaPrestamo
+                              ? const Color.fromARGB(255, 23, 23, 23)
+                              : const Color.fromARGB(
+                                  255, 5, 50, 91)), // Color de fondo azul
+                      // Color de fondo azul
+                    ),
+                    child: Text(
+                      btnsolicitaPrestamo
+                          ? 'Procesando...'
+                          : 'Solicitar Prestamo',
+                      style: TextStyle(
+                          color:
+                              btnsolicitaPrestamo ? Colors.white : Colors.white),
+                    ),
                   ),
                 ),
               ],

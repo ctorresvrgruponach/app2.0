@@ -1,12 +1,12 @@
 // app_routes.dart
 
 import 'package:com.gruponach.nach_empleado/views/cajadeahorro/valorescaja.dart';
-
-import '../views/cajadeahorro/cajaoperacionscreen.dart';
-import '../views/prestamos/solicita_prestamo.dart';
+import 'package:com.gruponach.nach_empleado/views/prestamos/documentos.dart';
 
 import '../config/vistas.dart';
+import '../views/cajadeahorro/cajaoperacionscreen.dart';
 import '../views/prestamos/prestamo_nomina.dart';
+import '../views/prestamos/solicita_prestamo.dart';
 
 class AppRoutes {
   static const String inicio = '/';
@@ -28,8 +28,9 @@ class AppRoutes {
   static const String cajaopereciones = 'cajaopereciones';
   static const String cajavalores = 'cajavalores';
   //Prestamos
-  static const String prestamo = 'prestamo';
+  static const String prestamo         = 'prestamo';
   static const String solicitaPrestamo = 'solicita_prestamo';
+  static const String documentos       = 'documentos';
 
   // Agrega la definición de initialRoute
   static const String initialRoute = inicio;
@@ -58,5 +59,6 @@ class AppRoutes {
     // Prestamos
     prestamo: (context) => const Prestamo(),
     solicitaPrestamo: (context) => const SolicitaPrestamo(),
+    documentos: (context) => const VerDocumentos(data: 0, idoperacion: 0,),
   };
 }
