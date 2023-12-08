@@ -1,5 +1,6 @@
 export 'package:flutter/material.dart';
 
+export '../../config/vistas.dart';
 export '../../views/adelanto/adelantoscreen.dart';
 // export '../../views/adelanto/pedir_adelanto.dart';
 export '../../views/adelanto/valores_pedir_adelanto.dart';
@@ -16,12 +17,11 @@ export '../../views/otrapantalla/otra_pantalla.dart';
 export '../../views/pdfs/pdf_view.dart';
 //export '../../views/splash_Screen.dart';
 export '../../views/servicios/serviciosscreen.dart';
-export '../views/firma/signaturepage.dart';
-export '../views/xmls/xml.dart';
-export '../views/recibosnomina/recibosnomina.dart';
+export '../../views/solicitudes/solicitudes.dart';
 //export '../../views/splash_Screen.dart';
 export '../views/adelanto/actualizaempleado.dart';
+export '../views/firma/signaturepage.dart';
 // export '../views/prestamos/prestamo_nomina.dart';
 export '../views/recibos/recibosnomina.dart';
-export '../../config/vistas.dart';
-export '../../views/solicitudes/solicitudes.dart';
+export '../views/recibosnomina/recibosnomina.dart';
+export '../views/xmls/xml.dart';

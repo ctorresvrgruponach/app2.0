@@ -20,7 +20,7 @@ class Cargando extends StatelessWidget {
         color: const Color.fromARGB(125, 255, 255, 255),
         child: SizedBox(
           width: displayWidth(context) * 0.5,
-          height: displayHeight(context) * 0.3,
+          height: displayHeight(context) * 0.4,
           child: Center(
             widthFactor: 20,
             child: Column(

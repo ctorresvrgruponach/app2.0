@@ -33,11 +33,12 @@ const String endpointDatosCaja = '/solicita_caja_ahorro';
 const String endpointPeriodosRecibosTransitorios = '/recibos_periodos_transitorios';
 
 //PRESTAMOS NOMINA
-const String prestamo = '/prestamo_nomina';
-const String solicitaPrestamo = '/solicita_prestamo_nomina';
-const String calculaPrestamo = '/calcula_prestamo';
-const String confirmaPrestamo = '/guarda_prestamo';
+const String prestamo             = '/prestamo_nomina';
+const String solicitaPrestamo     = '/solicita_prestamo_nomina';
+const String calculaPrestamo      = '/calcula_prestamo';
+const String confirmaPrestamo     = '/guarda_prestamo';
 const String solicitaPrestamoEdit = '/edita_prestamo_nomina';
+const String muestraDocumentos    = '/generar_archivos_prestamos';
 
 List<String> myList = ['Identificación (INE)', 'INE'];
 
