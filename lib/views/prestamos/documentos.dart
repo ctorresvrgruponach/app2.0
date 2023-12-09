@@ -150,21 +150,39 @@ class VerDocumentosState extends ConsumerState<VerDocumentos> {
       // print('plazos $plazos');
       // print('prestamo $prestamoId');
 
-      final postDatas = {
+      //  Map data = {};
+      Map<String, dynamic> data = {};
+
+      if(prestamoId == 0){
+
+        final postDatas = {
         "token": token,
         "idEmpleado": idEmpleado,
         "idOperacion":  idOperacionid == '' ?  operacionprestamo : idOperacionid,
         "montoPrestamo":   monto,
         "plazos": plazos,
-        "idPrestamo": prestamoId == 0 ? '' : prestamoId
       };
+      data = postDatas;
+      }else{
+        final postDatas = {
+          "token": token,
+          "idEmpleado": idEmpleado,
+          "idOperacion":  idOperacionid == '' ?  operacionprestamo : idOperacionid,
+          "montoPrestamo":   0,
+          "plazos": 0,
+          "idPrestamo":  prestamoId
+        };
+      data = postDatas;
+
+      }
+      
 
       final dynamic documentos = await fetchPostData(
         modo,
         completeUrldev,
         baseUrl,
         muestraDocumentos,
-        postDatas,
+        data,
       );
         if (documentos is Map<String, dynamic> && documentos["success"] != null) {
         if (documentos["success"]) {
