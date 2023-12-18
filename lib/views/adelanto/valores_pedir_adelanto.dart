@@ -90,10 +90,9 @@ class ValoresPedirAdelantoScreenState
                     sueldoMensual.text =
                         operaciones['salario_mensual'].toString();
 
-                    correo.text = operaciones['email'].toString();
                     String periodosPagos;
-                    double montomaximo =
-                        double.parse(operaciones['monto_real_prestamo']);
+                    double montomaximo = double.parse(
+                        operaciones['monto_real_prestamo'].toString());
 
                     if (operaciones["tipo_nomina"] == 'Semanal') {
                       periodosPagos = '52';
@@ -172,7 +171,8 @@ class ValoresPedirAdelantoScreenState
                                     const Color.fromARGB(255, 120, 120, 120),
                                 value: _currentSliderValue,
                                 max: double.parse(
-                                    operaciones['monto_real_prestamo']),
+                                    operaciones['monto_real_prestamo']
+                                        .toString()),
                                 min: 100,
                                 // divisions: 6,
                                 label: _currentSliderValue
@@ -437,47 +437,6 @@ class ValoresPedirAdelantoScreenState
                                 ),
                               ),
                             ),
-                            textoFijo10(
-                                context, 'Correo electrónico (obligatorio)'),
-                            SizedBox(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 8, vertical: 16),
-                                child: TextFormField(
-                                  controller: correo,
-                                  onChanged: (text) {},
-                                  style: const TextStyle(
-                                      color: Color.fromARGB(255, 5, 50, 91)),
-                                  decoration: const InputDecoration(
-                                    filled: true,
-                                    fillColor:
-                                        Color.fromARGB(128, 190, 191, 194),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(5.0)),
-                                      borderSide: BorderSide(
-                                        width: 2, //<-- SEE HERE
-                                        color: Color.fromARGB(0, 237, 0, 0),
-                                      ),
-                                    ),
-                                    border: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        width: 0.1, //<-- SEE HERE
-                                        color:
-                                            Color.fromARGB(128, 190, 191, 194),
-                                      ),
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(5.0)),
-                                    ),
-                                    labelText: 'Correo',
-                                    labelStyle: TextStyle(
-                                        color: Color.fromARGB(255, 5, 50, 91)),
-                                    iconColor:
-                                        Color.fromARGB(255, 255, 255, 255),
-                                  ),
-                                ),
-                              ),
-                            ),
                             Stack(
                               children: [
                                 Column(
@@ -499,6 +458,10 @@ class ValoresPedirAdelantoScreenState
                                           ),
                                         ),
                                         onPressed: () async {
+                                          setState(() {
+                                            someMap['boton'] = 'boton';
+                                            btnsolicitaPrestamo = true;
+                                          });
                                           Navigator.pushNamed(
                                               context, 'vista_html');
 
@@ -524,6 +487,7 @@ class ValoresPedirAdelantoScreenState
                                       onPressed: btnsolicitaPrestamo
                                           ? null
                                           : () async {
+                                              // falta validacion not null ine comprobante y curp
                                               setState(() {
                                                 someMap['Aceptar Adelanto'] =
                                                     'Aceptar Adelanto';

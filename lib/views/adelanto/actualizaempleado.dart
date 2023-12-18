@@ -1,3 +1,5 @@
+import 'package:com.gruponach.nach_empleado/config/vistas.dart';
+
 import '../../ui/decoracioninput.dart';
 import '../../api/actualizadatosempleado.dart';
 import '../../api/apiadelanto.dart';
@@ -737,58 +739,99 @@ class ActualizaEmpleadoScreenState
                                               ), // This is what you need!
                                             ),
                                             onPressed: () async {
-                                              final resulta =
-                                                  pdfGenerator.generatePdf();
-                                              if (await resulta) {
-                                                final enviaDatosEmpleado =
-                                                    EnviaDatosEmpleadoClass();
-                                                final resultado =
-                                                    await enviaDatosEmpleado
-                                                        .enviaDatos();
-                                                if (resultado['success'] ==
-                                                    false) {
-                                                  // await customDialogManager
-                                                  //     .showCustomDialog(
-                                                  //   icon:
-                                                  //       Icons.airlines_rounded,
-                                                  //   message:
-                                                  //       resultado['mensaje'],
-                                                  //   title: resultado['mensaje'],
-                                                  //   color: const Color.fromARGB(
-                                                  //       255, 244, 54, 54),
-                                                  // );
-                                                }
+                                              RegExp emailRegex = RegExp(
+                                                  r"^[^\s@]+@[^\s@]+\.[^\s@]+$");
+                                              RegExp phoneRegex =
+                                                  RegExp(r'^\d{10}$');
+                                              if (phoneRegex
+                                                  .hasMatch(telefonot.text)) {
+                                                if (emailRegex
+                                                    .hasMatch(emailt.text)) {
+                                                  final resulta = pdfGenerator
+                                                      .generatePdf();
+                                                  if (await resulta) {
+                                                    final enviaDatosEmpleado =
+                                                        EnviaDatosEmpleadoClass();
+                                                    final resultado =
+                                                        await enviaDatosEmpleado
+                                                            .enviaDatos();
+                                                    if (resultado['success'] ==
+                                                        false) {
+                                                      // await customDialogManager
+                                                      //     .showCustomDialog(
+                                                      //   icon:
+                                                      //       Icons.airlines_rounded,
+                                                      //   message:
+                                                      //       resultado['mensaje'],
+                                                      //   title: resultado['mensaje'],
+                                                      //   color: const Color.fromARGB(
+                                                      //       255, 244, 54, 54),
+                                                      // );
+                                                    }
 
-                                                if (resultado.isNotEmpty) {
-                                                  // ignore: use_build_context_synchronously
+                                                    if (resultado.isNotEmpty) {
+                                                      // ignore: use_build_context_synchronously
+                                                      final customDialogManager =
+                                                          // ignore: use_build_context_synchronously
+                                                          CustomDialogManager(
+                                                              context);
+                                                      if (resultadoResta <
+                                                              100 &&
+                                                          argumento1 ==
+                                                              'valores_pedir_adelanto') {
+                                                        await customDialogManager
+                                                            .showCustomDialog(
+                                                          icon: Icons
+                                                              .airlines_rounded,
+                                                          message:
+                                                              'La suma de tus adelantos supera el disponible para solicitar',
+                                                          title:
+                                                              'La suma de tus adelantos supera el disponible para solicitar',
+                                                          color: const Color
+                                                              .fromARGB(
+                                                              255, 244, 54, 54),
+                                                        );
+                                                        await navegador
+                                                            .algunlugar('home');
+                                                      } else {
+                                                        await navegador
+                                                            .algunlugar(
+                                                                argumento1);
+                                                      }
+                                                    }
+
+                                                    // // print(resultado['success']);
+                                                  }
+                                                } else {
                                                   final customDialogManager =
                                                       // ignore: use_build_context_synchronously
                                                       CustomDialogManager(
                                                           context);
-                                                  if (resultadoResta < 100 &&
-                                                      argumento1 ==
-                                                          'valores_pedir_adelanto') {
-                                                    await customDialogManager
-                                                        .showCustomDialog(
-                                                      icon: Icons
-                                                          .airlines_rounded,
-                                                      message:
-                                                          'La suma de tus adelantos supera el disponible para solicitar',
-                                                      title:
-                                                          'La suma de tus adelantos supera el disponible para solicitar',
-                                                      color:
-                                                          const Color.fromARGB(
-                                                              255, 244, 54, 54),
-                                                    );
-                                                    await navegador
-                                                        .algunlugar('home');
-                                                  } else {
-                                                    await navegador
-                                                        .algunlugar(argumento1);
-                                                  }
+                                                  await customDialogManager
+                                                      .showCustomDialog(
+                                                    icon:
+                                                        Icons.airlines_rounded,
+                                                    message:
+                                                        'Tu correo no es valido',
+                                                    title: '',
+                                                    color: const Color.fromARGB(
+                                                        255, 244, 54, 54),
+                                                  );
                                                 }
-
-                                                // // print(resultado['success']);
+                                              } else {
+                                                final customDialogManager =
+                                                    // ignore: use_build_context_synchronously
+                                                    CustomDialogManager(
+                                                        context);
+                                                await customDialogManager
+                                                    .showCustomDialog(
+                                                  icon: Icons.airlines_rounded,
+                                                  message:
+                                                      'Tu telefono no es valido',
+                                                  title: '',
+                                                  color: const Color.fromARGB(
+                                                      255, 244, 54, 54),
+                                                );
                                               }
                                             },
                                             child: SizedBox(
