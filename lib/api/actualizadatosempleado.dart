@@ -97,12 +97,12 @@ class EnviaDatosEmpleadoClass {
     } else {
       postDatas["telefono"] = null;
     }
-    if (telefono.isNotEmpty) {
+    if (direccionMunicipio.isNotEmpty) {
       postDatas["direccionMunicipio"] = direccionMunicipio;
     } else {
       postDatas["direccionMunicipio"] = null;
     }
-    if (telefono.isNotEmpty) {
+    if (direccionColonia.isNotEmpty) {
       postDatas["direccionColonia"] = direccionColonia;
     } else {
       postDatas["direccionColonia"] = null;

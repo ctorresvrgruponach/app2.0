@@ -386,32 +386,34 @@ class LoginState extends ConsumerState<Login> {
                         Padding(
                           padding: EdgeInsets.only(
                               top: displayWidth(context) * 0.07),
-                          child: labelText ? ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  const Color.fromARGB(255, 5, 50, 91),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(
-                                    displayWidth(context) * 0.02),
-                              ), // This is what you need!
-                            ),
-                            onPressed: () async {
-                              someFunction();
-                            },
-                            child: SizedBox(
-                              width: displayWidth(context) * 0.4,
-                              child: Center(
-                                child: Text(
-                                    labelText
-                                        ? 'Iniciar Sesión'
-                                        : 'Iniciar Sesión',
-                                    style: TextStyle(
-                                      fontSize: displayWidth(context) * 0.055,
-                                    )),
-                              ),
-                            ),
-                          )
-                          : const Text(''),
+                          child: labelText
+                              ? ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        const Color.fromARGB(255, 5, 50, 91),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          displayWidth(context) * 0.02),
+                                    ), // This is what you need!
+                                  ),
+                                  onPressed: () async {
+                                    someFunction();
+                                  },
+                                  child: SizedBox(
+                                    width: displayWidth(context) * 0.4,
+                                    child: Center(
+                                      child: Text(
+                                          labelText
+                                              ? 'Iniciar Sesión'
+                                              : 'Iniciar Sesión',
+                                          style: TextStyle(
+                                            fontSize:
+                                                displayWidth(context) * 0.055,
+                                          )),
+                                    ),
+                                  ),
+                                )
+                              : const Text(''),
                         ),
                       ],
                     ),

@@ -1,6 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
+import 'package:connectivity/connectivity.dart';
 
 class ApiHelper {
   final String baseUrl;
@@ -9,6 +10,16 @@ class ApiHelper {
 
   Future<dynamic> postRequest(Map<String, dynamic> data) async {
     try {
+      var connectivityResult = await Connectivity().checkConnectivity();
+      if (connectivityResult == ConnectivityResult.none) {
+        // No hay conexión a internet
+        if (kDebugMode) {
+          return ('{"success": false,"mensaje":"No hay conexión a internet"}');
+          // print('No hay conexión a internet');
+        }
+        // Puedes mostrar un mensaje al usuario o realizar otra acción
+        return;
+      }
       if (kDebugMode) {
         print(data);
         print(baseUrl);

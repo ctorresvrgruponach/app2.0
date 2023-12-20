@@ -1,5 +1,3 @@
-import 'package:com.gruponach.nach_empleado/config/vistas.dart';
-
 import '../../ui/decoracioninput.dart';
 import '../../api/actualizadatosempleado.dart';
 import '../../api/apiadelanto.dart';

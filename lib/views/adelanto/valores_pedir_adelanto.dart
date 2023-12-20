@@ -484,51 +484,63 @@ class ValoresPedirAdelantoScreenState
                                     ),
                                     Botonc(
                                       texto: 'Aceptar Adelanto',
-                                      onPressed: btnsolicitaPrestamo
-                                          ? null
-                                          : () async {
-                                              // falta validacion not null ine comprobante y curp
-                                              setState(() {
-                                                someMap['Aceptar Adelanto'] =
-                                                    'Aceptar Adelanto';
-                                                btnsolicitaPrestamo = true;
-                                              });
-                                              final instanciaEnviaAdelanto =
-                                                  EnviaAdelantoClass();
-                                              final resultado =
-                                                  await instanciaEnviaAdelanto
-                                                      .enviaadelanto();
-                                              if (resultado['success']) {
-                                                if (kDebugMode) {
-                                                  print(resultado);
-                                                }
-                                                final customDialogManager =
-                                                    // ignore: use_build_context_synchronously
-                                                    CustomDialogManager(
-                                                        context);
-                                                List<dynamic> argumentos = [];
-                                                final navegador =
-                                                    // ignore: use_build_context_synchronously
-                                                    NavegadorDeRuta(
-                                                        context, argumentos);
-                                                await navegador
-                                                    .algunlugar('home');
-                                                setState(() {
-                                                  someMap.clear();
-                                                });
-                                                setState(() {
-                                                  btnsolicitaPrestamo = false;
-                                                });
-                                                await customDialogManager
-                                                    .showCustomDialog(
-                                                  icon: Icons.airlines_rounded,
-                                                  message: resultado['mensaje'],
-                                                  title: resultado['mensaje'],
-                                                  color: const Color.fromARGB(
-                                                      255, 244, 54, 54),
-                                                );
-                                              }
-                                            },
+                                      onPressed: () async {
+                                        // falta validacion not null ine comprobante y curp
+                                        setState(() {
+                                          someMap['Aceptar Adelanto'] =
+                                              'Aceptar Adelanto';
+                                          btnsolicitaPrestamo = true;
+                                        });
+                                        final instanciaEnviaAdelanto =
+                                            EnviaAdelantoClass();
+                                        final resultado =
+                                            await instanciaEnviaAdelanto
+                                                .enviaadelanto();
+                                        if (resultado['success']) {
+                                          if (kDebugMode) {
+                                            print(resultado);
+                                          }
+                                          final customDialogManager =
+                                              // ignore: use_build_context_synchronously
+                                              CustomDialogManager(context);
+                                          List<dynamic> argumentos = [];
+                                          final navegador =
+                                              // ignore: use_build_context_synchronously
+                                              NavegadorDeRuta(
+                                                  context, argumentos);
+                                          await navegador.algunlugar('home');
+                                          setState(() {
+                                            someMap.clear();
+                                          });
+                                          setState(() {
+                                            btnsolicitaPrestamo = false;
+                                          });
+                                          await customDialogManager
+                                              .showCustomDialog(
+                                            icon: Icons.airlines_rounded,
+                                            message: resultado['mensaje'],
+                                            title: resultado['mensaje'],
+                                            color: const Color.fromARGB(
+                                                255, 244, 54, 54),
+                                          );
+                                        } else {
+                                          final customDialogManager =
+                                              // ignore: use_build_context_synchronously
+                                              CustomDialogManager(context);
+                                          await customDialogManager
+                                              .showCustomDialog(
+                                            icon: Icons.airlines_rounded,
+                                            message: resultado['mensaje'],
+                                            title: resultado['mensaje'],
+                                            color: const Color.fromARGB(
+                                                255, 244, 54, 54),
+                                          );
+                                          setState(() {
+                                            someMap.remove('Aceptar Adelanto');
+                                            btnsolicitaPrestamo = false;
+                                          });
+                                        }
+                                      },
                                     ),
                                   ],
                                 ),
