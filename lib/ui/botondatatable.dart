@@ -6,7 +6,7 @@ import '../libs/lib.dart';
 class Botoneditar extends ConsumerStatefulWidget {
   final String texto;
   final String? indiceadelanto;
-
+// BOTON DE ADELANTO EDICION
   const Botoneditar({
     Key? key,
     required this.texto,
@@ -253,7 +253,7 @@ class BotondocuState extends ConsumerState<Botondocu> {
                       onPressed: () async {
                         final instanciaEnviaAdelanto = EnviaAprobacionClass();
                         final resp = await instanciaEnviaAdelanto
-                            .enviaAprobacion(widget.indiceadelanto, 0);
+                            .enviaAprobacion( 0);
                         if (kDebugMode) {
                           print(resp['mensaje']);
                         }
@@ -286,13 +286,17 @@ class BotondocuState extends ConsumerState<Botondocu> {
   }
 }
 
+
+
+
+
+// BOTON DATA TABLE QUE CONFIRMA AVALES 
 class Botondocup extends ConsumerStatefulWidget {
   final String texto;
   final String? indiceadelanto;
   final String? idoperacion;
   final int notificacion;
   final List<Map<String, dynamic>>? someAvalesMap;
-
   const Botondocup(
       {Key? key,
       required this.texto,
@@ -307,6 +311,7 @@ class Botondocup extends ConsumerStatefulWidget {
 }
 
 class BotondocupState extends ConsumerState<Botondocup> {
+
   @override
   void initState() {
     super.initState();
@@ -322,24 +327,28 @@ class BotondocupState extends ConsumerState<Botondocup> {
     if (kDebugMode) {
       print(widget.indiceadelanto);
     }
-    List<Widget> avalesTextList = widget.someAvalesMap!.map((aval) {
-      // Convierte el mapa a una cadena para mostrarla en Text
-      String nombre = aval['nombre_aval'].toString();
+    // if(widget.idoperacion > 0  ){
 
-      return Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: SizedBox(
-          child: Column(
-            children: [
-              Text('El aval $nombre ha'),
-              const Text('rechazado la solicitud de ser aval'),
-            ],
-          ),
-        ),
-      );
-    }).toList();
+
+    // }
+    // List<Widget> avalesTextList = widget.someAvalesMap!.map((aval) {
+    //   // Convierte el mapa a una cadena para mostrarla en Text
+    //   // String nombre = aval['nombre_aval'].toString();
+
+    //   return Padding(
+    //     padding: const EdgeInsets.all(8.0),
+    //     child: SizedBox(
+    //       child: Column(
+    //         children: [
+    //           Text('El aval ha'),
+    //           const Text('rechazado la solicitud de ser aval'),
+    //         ],
+    //       ),
+    //     ),
+    //   );
+    // }).toList();
     var numeroavales = (widget.someAvalesMap?.length);
-    int btn = 0;
+    // int btn = 0;
     if (kDebugMode) {
       print(numeroavales);
     }
@@ -367,22 +376,25 @@ class BotondocupState extends ConsumerState<Botondocup> {
             width: displayWidth(context) * 0.9,
             height: displayHeight(context) * 0.6,
             child: AlertDialog(
-              title:  widget.notificacion == 1 && avalesTextList.isNotEmpty == false ? const Text('Para obtener más información, acerca del estatus de tus avales, presiona en ver mis avales.', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),) : (widget.notificacion == 0 ? const Text("Adjuntar documentos") : const Text('')) ,
+              // title:  widget.notificacion == 1 && avalesTextList.isNotEmpty == false ? const Text('Para obtener más información, acerca del estatus de tus avales, presiona en ver mis avales.', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),) : (widget.notificacion == 0 ? const Text("Adjuntar documentos") : const Text('')) ,
+              title: const Text('Estatus'),
               actions: <Widget>[
                 Column(
                   children: [
-                    ...avalesTextList,
+                    // ...avalesTextList,
                     // avalesTextList.isNotEmpty
                     //     ? 
                     Visibility(
                       visible:  widget.notificacion == 0 ? false : true,
                       child: Botonc(
-                              texto: avalesTextList.isNotEmpty ? 'Selecciona Nuevos Avales' : 'Ver Mis Avales',
+                              // texto: avalesTextList.isNotEmpty ? 'Selecciona Nuevos Avales' : 'Ver Mis Avales',
+                              texto: 'Mis avales seleccionados',
                               onPressed: () {
                                 if (kDebugMode) {}
                                 // if (kDebugMode) {
                                   String? idPrestamo = widget.indiceadelanto;
                                   String? idoperacion = widget.idoperacion;
+                                  // print(idoperacion);
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -398,7 +410,7 @@ class BotondocupState extends ConsumerState<Botondocup> {
                       //   // :
                       // Text(widget.notificacion.toString()),
                       // Text(avalesTextList.isNotEmpty .toString()),
-                      Text(widget.notificacion  == 1  ? '' : 'Selecciona que archivo que deseas adjuntar'),
+                      Text(widget.notificacion  == 1  ? '' : 'Selecciona que archivo que deseas adjuntar para '),
                       widget.notificacion  == 1 ? const  Text('') : const Botonfile(texto: 'INE'),
                     widget.notificacion == 1 ? const Text('') : const Botonfile(texto: 'Comprobante'),
                     Visibility(
@@ -439,7 +451,7 @@ class BotondocupState extends ConsumerState<Botondocup> {
                           }else{
                             // print('LLEGO BB');
                             setState(() {
-                              btn = 1;
+                              // btn = 1;
                             });
                             // print('nuevo valor $btn');
                             await customDialogManager.showCustomDialog(
@@ -450,11 +462,11 @@ class BotondocupState extends ConsumerState<Botondocup> {
                               color: const Color.fromARGB(255, 244, 54, 54),
                             );
                             setState(() {
-                              btn = 1;
+                              // btn = 1;
                             });
                             final instanciaEnviaAdelanto = EnviaAprobacionClass();
                             final resp = await instanciaEnviaAdelanto
-                                .enviaAprobacion(widget.indiceadelanto, 1);
+                                .enviaAprobacion( 1);
                             if (kDebugMode) {
                               print(resp['mensaje']);
                             }
@@ -554,7 +566,7 @@ class BotondocurState extends ConsumerState<Botondocur> {
                       onPressed: () async {
                         final instanciaEnviaAdelanto = EnviaAprobacionClass();
                         final resp = await instanciaEnviaAdelanto
-                            .enviaAprobacion(widget.indiceadelanto, 2);
+                            .enviaAprobacion( 2);
                         if (kDebugMode) {
                           print(resp['mensaje']);
                         }

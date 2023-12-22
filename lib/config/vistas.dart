@@ -21,6 +21,7 @@ export '../../views/solicitudes/solicitudes.dart';
 //export '../../views/splash_Screen.dart';
 export '../views/adelanto/actualizaempleado.dart';
 export '../views/firma/signaturepage.dart';
+export '../views/misservicios/servicios_activos.dart';
 // export '../views/prestamos/prestamo_nomina.dart';
 export '../views/recibos/recibosnomina.dart';
 export '../views/recibosnomina/recibosnomina.dart';

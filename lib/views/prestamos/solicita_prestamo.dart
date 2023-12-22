@@ -134,13 +134,6 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
         "token": token,
       };
 
-      // final data = await fetchPostData(
-      //   modo,
-      //   completeUrldev,
-      //   baseUrl,
-      //   calculaPrestamo,
-      //   postDatas,
-      // );
       final response = await fetchPostData(
           modo, completeUrldev, baseUrl, calculaPrestamo, postDatas);
       if (response['estatus'] == 200) {

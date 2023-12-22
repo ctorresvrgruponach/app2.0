@@ -72,7 +72,7 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                         label: Text('Estatus'),
                                       ),
                                       DataColumn(
-                                        label: Text('Aprobar'),
+                                        label: Text('Aprobar papito'),
                                       ),
 
                                       DataColumn(
@@ -99,7 +99,7 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                           ),
                                           DataCell(
                                             Botondocup(
-                                              texto: 'APROBAR',
+                                              texto: 'APROBArR',
                                               indiceadelanto:
                                                   '${rowData['id_prestamo']}',
                                               notificacion:
@@ -344,6 +344,7 @@ class MisAdelantosState extends ConsumerState<MisAdelantos> {
                                                   '${rowData['total_descuento']}'),
                                             ),
                                             DataCell(
+                                              //EDICION ADELANTO DE NOMINA
                                               Botoneditar(
                                                 texto: 'Editar',
                                                 indiceadelanto:

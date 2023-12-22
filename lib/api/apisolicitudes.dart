@@ -4,13 +4,14 @@ final postMissolicitudesProviders =
     FutureProvider.autoDispose<Map<String, dynamic>>((ref) async {
   final token = await SharedPreferencesHelper.getdatos('token');
   final empleadoId = await SharedPreferencesHelper.getdatos('empleado');
+
   final postDatas = {
-    "idEmpleado": empleadoId,
+    // "idEmpleado": empleadoId,
     "token": token,
   };
 
   final dynamic datasolicitudes = await fetchPostData(
-      modo, completeUrldev, baseUrl, endpointMisservicios, postDatas);
+      modo, completeUrldev, baseUrl, misSolicitudes, postDatas);
 
   //print(datasolicitudes["success"]);
 

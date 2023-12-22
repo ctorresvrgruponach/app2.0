@@ -1,5 +1,10 @@
 // main.dart
 
+// import 'package:syncfusion_flutter_calendar/calendar.dart';
+// ignore: depend_on_referenced_packages
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:syncfusion_localizations/syncfusion_localizations.dart';
+
 import 'libs/lib.dart';
 // Importa las rutas desde el archivo separado
 
@@ -18,6 +23,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'APP NACH',
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        SfGlobalLocalizations.delegate
+      ],
+      // ignore: always_specify_types
+      supportedLocales: const [
+        Locale('en'),
+        Locale('es'),
+      ],
+      locale: const Locale('es'),
       debugShowCheckedModeBanner: modo == 'dev' ? true : false,
       theme: ThemeData(
         useMaterial3: false,
@@ -30,3 +45,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+    // localizationsDelegates: [
+    //     GlobalMaterialLocalizations.delegate,
+    //     GlobalWidgetsLocalizations.delegate,
+    //   ],

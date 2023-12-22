@@ -5,7 +5,10 @@ import '../../libs/lib.dart';
 import '../../ui/lieneacentro.dart';
 
 class Firma extends StatefulWidget {
-  const Firma({Key? key}) : super(key: key);
+  const Firma({Key? key, required this.data,}) : super(key: key);
+  // ignore: prefer_typing_uninitialized_variables
+  final data;
+
 
   @override
   State<Firma> createState() => _FirmaState();
@@ -29,6 +32,7 @@ class _FirmaState extends State<Firma> {
 
   @override
   Widget build(BuildContext context) {
+    int flagFirma  = widget.data;
     return Scaffold(
       // backgroundColor: Colors.teal,
       body: Column(
@@ -43,9 +47,10 @@ class _FirmaState extends State<Firma> {
           buttonWidgets(context)!,
         ],
       ),
-      bottomNavigationBar: const MyBottomNavigationBar(
+      bottomNavigationBar: flagFirma == 1 ? const MyBottomNavigationBar(
         selectedIndex: 3,
-      ),
+      ) : const SizedBox(
+        height: 40, child: Text('                    Por favor captura tu firma para poder continuar')),
     );
   }
 

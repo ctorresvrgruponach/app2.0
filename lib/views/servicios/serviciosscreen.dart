@@ -344,6 +344,8 @@ item(context, imagen, texto1, texto2, ruta) {
                           child: ElevatedButton(
                             onPressed: () {
                               Navigator.pushNamed(context, ruta);
+
+                              print(ruta);
                               // Future<String> html =
                               // SharedPreferencesHelper.getdatos(
                               //         'imagen_emplaedo')

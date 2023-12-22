@@ -61,8 +61,8 @@ class EditaPrestamoState extends ConsumerState<EditaPrestamo> {
   @override
   Widget build(BuildContext context) {
 //PETIION EDICION SE  PRESTAMOS
-    String idPrestamo = widget.data;
-    String idoperacion = widget.idoperacion;
+    int idPrestamo = widget.data;
+    int idoperacion = widget.idoperacion;
     // print('ID DEL PRESTAMO $idPrestamo');
     final editaPrestamo =
         FutureProvider.autoDispose<Map<String, dynamic>>((ref) async {

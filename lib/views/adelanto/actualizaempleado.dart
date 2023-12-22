@@ -1,7 +1,7 @@
-import '../../ui/decoracioninput.dart';
 import '../../api/actualizadatosempleado.dart';
 import '../../api/apiadelanto.dart';
 import '../../libs/lib.dart';
+import '../../ui/decoracioninput.dart';
 import '../docshtml/documentodeidentidad.dart';
 
 class ActualizaEmpleadoScreen extends ConsumerStatefulWidget {
@@ -829,7 +829,24 @@ class ActualizaEmpleadoScreenState
                     // return Text(snapshot.error.toString());
                   }
                   // By default show a loading spinner.
-                  return const Cargando();
+                  return Center(
+                    child: SizedBox(
+                    child: Column(
+                      children: [
+                        const LogoandSpinner(
+                          imageAssets: 'assets/images/NACHlogotipo.png',
+                          reverse: true,
+                          arcColor: Color.fromARGB(255, 255, 255, 255),
+                          spinSpeed: Duration(milliseconds: 500),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(top: 5),
+                          child: const Text("Cargando...",style: TextStyle(color: Colors.white),)
+                        ),
+                      ],
+                    ),
+                  )
+                );
                 },
               ),
             ],
