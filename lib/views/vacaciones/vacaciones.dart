@@ -385,7 +385,7 @@ class VacacionesState extends ConsumerState<Vacaciones> {
                                       'diasNoLaborados', '$diasTomados');
                                   SharedPreferencesHelper.setdatos(
                                       'diasSolicitados', '$diasnolavorados');
-                                  // SharedPreferencesHelper.setdatos('diaPresentarse',  '$fecharegreso');
+                                  SharedPreferencesHelper.setdatos('diaPresentarse',  '$fecharegreso');
                                   final respuesta =
                                       await enviaSolicitudVacaciones
                                           .confirmanrvacaciones();
@@ -428,6 +428,9 @@ class VacacionesState extends ConsumerState<Vacaciones> {
                                             color: Colors.red);
                                       },
                                     );
+                                    setState(() {
+                                    solicita = false;
+                                  });
                                   }
                                 } else if (idLider == 0) {
                                   showDialog(
