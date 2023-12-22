@@ -403,8 +403,9 @@ class DetallesNotificacionesState
                                                                               setState(() {
                                                                                 someMap.clear();
                                                                               });
-                                                                              ref.refresh(postMisNotificacionesdetalleProviders);
-                                                                              ref.refresh(postMisAdelantosProviders);
+                                                                              await SharedPreferencesHelper.remove('idSolucitud');
+                                                                              // ref.refresh(solicitudesActivas);
+                                                                              // ref.refresh(notificacionDetalles);
                                                                               // ignore: use_build_context_synchronously
                                                                               // Navigator.of(context).pop();
                                                                               // ignore: use_build_context_synchronously
@@ -496,10 +497,10 @@ class DetallesNotificacionesState
                                                                             context,
                                                                             MaterialPageRoute(builder: (context) => const HomeScreen()),
                                                                           );
-                                                                          ref.refresh(
-                                                                              postMisNotificacionesdetalleProviders);
-                                                                          ref.refresh(
-                                                                              postMisAdelantosProviders);
+                                                                          // ref.refresh(solicitudesActivas);
+                                                                          // ref.refresh(notificacionDetalles);
+                                                                          await SharedPreferencesHelper.remove('idSolucitud');
+                                                                          // await SharedPreferencesHelper.remove('Identificación (INE)');
                                                                         } else {
                                                                           await customDialogManager.showCustomDialog(
                                                                               icon: Icons.warning,

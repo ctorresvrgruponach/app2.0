@@ -44,12 +44,15 @@ class MisSolicitudesState extends ConsumerState<MisSolicitudes> {
                     return Column(
                       children: <Widget>[
                         const SizedBox(
-                          child: Text(
-                            'Actualmente cuentas con las siguietes solicitudes disponobles',
-                            style: TextStyle(
-                              fontSize: 28,
+                          child: Padding(
+                            padding: EdgeInsets.all(12.0),
+                            child: Text(
+                              'Actualmente cuentas con las siguientes solicitudes disponibles',
+                              style: TextStyle(
+                                fontSize: 28,
+                              ),
+                              textAlign: TextAlign.left,
                             ),
-                            textAlign: TextAlign.left,
                           ),
                         ),
                         const SizedBox(

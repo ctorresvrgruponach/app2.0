@@ -73,6 +73,7 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
   int semanal    = 56;
   bool btnDocumentos = false;
   bool btnCambiaMonto = true;
+  bool verdocumentos = false;
 
 //PARA LOS AVALES
 
@@ -493,12 +494,15 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                                       // Text('observacion', style: TextStyle(fontSize: 20)),
                                       SizedBox(
                                         width: MediaQuery.of(context).size.width * 0.9,
-                                          child: ElevatedButton(onPressed: (){
+                                          child: ElevatedButton(onPressed:  verdocumentos
+                                                  ? null
+                                                  : (){
                                             SharedPreferencesHelper.setdatos('monto', '$montoinput'); //monto
                                             SharedPreferencesHelper.setdatos('plazos', '$plazos'); //plazos
                                             Navigator.pushNamed(context, 'documentos');
                                             setState(() {
                                               btnDocumentos = true;
+                                              verdocumentos = true;
                                             });
                                           },
                                           style: ButtonStyle(
