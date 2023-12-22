@@ -228,28 +228,22 @@ class MyBottomNavigationBarState extends ConsumerState<MyBottomNavigationBar> {
                             await SharedPreferencesHelper.borrashared();
                             SharedPreferencesHelper.setdatos('cerrar', 'si');
 
-                              // ignore: use_build_context_synchronously
-                              Navigator.pushNamedAndRemoveUntil(
-                                  context, '/', (route) => false);
-                            },
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    const Color.fromARGB(255, 5, 50, 91)),
-                            child: const Text('Cerrar sesión'),
-                          )),
-                        ],
-                        elevation: 8.0,
-                      );
-                      break;
-                  }
-                },
-              );
-            } else {
-              return Padding(
-                padding: const EdgeInsets.all(80.0),
-                child: Text(data['mensaje']),
-              );
-            }
+                            // ignore: use_build_context_synchronously
+                            Navigator.pushNamedAndRemoveUntil(
+                                context, '/', (route) => false);
+                          },
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  const Color.fromARGB(255, 5, 50, 91)),
+                          child: const Text('Cerrar sesión'),
+                        )),
+                      ],
+                      elevation: 8.0,
+                    );
+                    break;
+                }
+              },
+            );
           },
           loading: () => Center(
               child: Padding(

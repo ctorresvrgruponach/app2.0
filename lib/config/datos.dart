@@ -1,5 +1,5 @@
 //const String modo = "";
-const String modo = "";
+const String modo = "dev";
 const String protocolossl = "https";
 const String protocolodev = "http";
 const String baseUrldev = "3.144.234.124";

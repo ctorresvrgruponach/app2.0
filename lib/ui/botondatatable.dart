@@ -383,9 +383,9 @@ class BotondocupState extends ConsumerState<Botondocup> {
                   children: [
                     // ...avalesTextList,
                     // avalesTextList.isNotEmpty
-                    //     ?
+                    //     ? 
                     Visibility(
-                      visible: widget.notificacion == 0 ? false : true,
+                      visible:  widget.notificacion == 0 ? false : true,
                       child: Botonc(
                               // texto: avalesTextList.isNotEmpty ? 'Selecciona Nuevos Avales' : 'Ver Mis Avales',
                               texto: 'Mis avales seleccionados',
@@ -406,10 +406,6 @@ class BotondocupState extends ConsumerState<Botondocup> {
                                 // }
                               },
                             ),
-                          );
-                          // }
-                        },
-                      ),
                     ),
                       //   // :
                       // Text(widget.notificacion.toString()),
@@ -418,43 +414,41 @@ class BotondocupState extends ConsumerState<Botondocup> {
                       widget.notificacion  == 1 ? const  Text('') : const Botonfile(texto: 'INE'),
                     widget.notificacion == 1 ? const Text('') : const Botonfile(texto: 'Comprobante'),
                     Visibility(
-                      visible: widget.notificacion == 1 ? false : true,
+                      visible: widget.notificacion  == 1 ? false : true,
                       child: Botonc(
                         texto: 'Enviar',
                         onPressed: () async {
-                          final ine =
-                              await SharedPreferencesHelper.getdatos('INE');
-                          final comprobante =
-                              await SharedPreferencesHelper.getdatos(
-                                  'Comprobante');
-                          if (ine == '') {
-                            // ignore: use_build_context_synchronously
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return const CustomAlertDialog(
-                                    message: 'El INE no han sido cargado.',
-                                    title: 'Atención',
-                                    icon: Icons.error_outline,
-                                    color: Colors.amber);
-                              },
-                            );
+                          final ine = await SharedPreferencesHelper.getdatos('INE');
+                          final comprobante = await SharedPreferencesHelper.getdatos('Comprobante');
+                          if(ine == '' ){
+                             // ignore: use_build_context_synchronously
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return const CustomAlertDialog(
+                                      message:
+                                          'El INE no han sido cargado.',
+                                      title: 'Atención',
+                                      icon: Icons.error_outline,
+                                      color: Colors.amber);
+                                },
+                              );
                             // print ('El INE o el comprobante no han sido cargados.');
                             return;
-                          } else if (comprobante == '') {
-                            // ignore: use_build_context_synchronously
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return const CustomAlertDialog(
-                                    message:
-                                        'El Comprobante no han sido cargado.',
-                                    title: 'Atención',
-                                    icon: Icons.error_outline,
-                                    color: Colors.amber);
-                              },
-                            );
-                          } else {
+                          }else if( comprobante == ''){
+                              // ignore: use_build_context_synchronously
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return const CustomAlertDialog(
+                                      message:
+                                          'El Comprobante no han sido cargado.',
+                                      title: 'Atención',
+                                      icon: Icons.error_outline,
+                                      color: Colors.amber);
+                                },
+                              );
+                          }else{
                             // print('LLEGO BB');
                             setState(() {
                               // btn = 1;
@@ -481,16 +475,13 @@ class BotondocupState extends ConsumerState<Botondocup> {
                                   icon: Icons.check,
                                   title: resp['mensaje'],
                                   message: '',
-                                  color:
-                                      const Color.fromARGB(255, 54, 244, 76));
+                                  color: const Color.fromARGB(255, 54, 244, 76));
                               await SharedPreferencesHelper.remove('INE');
-                              await SharedPreferencesHelper.remove(
-                                  'Comprobante');
+                              await SharedPreferencesHelper.remove('Comprobante');
                               setState(() {
                                 someMap.clear();
                               });
-                              ref.refresh(
-                                  postMisNotificacionesdetalleProviders);
+                              ref.refresh(postMisNotificacionesdetalleProviders);
                               ref.refresh(postMisAdelantosProviders);
                               // ignore: use_build_context_synchronously
                               Navigator.of(context).pop();
@@ -499,8 +490,7 @@ class BotondocupState extends ConsumerState<Botondocup> {
                                   icon: Icons.warning,
                                   title: resp['mensaje'],
                                   message: '',
-                                  color:
-                                      const Color.fromARGB(255, 244, 54, 54));
+                                  color: const Color.fromARGB(255, 244, 54, 54));
                             }
                           }
                         },
