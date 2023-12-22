@@ -417,83 +417,93 @@ class BotondocupState extends ConsumerState<Botondocup> {
                       visible: widget.notificacion  == 1 ? false : true,
                       child: Botonc(
                         texto: 'Enviar',
-                        onPressed: () async {
-                          final ine = await SharedPreferencesHelper.getdatos('INE');
-                          final comprobante = await SharedPreferencesHelper.getdatos('Comprobante');
-                          if(ine == '' ){
-                             // ignore: use_build_context_synchronously
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return const CustomAlertDialog(
-                                      message:
-                                          'El INE no han sido cargado.',
-                                      title: 'Atención',
-                                      icon: Icons.error_outline,
-                                      color: Colors.amber);
-                                },
-                              );
-                            // print ('El INE o el comprobante no han sido cargados.');
-                            return;
-                          }else if( comprobante == ''){
-                              // ignore: use_build_context_synchronously
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return const CustomAlertDialog(
-                                      message:
-                                          'El Comprobante no han sido cargado.',
-                                      title: 'Atención',
-                                      icon: Icons.error_outline,
-                                      color: Colors.amber);
-                                },
-                              );
-                          }else{
-                            // print('LLEGO BB');
-                            setState(() {
-                              // btn = 1;
-                            });
-                            // print('nuevo valor $btn');
-                            await customDialogManager.showCustomDialog(
-                              icon: Icons.warning,
-                              message:
-                                  'Al dar click se tendrá acceso a tu último recibo de nómina.',
-                              title: '',
-                              color: const Color.fromARGB(255, 244, 54, 54),
-                            );
-                            setState(() {
-                              // btn = 1;
-                            });
-                            final instanciaEnviaAdelanto = EnviaAprobacionClass();
-                            final resp = await instanciaEnviaAdelanto
-                                .enviaAprobacion( 1);
-                            if (kDebugMode) {
-                              print(resp['mensaje']);
-                            }
-                            if (resp['success']) {
-                              await customDialogManager.showCustomDialog(
-                                  icon: Icons.check,
-                                  title: resp['mensaje'],
-                                  message: '',
-                                  color: const Color.fromARGB(255, 54, 244, 76));
-                              await SharedPreferencesHelper.remove('INE');
-                              await SharedPreferencesHelper.remove('Comprobante');
-                              setState(() {
-                                someMap.clear();
-                              });
-                              ref.refresh(postMisNotificacionesdetalleProviders);
-                              ref.refresh(postMisAdelantosProviders);
-                              // ignore: use_build_context_synchronously
-                              Navigator.of(context).pop();
-                            } else {
-                              await customDialogManager.showCustomDialog(
-                                  icon: Icons.warning,
-                                  title: resp['mensaje'],
-                                  message: '',
-                                  color: const Color.fromARGB(255, 244, 54, 54));
-                            }
-                          }
-                        },
+                        onPressed: someMap["boton"] != "boton"
+                            ? () async {
+                                someMap['boton aval'] == 'boton aval';
+                                final ine =
+                                    await SharedPreferencesHelper.getdatos(
+                                        'INE');
+                                final comprobante =
+                                    await SharedPreferencesHelper.getdatos(
+                                        'Comprobante');
+                                if (ine == '') {
+                                  // ignore: use_build_context_synchronously
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return const CustomAlertDialog(
+                                          message:
+                                              'El INE no han sido cargado.',
+                                          title: 'Atención',
+                                          icon: Icons.error_outline,
+                                          color: Colors.amber);
+                                    },
+                                  );
+                                  // print ('El INE o el comprobante no han sido cargados.');
+                                  return;
+                                } else if (comprobante == '') {
+                                  // ignore: use_build_context_synchronously
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return const CustomAlertDialog(
+                                          message:
+                                              'El Comprobante no han sido cargado.',
+                                          title: 'Atención',
+                                          icon: Icons.error_outline,
+                                          color: Colors.amber);
+                                    },
+                                  );
+                                } else {
+                                  // print('LLEGO BB');
+                                  setState(() {});
+                                  // print('nuevo valor $btn');
+                                  await customDialogManager.showCustomDialog(
+                                    icon: Icons.warning,
+                                    message:
+                                        'Al dar click se tendrá acceso a tu último recibo de nómina.',
+                                    title: '',
+                                    color:
+                                        const Color.fromARGB(255, 244, 54, 54),
+                                  );
+                                  setState(() {});
+                                  final instanciaEnviaAdelanto =
+                                      EnviaAprobacionClass();
+                                  final resp = await instanciaEnviaAdelanto
+                                      .enviaAprobacion(
+                                          widget.indiceadelanto, 1);
+                                  if (kDebugMode) {
+                                    print(resp['mensaje']);
+                                  }
+                                  if (resp['success']) {
+                                    await customDialogManager.showCustomDialog(
+                                        icon: Icons.check,
+                                        title: resp['mensaje'],
+                                        message: '',
+                                        color: const Color.fromARGB(
+                                            255, 54, 244, 76));
+                                    await SharedPreferencesHelper.remove('INE');
+                                    await SharedPreferencesHelper.remove(
+                                        'Comprobante');
+                                    setState(() {
+                                      someMap.clear();
+                                    });
+                                    ref.refresh(
+                                        postMisNotificacionesdetalleProviders);
+                                    ref.refresh(postMisAdelantosProviders);
+                                    // ignore: use_build_context_synchronously
+                                    Navigator.of(context).pop();
+                                  } else {
+                                    await customDialogManager.showCustomDialog(
+                                        icon: Icons.warning,
+                                        title: resp['mensaje'],
+                                        message: '',
+                                        color: const Color.fromARGB(
+                                            255, 244, 54, 54));
+                                  }
+                                }
+                              }
+                            : null,
                       ),
                     )
                   ],
