@@ -69,20 +69,21 @@ class SolicitudesState extends ConsumerState<SolicitudesScreen> {
                                 for (var solicitud in servicios) {
                                   itemssolicitudes.add(items(
                                     context,
-                                    solicitud["imagen_servicio"],
-                                    solicitud["nombre_servicio"],
-                                    solicitud["descripcion_servicio"],
-                                    'cajaopereciones',
+                                    solicitud["imagen_solicitud"],
+                                    solicitud["nombre_solicitud"],
+                                    solicitud["descripcion_solicitud"],
+                                    solicitud["ruta_solicitud"],
+
+                                    // 'cajaopereciones',
                                   ));
                                 }
 
                                 return itemssolicitudes;
                               }
-
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: buildServiciosItemss(
-                                    context, data['servicios']),
+                                    context, data['solicitudes']),
                               );
                             } else {
                               // Manejar caso en que rows es nulo o vacío
@@ -287,8 +288,8 @@ class SolicitudesState extends ConsumerState<SolicitudesScreen> {
 }
 
 items(context, imagen, texto1, texto2, ruta) {
-  Uint8List bytes = base64.decode(imagen);
-  final image = MemoryImage(bytes);
+  // Uint8List bytes = base64.decode(imagen);
+  // final image = MemoryImage(bytes);
   return Padding(
     padding: EdgeInsets.only(top: displayWidth(context) * 0.05),
     child: ElevatedButton(
@@ -311,9 +312,9 @@ items(context, imagen, texto1, texto2, ruta) {
                     padding: EdgeInsets.all(displayWidth(context) * 0.05),
                     child: SizedBox(
                       width: displayWidth(context) * 0.25,
-                      child: Image(
-                        image: image,
-                      ),
+                      // child: Image(
+                      //   image: image,
+                      // ),
                     ),
                   ),
                   SizedBox(
@@ -328,7 +329,7 @@ items(context, imagen, texto1, texto2, ruta) {
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: const Color.fromARGB(255, 0, 0, 0),
-                                fontSize: displayWidth(context) * 0.04),
+                                fontSize: displayWidth(context) * 0.03),
                           ),
                         ),
                         Padding(
@@ -343,6 +344,7 @@ items(context, imagen, texto1, texto2, ruta) {
                               top: displayWidth(context) * 0.02),
                           child: ElevatedButton(
                             onPressed: () {
+                              // print(ruta);
                               Navigator.pushNamed(context, ruta);
                               // Future<String> html =
                               // SharedPreferencesHelper.getdatos(

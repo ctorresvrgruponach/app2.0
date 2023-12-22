@@ -5,8 +5,10 @@ import 'package:com.gruponach.nach_empleado/views/prestamos/documentos.dart';
 
 import '../config/vistas.dart';
 import '../views/cajadeahorro/cajaoperacionscreen.dart';
+import '../views/notificaciones/notificaciones.dart';
 import '../views/prestamos/prestamo_nomina.dart';
 import '../views/prestamos/solicita_prestamo.dart';
+import '../views/vacaciones/vacaciones.dart';
 
 class AppRoutes {
   static const String inicio = '/';
@@ -25,12 +27,22 @@ class AppRoutes {
   static const String reviewSignaturePage = 'reviewSignaturePage';
   static const String xml = 'xml';
   static const String solicitudes = 'solicitudes';
-  static const String cajaopereciones = 'cajaopereciones';
+  static const String cajaopereciones = 'caja_ahorro';
   static const String cajavalores = 'cajavalores';
   //Prestamos
   static const String prestamo         = 'prestamo';
   static const String solicitaPrestamo = 'solicita_prestamo';
   static const String documentos       = 'documentos';
+  //Vacaciones
+  static const String vacaciones       = 'solicitud_vacaciones';
+  static const String detallesNotificacion         = 'detalles_notificacion';
+
+  //Notificaciones
+  static const String notificaciones   = 'notificaciones';
+  static const String solicitudesPendientes   = 'solicitudesPendientes';
+
+  // Servicios Activos
+  static const String serviciosActivos = 'servicios_activos';
 
   // Agrega la definición de initialRoute
   static const String initialRoute = inicio;
@@ -41,7 +53,7 @@ class AppRoutes {
     home: (context) => const HomeScreen(),
     login: (context) => const Login(),
     otraPantalla: (context) => const OtraPantalla(),
-    firma: (context) => const Firma(),
+    firma: (context) => const Firma(data: '0',),
     servicios: (context) => const ServiciosScreen(),
     solicitudes: (context) => const SolicitudesScreen(),
     misAdelantos: (context) => const MisAdelantos(),
@@ -60,5 +72,18 @@ class AppRoutes {
     prestamo: (context) => const Prestamo(),
     solicitaPrestamo: (context) => const SolicitaPrestamo(),
     documentos: (context) => const VerDocumentos(data: 0, idoperacion: 0,),
+
+    //Vacaciones
+    vacaciones: (context) => const Vacaciones(),
+    detallesNotificacion:   (context) => const DetallesNotificaciones(),
+    // pruebas: (context) =>  MyAppState(),
+
+    // notificaciones
+    notificaciones: (context) =>const Notificaciones(),
+    // notificaciones: (context) => VerNotificaciones(),
+    solicitudesPendientes: (context) => const SolicitudesRealizadas(),
+
+    //Servicios Activos
+    serviciosActivos: (context) =>const  MisSolicitudes(),
   };
 }

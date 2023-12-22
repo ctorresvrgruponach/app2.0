@@ -128,10 +128,13 @@ final postMisNotificacionesdetalleProviders =
     FutureProvider.autoDispose<Map<String, dynamic>>((ref) async {
   final token = await SharedPreferencesHelper.getdatos('token');
   final empleadoId = await SharedPreferencesHelper.getdatos('empleado');
+  // final idPrestamo = await SharedPreferencesHelper.getdatos('prestamoid');
 
   final postDatas = {
     "idEmpleado": empleadoId,
     "token": token,
+    "id_prestamo":3446
+
   };
 
   final dynamic datanotificaciones = await fetchPostData(

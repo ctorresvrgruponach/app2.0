@@ -94,7 +94,6 @@ class PrestamoState extends ConsumerState<Prestamo> {
                   SizedBox(
                     //color: Color.fromARGB(255, 5, 50, 91),
                     width: displayWidth(context) * 1,
-
                     child: FutureBuilder<Map<String, dynamic>>(
                       future: ref.watch(operacionesPrestamo.future),
                       builder: (context, snapshot) {

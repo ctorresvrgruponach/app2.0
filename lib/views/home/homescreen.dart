@@ -161,21 +161,69 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             0.11,
                                                       ),
                                                     ),
-                                                    Container(
-                                                      width: displayWidth(
-                                                              context) *
-                                                          0.11,
-                                                      height: displayWidth(
-                                                              context) *
-                                                          0.11,
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                        image: DecorationImage(
-                                                            image: AssetImage(
-                                                              "assets/images/logo_sesion.png",
+                                                    
+                                                    // Container(
+                                                    //   width: displayWidth(
+                                                    //           context) *
+                                                    //       0.11,
+                                                    //   height: displayWidth(
+                                                    //           context) *
+                                                    //       0.11,
+                                                    //   decoration:
+                                                    //       const BoxDecoration(
+                                                    //     image: DecorationImage(
+                                                    //         image: AssetImage(
+                                                    //           "assets/images/logo_sesion.png",
+                                                    //         ),
+                                                    //         fit: BoxFit.cover),
+                                                    //   ),
+                                                    // ),
+                                                  //   IconButton(
+                                                  //   icon:const  Icon(Icons.notifications_active),
+                                                  //   iconSize: 40,
+                                                  //   color: const Color.fromARGB(255, 5, 50, 91),
+                                                  //   onPressed: () {
+                                                  //     // print('Me tocaste');
+                                                  //     Navigator.pushNamed(context, 'notificaciones');
+                                                  //      // Navigator.pushNamed(context, 'vacaciones');
+                                                  //   },
+                                                  //
+                                                    Stack(
+                                                      children: [
+                                                        IconButton(
+                                                          icon: const Icon(Icons.notifications_active),
+                                                          iconSize: 40,
+                                                          color: const Color.fromARGB(255, 5, 50, 91),
+                                                          onPressed: () {
+                                                            Navigator.pushNamed(context, 'notificaciones');
+                                                            // print('me tocastre');
+                                                          },
+                                                        ),
+                                                        if (1 > 0)
+                                                          Positioned(
+                                                            right: 8,
+                                                            top: 8,
+                                                            child: Container(
+                                                              padding: const EdgeInsets.all(4),
+                                                              decoration: BoxDecoration(
+                                                                color: Colors.red,
+                                                                borderRadius: BorderRadius.circular(10),
+                                                              ),
+                                                              constraints: const BoxConstraints(
+                                                                minWidth: 18,
+                                                                minHeight: 18,
+                                                              ),
+                                                              child: const Text(
+                                                                '1',
+                                                                style: TextStyle(
+                                                                  color: Colors.white,
+                                                                  fontSize: 12,
+                                                                ),
+                                                                textAlign: TextAlign.center,
+                                                              ),
                                                             ),
-                                                            fit: BoxFit.cover),
-                                                      ),
+                                                          ),
+                                                      ],
                                                     ),
                                                   ],
                                                 ),
@@ -394,3 +442,12 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
+//TODOS LOS PUNTOS QUE SE NECESITAN REVISAR
+// 1 loginnvalidar la version de la app en caso de no ser la misma manmdar a que se actualize 
+// 2 la firma solo se debe pedir 1 sola vez
+// 3 vacaciones
+// 4Notificaciones 
+// mis solicitudes
+
+

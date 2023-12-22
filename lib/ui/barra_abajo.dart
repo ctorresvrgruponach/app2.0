@@ -1,4 +1,5 @@
 import '../libs/lib.dart';
+import '../views/firma/firma.dart';
 
 BottomNavigationBar bottomNachBarfirma(context) {
   return BottomNavigationBar(
@@ -53,149 +54,179 @@ class MyBottomNavigationBarState extends ConsumerState<MyBottomNavigationBar> {
         return postMisMisNotificacionesProvider.when(
           data: (data) {
             // Verifica si 'aval_prestamos' está presente en el mapa y es una lista
-            if (data['success'] == true) {
-              final rows = (data['aval_prestamos'] as List?)
-                  ?.cast<Map<String, dynamic>>();
-              final rows2 = (data['avales_rechazados'] as List?)
-                  ?.cast<Map<String, dynamic>>();
-              var count = rows!.length + rows2!.length;
-              // print(count);
-              return BottomNavigationBar(
-                showUnselectedLabels: true,
-                items: <BottomNavigationBarItem>[
-                  BottomNavigationBarItem(
-                    activeIcon: Stack(
-                      children: [
-                        const Icon(Icons.notifications),
-                        count > 0
-                            ? Positioned(
-                                right: 0,
-                                child: Container(
-                                  padding: const EdgeInsets.all(2),
-                                  decoration: BoxDecoration(
-                                    color: Colors.red,
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  constraints: const BoxConstraints(
-                                    minWidth: 16,
-                                    minHeight: 16,
-                                  ),
-                                  child: Text(
-                                    '$count',
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              )
-                            : const Text(''),
-                      ],
-                    ),
-                    icon: Stack(
-                      children: [
-                        const Icon(Icons.notifications),
-                        count > 0
-                            ? Positioned(
-                                right: 0,
-                                child: Container(
-                                  padding: const EdgeInsets.all(2),
-                                  decoration: BoxDecoration(
-                                    color: Colors.red,
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  constraints: const BoxConstraints(
-                                    minWidth: 16,
-                                    minHeight: 16,
-                                  ),
-                                  child: Text(
-                                    '$count',
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              )
-                            : const Text(''),
-                      ],
-                    ),
-                    label: 'Notificaciones',
-                    backgroundColor: const Color.fromARGB(255, 209, 207, 207),
-                  ),
-                  const BottomNavigationBarItem(
-                    icon: Icon(Icons.star),
-                    tooltip: 'Productos',
-                    activeIcon:
-                        Icon(color: Color.fromARGB(255, 5, 50, 91), Icons.star),
-                    label: 'Productos',
+            // final rows =
+            //     (data['aval_prestamos'] as List?)?.cast<Map<String, dynamic>>();
+            // final rows2 = (data['avales_rechazados'] as List?)
+            //     ?.cast<Map<String, dynamic>>();
+            // // var count = rows!.length + rows2!.length;
+            // var count =1;
+            // print(count);
+            // print(count);
+            return BottomNavigationBar(
+              showUnselectedLabels: true,
+              items: const <BottomNavigationBarItem>[
+                // BottomNavigationBarItem(
+                //   activeIcon: Stack(
+                //     children: [
+                //       const Icon(Icons.notifications),
+                //       count > 0
+                //           ? Positioned(
+                //               right: 0,
+                //               child: Container(
+                //                 padding: const EdgeInsets.all(2),
+                //                 decoration: BoxDecoration(
+                //                   color: Colors.red,
+                //                   borderRadius: BorderRadius.circular(8),
+                //                 ),
+                //                 constraints: const BoxConstraints(
+                //                   minWidth: 16,
+                //                   minHeight: 16,
+                //                 ),
+                //                 child: Text(
+                //                   '$count',
+                //                   style: const TextStyle(
+                //                     color: Colors.white,
+                //                     fontSize: 12,
+                //                   ),
+                //                   textAlign: TextAlign.center,
+                //                 ),
+                //               ),
+                //             )
+                //           : const Text(''),
+                //     ],
+                //   ),
+                //   icon: Stack(
+                //     children: [
+                //       const Icon(Icons.notifications),
+                //       count > 0
+                //           ? Positioned(
+                //               right: 0,
+                //               child: Container(
+                //                 padding: const EdgeInsets.all(2),
+                //                 decoration: BoxDecoration(
+                //                   color: Colors.red,
+                //                   borderRadius: BorderRadius.circular(8),
+                //                 ),
+                //                 constraints: const BoxConstraints(
+                //                   minWidth: 16,
+                //                   minHeight: 16,
+                //                 ),
+                //                 child: Text(
+                //                   '$count',
+                //                   style: const TextStyle(
+                //                     color: Colors.white,
+                //                     fontSize: 12,
+                //                   ),
+                //                   textAlign: TextAlign.center,
+                //                 ),
+                //               ),
+                //             )
+                //           : const Text(''),
+                //     ],
+                //   ),
+                //   label: 'Notificaciones',
+                //   backgroundColor: const Color.fromARGB(255, 209, 207, 207),
+                // ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.edit_document),
+                  tooltip: 'Solicitudes',
+                  activeIcon:
+                      Icon(color: Color.fromARGB(255, 5, 50, 91), Icons.star),
+                  label: 'Solicitudes',
 
-                    //label: 'Business',
+                  //label: 'Business',
 
-                    backgroundColor: Color.fromARGB(255, 209, 207, 207),
-                  ),
-                  const BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    tooltip: 'Home',
-                    activeIcon:
-                        Icon(color: Color.fromARGB(255, 5, 50, 91), Icons.home),
-                    label: 'Home',
+                  backgroundColor: Color.fromARGB(255, 209, 207, 207),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.star),
+                  tooltip: 'Productos',
+                  activeIcon:
+                      Icon(color: Color.fromARGB(255, 5, 50, 91), Icons.star),
+                  label: 'Productos',
 
-                    backgroundColor: Color.fromARGB(255, 209, 207, 207),
-                    // backgroundColor: Colors.purple,
-                  ),
-                  const BottomNavigationBarItem(
-                    icon: Icon(Icons.settings),
-                    activeIcon: Icon(Icons.settings),
-                    tooltip: 'Configura tu firma',
-                    label: 'Configura tu firma',
-                    backgroundColor: Color.fromARGB(255, 209, 207, 207),
-                    // backgroundColor: Colors.pink,
-                  ),
-                  const BottomNavigationBarItem(
-                    icon: Icon(Icons.account_circle_rounded),
-                    activeIcon: Icon(Icons.account_circle_rounded),
-                    tooltip: 'Cerrar sesión',
-                    label: 'Cerrar sesión',
-                    backgroundColor: Color.fromARGB(255, 209, 207, 207),
+                  //label: 'Business',
 
-                    // backgroundColor: Colors.pink,
-                  ),
-                ],
-                currentIndex: widget.selectedIndex,
-                fixedColor: const Color.fromARGB(255, 5, 50, 91),
-                onTap: (int index) {
-                  switch (index) {
-                    case 0:
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, 'mis_adelantos', (route) => false);
-                      break;
-                    case 1:
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, 'servicios', (route) => false);
-                      break;
-                    case 2:
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, 'home', (route) => false);
-                      break;
-                    case 3:
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, 'firma', (route) => false);
-                      break;
-                    case 4:
-                      //   Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
-                      showMenu<String>(
-                        context: context,
-                        position: const RelativeRect.fromLTRB(
-                            1000.0, 1000.0, 0.0, 0.0),
-                        items: <PopupMenuItem<String>>[
-                          PopupMenuItem<String>(
-                              child: ElevatedButton(
-                            onPressed: () async {
-                              await SharedPreferencesHelper.borrashared();
-                              SharedPreferencesHelper.setdatos('cerrar', 'si');
+                  backgroundColor: Color.fromARGB(255, 209, 207, 207),
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  tooltip: 'Home',
+                  activeIcon:
+                      Icon(color: Color.fromARGB(255, 5, 50, 91), Icons.home),
+                  label: 'Home',
+
+                  backgroundColor: Color.fromARGB(255, 209, 207, 207),
+                  // backgroundColor: Colors.purple,
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.settings),
+                  activeIcon: Icon(Icons.settings),
+                  tooltip: 'Configura tu firma',
+                  label: 'Configura tu firma',
+                  backgroundColor: Color.fromARGB(255, 209, 207, 207),
+                  // backgroundColor: Colors.pink,
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.account_circle_rounded),
+                  activeIcon: Icon(Icons.account_circle_rounded),
+                  tooltip: 'Cerrar sesión',
+                  label: 'Cerrar sesión',
+                  backgroundColor: Color.fromARGB(255, 209, 207, 207),
+
+                  // backgroundColor: Colors.pink,
+                ),
+              ],
+              currentIndex: widget.selectedIndex,
+              fixedColor: const Color.fromARGB(255, 5, 50, 91),
+              onTap: (int index) {
+                switch (index) {
+                  case 0:
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, 'servicios_activos', (route) => false);
+                    break;
+                  case 1:
+                    // Navigator.pushNamedAndRemoveUntil(
+                    //     context, 'servicios_activos', (route) => false);
+                    Navigator.pushNamed(context, 'servicios');
+                    break;
+                  case 2:
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, 'home', (route) => false);
+                    break;
+                  case 3:
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>const Firma( data: 1),
+                        ),
+                      );
+                    // Navigator.pushNamedAndRemoveUntil(
+                    //     context, '/', (route) => false);
+                        
+                    break;
+                  // case 4:
+                  //   // Navigator.pushNamedAndRemoveUntil(
+                  //   //     context, 'firma', (route) => false);
+                  //       Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //         builder: (context) =>const Firma( data: 1),
+                  //       ),
+                  //     );
+                  //   break;
+                  case 4:
+                    //   Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+                    showMenu<String>(
+                      context: context,
+                      position:
+                          const RelativeRect.fromLTRB(1000.0, 1000.0, 0.0, 0.0),
+                      items: <PopupMenuItem<String>>[
+                        PopupMenuItem<String>(
+                            child: ElevatedButton(
+                          onPressed: () async {
+                            await SharedPreferencesHelper.borrashared();
+                            SharedPreferencesHelper.setdatos('cerrar', 'si');
 
                               // ignore: use_build_context_synchronously
                               Navigator.pushNamedAndRemoveUntil(

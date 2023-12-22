@@ -1,5 +1,7 @@
+import 'package:com.gruponach.nach_empleado/config/vistas.dart';
 import 'package:flutter_swiper_plus/flutter_swiper_plus.dart';
 import 'package:local_auth/local_auth.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../api/apilogin.dart';
 import '../../libs/lib.dart';
@@ -21,15 +23,50 @@ class LoginState extends ConsumerState<Login> {
     someFunction();
   }
 
-  Future<void> somelugar(int firma) async {
-    final firmas = await SharedPreferencesHelper.getdatos('imagen_emplaedo');
-    if (firma == 0 || firmas.isEmpty) {
-      // ignore: use_build_context_synchronously
-      Navigator.pushNamedAndRemoveUntil(context, 'firma', (route) => false);
-    } else {
-      // ignore: use_build_context_synchronously
-      Navigator.pushNamedAndRemoveUntil(context, 'home', (route) => false);
+  // Future<void> somelugar(int firma) async {
+  //   final firmas = await SharedPreferencesHelper.getdatos('imagen_emplaedo');
+  //   if (firma == 0 || firmas.isEmpty) {
+  //     // ignore: use_build_context_synchronously
+  //     Navigator.pushNamedAndRemoveUntil(context, 'firma', (route) => false);
+  //   } else {
+  //     // ignore: use_build_context_synchronously
+  //     Navigator.pushNamedAndRemoveUntil(context, 'home', (route) => false);
+  //   }
+  // }
+
+
+  Future<void> somelugar(int firma, String version,) async {
+    // final firmas = await SharedPreferencesHelper.getdatos('imagen_emplaedo');
+    PackageInfo versionApp = await PackageInfo.fromPlatform();
+    if(versionApp.buildNumber == version){
+      if(firma == 0){
+         // ignore: use_build_context_synchronously
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Firma( data: firma),
+          ),
+        );
+      }else{
+        // ignore: use_build_context_synchronously
+        Navigator.pushNamedAndRemoveUntil(context, 'home', (route) => false);
+      }
+    }else {
+      muestraAlerta();
     }
+    // if (firma == 0) {
+    //   // ignore: use_build_context_synchronously
+    //   // Navigator.pushNamedAndRemoveUntil(context, 'firma', (route) => false);
+    //     Navigator.push(
+    //       context,
+    //       MaterialPageRoute(
+    //         builder: (context) => Firma( data: firma),
+    //       ),
+    //     );
+    // } else{
+    //   // ignore: use_build_context_synchronously
+    //   Navigator.pushNamedAndRemoveUntil(context, 'home', (route) => false);
+    // }
   }
 
   Future<void> someFunction() async {
@@ -141,8 +178,10 @@ class LoginState extends ConsumerState<Login> {
             '${data['empleado']['nombres']} ${data['empleado']['apellidoPaterno']} ${data['empleado']['apellidoMaterno']}');
         SharedPreferencesHelper.setdatos(
             'flag_firma', data['flag_firma'].toString());
+        SharedPreferencesHelper.setdatos('notificaciones', data['notificaciones'].toString());
         var firma = data['flag_firma'];
-        somelugar(firma);
+        var versionApp = data['version_app'];
+        somelugar(firma, versionApp);
         stateController.state = false;
       } else {
         SharedPreferencesHelper.setdatos('token', '');
@@ -447,4 +486,49 @@ class LoginState extends ConsumerState<Login> {
       ),
     );
   }
+  void muestraAlerta() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Actualizar Aplicación"),
+          content: const Text("Hay una nueva versión disponible. Por favor, actualiza la aplicación."),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text("Cerrar"),
+            ),
+            TextButton(
+              onPressed: () {
+                abrirPlayStore();
+                Navigator.of(context).pop();
+              },
+              child:const Text("Actualizar"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+  void abrirPlayStore() async {
+    const url = 'https://play.google.com/store/apps/details?id=com.gruponach.nach_empleado';
+    // ignore: deprecated_member_use
+    if (await canLaunch(url)) {
+      // ignore: deprecated_member_use
+      await launch(url);
+    } else {
+      throw 'No se pudo abrir la Play Store';
+    }
+  }
+
+  //   void checkForUpdate() {
+  //   // Comparar versiones
+  //   if (currentAppVersion != latestAppVersion) {
+  //     showUpdateAlert();
+  //   } else {
+  //     showToast("La aplicación está actualizada");
+  //   }
+  // }
 }

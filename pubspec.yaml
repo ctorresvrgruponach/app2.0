@@ -71,6 +71,14 @@ dependencies:
   file_saver:   
   pdf_viewer_v2: ^1.0.1
   connectivity: ^3.0.6
+  syncfusion_flutter_datepicker: ^19.2.52
+  date_format_field: ^0.0.2
+  flutter_localization: ^0.2.0
+  table_calendar: ^3.0.9
+  syncfusion_localizations: ^19.4.56
+  marquee: ^2.2.3
+  # fluttertoast: ^8.2.4
+  url_launcher: ^6.0.13
   # flutter_plugin_pdf_viewer: ^1.0.7ç
   # pdf_flutter: ^2.2.1
 

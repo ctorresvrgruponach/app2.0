@@ -1,6 +1,7 @@
 import 'package:com.gruponach.nach_empleado/views/home/homescreen.dart';
-import 'package:com.gruponach.nach_empleado/views/misadelantos/mis_adelantos.dart';
 import 'package:flutter/material.dart';
+
+import '../views/misservicios/servicios_activos.dart';
 
 class CustomDialogManager {
   final BuildContext context;
@@ -15,6 +16,7 @@ class CustomDialogManager {
   }) async {
     return showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return CustomAlertDialog(
           icon: icon,
@@ -249,7 +251,7 @@ class alerterror extends StatelessWidget {
               Navigator.of(context).pop();
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const MisAdelantos()),
+                MaterialPageRoute(builder: (context) => const MisSolicitudes()),
               );
             },
             style: ButtonStyle(

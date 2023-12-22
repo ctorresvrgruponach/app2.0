@@ -41,6 +41,20 @@ const String confirmaPrestamo = '/guarda_prestamo';
 const String solicitaPrestamoEdit = '/edita_prestamo_nomina';
 const String muestraDocumentos = '/generar_archivos_prestamos';
 
+//VACACIONES
+const String operacionSolicitudVacaciones = '/solicitud_vacaciones';
+const String solicitaVacaciones           = '/solicita_vacaciones';
+const String confirmaVacaciones           = '/guarda_vacaciones';
+const String confirmaRechazaVacaciones    = '/autoriza_rechaza_vacaciones';
+
+//Mis solicitudes 
+const String misSolicitudes               = '/solicitudes_app';
+const String solicitudes                  = '/solicitudes';
+
+//Detalles Notificaciones 
+const String detallsNotificacion = '/solicitudes_detalle';
+
+
 List<String> myList = ['Identificación (INE)', 'INE'];
 
 Map<String, String> someMap = {};
