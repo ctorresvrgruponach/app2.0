@@ -54,6 +54,10 @@ const String solicitudes                  = '/solicitudes';
 //Detalles Notificaciones 
 const String detallsNotificacion = '/solicitudes_detalle';
 
+//Notificaciones Activas 
+
+const String notificacionesActivas = '/notificaciones';
+
 
 List<String> myList = ['Identificación (INE)', 'INE'];
 

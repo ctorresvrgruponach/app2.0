@@ -1,7 +1,7 @@
-import 'package:com.gruponach.nach_empleado/views/home/homescreen.dart';
 import 'package:flutter/material.dart';
 
 import '../views/misservicios/servicios_activos.dart';
+import '../views/solicitudes/solicitudes.dart';
 
 class CustomDialogManager {
   final BuildContext context;
@@ -168,7 +168,8 @@ class alersuccess extends StatelessWidget {
               Navigator.of(context).pop();
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const HomeScreen()),
+                // MaterialPageRoute(builder: (context) => const HomeScreen()),
+                MaterialPageRoute(builder: (context) => const SolicitudesScreen()),
               );
             },
             style: ButtonStyle(

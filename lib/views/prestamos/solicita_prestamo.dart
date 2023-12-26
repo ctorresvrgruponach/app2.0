@@ -980,6 +980,7 @@ class SolicitaPrestamoState extends ConsumerState<SolicitaPrestamo> {
                                 //ignore: use_build_context_synchronously
                                 showDialog(
                                   context: context,
+                                  barrierDismissible: true,
                                   builder: (BuildContext context) {
                                     return alersuccess(
                                         message: respuesta['mensaje'],

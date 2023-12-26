@@ -20,12 +20,12 @@ final postEnviaAprobacionProviders =
 });
 
 class EnviaAprobacionClass {
-  Future<Map<String, dynamic>> enviaAprobacion(int aprobar) async {
+  Future<Map<String, dynamic>> enviaAprobacion(int aprobar ) async {
     final token = await SharedPreferencesHelper.getdatos('token');
     final empleadoId = await SharedPreferencesHelper.getdatos('empleado');
     final comprobante = await SharedPreferencesHelper.getdatos('Comprobante');
     final ine = await SharedPreferencesHelper.getdatos('INE');
-    final idprestamo = await SharedPreferencesHelper.getdatos('id_solicitud');
+    final idprestamo = await SharedPreferencesHelper.getdatos('id_solicitud_aval');
 
 
     final postDatas = {
