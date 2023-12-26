@@ -42,8 +42,8 @@ class ConfirmarRechazarVacaciones {
     //variables que se mandaran
 
     final token = await SharedPreferencesHelper.getdatos('token');
-    final idSolicitud = await SharedPreferencesHelper.getdatos('id_solicitud');
-    final estatus = await SharedPreferencesHelper.getdatos('estatus');
+    final idSolicitud = await SharedPreferencesHelper.getdatos('id_solicitud_vacacion');
+    final estatus = await SharedPreferencesHelper.getdatos('estatus_vacaciones');
 
     // final comprobante   = await SharedPreferencesHelper.getdatos('Comprobante (DOMICILIO)');
 

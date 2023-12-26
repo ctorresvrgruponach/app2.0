@@ -1,10 +1,8 @@
 import 'package:com.gruponach.nach_empleado/libs/lib.dart';
 
-import '../../api/autoriza_rechaza_vacaciones.dart';
 import '../../api/enviaraprobacion.dart';
 import '../../api/notificacion_detalle.dart';
 import '../../api/solicitudes.dart';
-import '../../config/vistas.dart';
 // import '../../api/solicitudes.dart';
 // import 'package:intl/intl.dart';
 
@@ -172,10 +170,67 @@ class DetallesNotificacionesState
 
   bool aceptavacaciones = false;
   bool rechazavacaciones = false;
+  bool isLoading = false;
+
+  void fetchData() async {
+    final token = await SharedPreferencesHelper.getdatos('token');
+    final idSolicitud =
+        await SharedPreferencesHelper.getdatos('id_solicitud_vacacion');
+    final estatus =
+        await SharedPreferencesHelper.getdatos('estatus_vacaciones');
+
+    final postDatas = {
+      "token": token,
+      "id_solicitud": idSolicitud,
+      "estatus": estatus,
+    };
+
+    final response = await fetchPostData(
+        modo, completeUrldev, baseUrl, confirmaRechazaVacaciones, postDatas);
+
+    if (response['success'] == true) {
+      setState(() {
+        isLoading = false;
+      });
+      Navigator.of(context).pop();
+      ref.refresh(notificacionDetalles);
+      return
+          // ignore: use_build_context_synchronously
+          showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return CustomAlertDialog(
+              message: response['mensaje'],
+              title: 'Éxito',
+              icon: Icons.check,
+              color: Colors.green);
+        },
+      );
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+      Navigator.of(context).pop();
+      return
+          // ignore: use_build_context_synchronously
+          showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return const CustomAlertDialog(
+              message: 'Error al realizar la solicitud intentalo mas tarde.',
+              title: 'Error...!',
+              icon: Icons.error_sharp,
+              color: Colors.red);
+        },
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final enviaSolicitudVacaciones = ConfirmarRechazarVacaciones();
+    // final enviaSolicitudVacaciones = ConfirmarRechazarVacaciones();
     // final enviaSolicitudVacaciones = ConfirmarVacaciones();
     final customDialogManager = CustomDialogManager(context);
 
@@ -222,7 +277,7 @@ class DetallesNotificacionesState
                             ),
                           )
                         : SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.7,
+                            height: MediaQuery.of(context).size.height * 0.8,
                             width: MediaQuery.of(context).size.height * 0.9,
                             child: ListView.builder(
                               itemCount: solicitud.length,
@@ -262,7 +317,7 @@ class DetallesNotificacionesState
                                                       fontSize: 14),
                                                 )
                                               : Text(
-                                                  'El empleado ${currentItem['nombre_solicitante']} ha solicitado ${currentItem['cantidad']} dias a cuenta de sus vacaciones que constan del dia  ${currentItem['fecha_inicio']}. al ${currentItem['fecha_inicio']} del presenter año en curso.',
+                                                  'El empleado ${currentItem['nombre_solicitante']} ha solicitado ${currentItem['cantidad']} dias a cuenta de sus vacaciones que constan del dia  ${currentItem['fecha_inicio']}. al ${currentItem['fecha_fin']} del presenter año en curso.',
                                                   textAlign: TextAlign.justify,
                                                   style: const TextStyle(
                                                       fontSize: 14),
@@ -272,6 +327,7 @@ class DetallesNotificacionesState
                                         ),
                                         tipoServicio == 'Autorizacion de Aval'
                                             ? Row(
+                                                //TODO CONFIRMAR AVAL LO RELACIONADO A AVALES
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.end,
                                                 children: <Widget>[
@@ -385,7 +441,7 @@ class DetallesNotificacionesState
                                                                             // print('LLEGO BB');
                                                                             await customDialogManager.showCustomDialog(
                                                                               icon: Icons.warning,
-                                                                              message: 'Al dar click se tendrá acceso a tu último recibo de nómina.',
+                                                                              message: 'Al dar clic se tendrá acceso a tu último recibo de nómina.',
                                                                               title: '',
                                                                               color: const Color.fromARGB(255, 244, 54, 54),
                                                                             );
@@ -395,7 +451,11 @@ class DetallesNotificacionesState
                                                                             final confrimaRechazaAval =
                                                                                 EnviaAprobacionClass();
                                                                             final resp =
-                                                                                await confrimaRechazaAval.enviaAprobacion(1);
+                                                                                await confrimaRechazaAval.enviaAprobacion(
+                                                                              1,
+                                                                            );
+                                                                            SharedPreferencesHelper.setdatos('id_solicitud_aval',
+                                                                                '${currentItem['id_solicitud']}');
                                                                             if (resp['success']) {
                                                                               await customDialogManager.showCustomDialog(icon: Icons.check, title: resp['mensaje'], message: '', color: const Color.fromARGB(255, 54, 244, 76));
                                                                               await SharedPreferencesHelper.remove('INE');
@@ -403,16 +463,17 @@ class DetallesNotificacionesState
                                                                               setState(() {
                                                                                 someMap.clear();
                                                                               });
+                                                                              ref.refresh(notificacionDetalles);
                                                                               await SharedPreferencesHelper.remove('idSolucitud');
                                                                               // ref.refresh(solicitudesActivas);
                                                                               // ref.refresh(notificacionDetalles);
                                                                               // ignore: use_build_context_synchronously
-                                                                              // Navigator.of(context).pop();
+                                                                              Navigator.of(context).pop();
                                                                               // ignore: use_build_context_synchronously
-                                                                              Navigator.push(
-                                                                                context,
-                                                                                MaterialPageRoute(builder: (context) => const HomeScreen()),
-                                                                              );
+                                                                              // Navigator.push(
+                                                                              //   context,
+                                                                              //   MaterialPageRoute(builder: (context) => const Noto()),
+                                                                              // );
                                                                             } else {
                                                                               await customDialogManager.showCustomDialog(icon: Icons.warning, title: resp['mensaje'], message: '', color: const Color.fromARGB(255, 244, 54, 54));
                                                                             }
@@ -474,6 +535,7 @@ class DetallesNotificacionesState
                                                                       onPressed:
                                                                           () async {
                                                                         // print('ENVIAMOS SOLICITUD');
+                                                                        SharedPreferencesHelper.setdatos('id_solicitud_aval', '${currentItem['id_solicitud']}');
                                                                         final instanciaEnviaAdelanto =
                                                                             EnviaAprobacionClass();
                                                                         final resp =
@@ -484,6 +546,9 @@ class DetallesNotificacionesState
                                                                         }
                                                                         if (resp[
                                                                             'success']) {
+                                                                          ref.refresh(
+                                                                              notificacionDetalles);
+
                                                                           await customDialogManager.showCustomDialog(
                                                                               icon: Icons.check,
                                                                               title: resp['mensaje'],
@@ -492,14 +557,18 @@ class DetallesNotificacionesState
                                                                           // ignore: use_build_context_synchronously
                                                                           // Navigator.of(context).pop();
                                                                           // ignore: use_build_context_synchronously
-                                                                          Navigator
-                                                                              .push(
-                                                                            context,
-                                                                            MaterialPageRoute(builder: (context) => const HomeScreen()),
-                                                                          );
+                                                                          // Navigator
+                                                                          //     .push(
+                                                                          //   context,
+                                                                          //   MaterialPageRoute(builder: (context) => const HomeScreen()),
+                                                                          // );
                                                                           // ref.refresh(solicitudesActivas);
                                                                           // ref.refresh(notificacionDetalles);
-                                                                          await SharedPreferencesHelper.remove('idSolucitud');
+                                                                          Navigator.of(context)
+                                                                              .pop();
+
+                                                                          await SharedPreferencesHelper.remove(
+                                                                              'idSolucitud');
                                                                           // await SharedPreferencesHelper.remove('Identificación (INE)');
                                                                         } else {
                                                                           await customDialogManager.showCustomDialog(
@@ -536,71 +605,21 @@ class DetallesNotificacionesState
                                                 ],
                                               )
                                             : Row(
+                                                //TODO RELACIONADO CONFIRMA VACACIONES
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.end,
                                                 children: <Widget>[
                                                   ElevatedButton(
                                                       onPressed: () async {
                                                         SharedPreferencesHelper
-                                                            .setdatos('estatus',
+                                                            .setdatos(
+                                                                'estatus_vacaciones',
                                                                 '1'); //ACEPTAR
                                                         SharedPreferencesHelper
                                                             .setdatos(
-                                                                'id_solicitud',
+                                                                'id_solicitud_vacacion',
                                                                 '${currentItem['id_solicitud']}');
-                                                        // print('para vacaciones');
-                                                        setState(() {
-                                                          aceptavacaciones =
-                                                              true;
-                                                        });
-                                                        final respuesta =
-                                                            await enviaSolicitudVacaciones
-                                                                .rechazarconfirmardiasVacaciones();
-                                                        if (respuesta[
-                                                                'success'] ==
-                                                            true) {
-                                                          // ignore: use_build_context_synchronously
-                                                          showDialog(
-                                                            context: context,
-                                                            barrierDismissible:
-                                                                false,
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                              return alersuccess(
-                                                                  message:
-                                                                      respuesta[
-                                                                          'mensaje'],
-                                                                  title:
-                                                                      'Éxito',
-                                                                  icon: Icons
-                                                                      .check,
-                                                                  color: Colors
-                                                                      .green);
-                                                            },
-                                                          );
-                                                        } else if (respuesta[
-                                                                'success'] ==
-                                                            false) {
-                                                          // ignore: use_build_context_synchronously
-                                                          showDialog(
-                                                            context: context,
-                                                            barrierDismissible:
-                                                                false,
-                                                            builder: (context) {
-                                                              return CustomAlertDialog(
-                                                                  message:
-                                                                      respuesta[
-                                                                          'mensaje'],
-                                                                  title:
-                                                                      'Error...!',
-                                                                  icon: Icons
-                                                                      .error_sharp,
-                                                                  color: Colors
-                                                                      .red);
-                                                            },
-                                                          );
-                                                        }
+                                                        modalCargando();
                                                       },
                                                       style: ButtonStyle(
                                                         backgroundColor:
@@ -613,72 +632,23 @@ class DetallesNotificacionesState
                                                                         50,
                                                                         91)),
                                                       ),
-                                                      child: Text(
-                                                          aceptavacaciones
-                                                              ? 'Confirmando'
-                                                              : 'Aceptar')),
+                                                      child: const Text(
+                                                          'Aceptar')),
                                                   const SizedBox(
                                                     width: 20,
                                                   ),
                                                   ElevatedButton(
+                                                      //TODO RECHAZA VACACIONES
                                                       onPressed: () async {
                                                         SharedPreferencesHelper
-                                                            .setdatos('estatus',
+                                                            .setdatos(
+                                                                'estatus_vacaciones',
                                                                 '2'); //RECHAZAR
                                                         SharedPreferencesHelper
                                                             .setdatos(
-                                                                'id_solicitud',
+                                                                'id_solicitud_vacacion',
                                                                 '${currentItem['id_solicitud']}');
-                                                        setState(() {
-                                                          rechazavacaciones =
-                                                              true;
-                                                        });
-                                                        final respuesta =
-                                                            await enviaSolicitudVacaciones
-                                                                .rechazarconfirmardiasVacaciones();
-                                                        if (respuesta[
-                                                                'success'] ==
-                                                            true) {
-                                                          // ignore: use_build_context_synchronously
-                                                          showDialog(
-                                                            context: context,
-                                                            barrierDismissible:
-                                                                false,
-                                                            builder:
-                                                                (BuildContext
-                                                                    context) {
-                                                              return alersuccess(
-                                                                  message:
-                                                                      respuesta[
-                                                                          'mensaje'],
-                                                                  title:
-                                                                      'Éxito',
-                                                                  icon: Icons
-                                                                      .check,
-                                                                  color: Colors
-                                                                      .green);
-                                                            },
-                                                          );
-                                                        } else {
-                                                          // ignore: use_build_context_synchronously
-                                                          showDialog(
-                                                            context: context,
-                                                            barrierDismissible:
-                                                                false,
-                                                            builder: (context) {
-                                                              return CustomAlertDialog(
-                                                                  message:
-                                                                      respuesta[
-                                                                          'mensaje'],
-                                                                  title:
-                                                                      'Error...!',
-                                                                  icon: Icons
-                                                                      .error_sharp,
-                                                                  color: Colors
-                                                                      .red);
-                                                            },
-                                                          );
-                                                        }
+                                                        modalCargando();
                                                       },
                                                       style: ButtonStyle(
                                                         backgroundColor:
@@ -691,10 +661,8 @@ class DetallesNotificacionesState
                                                                         0,
                                                                         0)),
                                                       ),
-                                                      child: Text(
-                                                          rechazavacaciones
-                                                              ? 'Procesando..'
-                                                              : 'Rechazar')),
+                                                      child: const Text(
+                                                          'Rechazar')),
                                                   const SizedBox(
                                                     width: 8,
                                                   )
@@ -740,5 +708,39 @@ class DetallesNotificacionesState
         ],
       ),
     );
+  }
+
+  void modalCargando() {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return AbsorbPointer(
+          absorbing: true, // Establece en true para bloquear la interacción
+          child: Container(
+            height: MediaQuery.of(context).size.height * 0.3,
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text('Procesando solicitud, por favor espere...'),
+                const SizedBox(height: 30),
+                SizedBox(
+                  width: MediaQuery.of(context).size.height * 0.1,
+                  height: MediaQuery.of(context).size.height * 0.1,
+                  child: const CircularProgressIndicator(
+                    strokeWidth: 8,
+                    backgroundColor: Color.fromARGB(255, 5, 50, 91),
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      Color.fromARGB(255, 255, 255, 255),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+    fetchData();
   }
 }
