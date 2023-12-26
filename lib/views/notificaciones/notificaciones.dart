@@ -269,7 +269,7 @@ class DetallesNotificacionesState
                                   // ignore: unnecessary_const
                                   contentPadding:
                                       const EdgeInsets.fromLTRB(15, 10, 25, 0),
-                                  title: Text('Nada que mostrar'),
+                                  title: Text('Por el momento no cuentas con ninguna autorización pendiente.'),
                                   // subtitle: Text('El empleado ${currentItem['nombre_solicitante']} te ha seleccionado como aval por la cantidad de ${currentItem['cantidad']} pesos mexicanos.'),
                                   // leading: const Icon(Icons.notification_add_outlined),
                                 ),
@@ -336,10 +336,12 @@ class DetallesNotificacionesState
                                                         SharedPreferencesHelper
                                                             .setdatos('estatus',
                                                                 '1'); //Autorizar
-                                                        SharedPreferencesHelper
-                                                            .setdatos(
-                                                                'id_solicitud',
-                                                                '${currentItem['id_solicitud']}');
+                                                        // SharedPreferencesHelper
+                                                        //     .setdatos(
+                                                        //         'id_solicitud',
+                                                        //         '${currentItem['id_solicitud']}');
+                                                        SharedPreferencesHelper.setdatos('id_solicitud_aval',
+                                                                                '${currentItem['id_solicitud']}');
                                                         // print('para avales');
                                                         await SharedPreferencesHelper
                                                             .remove('INE');
@@ -699,7 +701,24 @@ class DetallesNotificacionesState
                     //     icon: Icons.notification_add,
                     //     color: Colors.white);
 
-                    return const Text('Error');
+                    return  Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      margin: const EdgeInsets.all(15),
+                      elevation: 10,
+                      child: const Column(
+                        children: <Widget>[
+                          ListTile(
+                            // ignore: unnecessary_const
+                            contentPadding:
+                                EdgeInsets.fromLTRB(15, 10, 25, 0),
+                            title: Text('Por el momento no cuentas con ninguna autorización pendiente.'),
+                            // subtitle: Text('El empleado ${currentItem['nombre_solicitante']} te ha seleccionado como aval por la cantidad de ${currentItem['cantidad']} pesos mexicanos.'),
+                            // leading: const Icon(Icons.notification_add_outlined),
+                          ),
+                        ],
+                      ),
+                    );
                   }
                   // By default show a loading spinner.
                   return const Cargando();
