@@ -719,7 +719,7 @@ class SolicitudesRealizadasState extends ConsumerState<SolicitudesRealizadas> {
     // Iterar a través de la lista y construir la cadena
     for (var elemento in avalesRechazados) {
       contenidoModal +=
-          "El emplado ${elemento['nombre_aval']} a rechazado la oferta...";
+          "El empleado ${elemento['nombre_aval']} a rechazado la oferta..."'\n' ;
     }
 
     showDialog(

@@ -461,6 +461,7 @@ class EditaPrestamoState extends ConsumerState<EditaPrestamo> {
                               //ignore: use_build_context_synchronously
                               showDialog(
                                 context: context,
+                                barrierDismissible: false,
                                 builder: (BuildContext context) {
                                   return alersuccess(
                                       message: respuesta['mensaje'],
