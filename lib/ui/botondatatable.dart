@@ -471,7 +471,7 @@ class BotondocupState extends ConsumerState<Botondocup> {
                                       EnviaAprobacionClass();
                                   final resp = await instanciaEnviaAdelanto
                                       .enviaAprobacion(
-                                          widget.indiceadelanto, 1);
+                                          1);
                                   if (kDebugMode) {
                                     print(resp['mensaje']);
                                   }
