@@ -12,7 +12,8 @@ import '../views/vacaciones/vacaciones.dart';
 
 class AppRoutes {
   static const String inicio = '/';
-  static const String home = 'home';
+  // static const String home = 'home';
+  static const String nuevohome = 'home';
   static const String login = 'login';
   static const String otraPantalla = 'pantalla';
   static const String firma = 'firma';
@@ -50,7 +51,8 @@ class AppRoutes {
   // Agrega la definición de routes
   static final routes = {
     inicio: (context) => const InicioSplashScreen(),
-    home: (context) => const HomeScreen(),
+    // home: (context) => const HomeScreen(),
+    nuevohome: (context) => const Home(),
     login: (context) => const Login(),
     otraPantalla: (context) => const OtraPantalla(),
     firma: (context) => const Firma(data: '0',),

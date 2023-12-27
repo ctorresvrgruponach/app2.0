@@ -1,3 +1,4 @@
+import '../api/notificaciones_activas.dart';
 import '../libs/lib.dart';
 import '../views/firma/firma.dart';
 
@@ -191,6 +192,7 @@ class MyBottomNavigationBarState extends ConsumerState<MyBottomNavigationBar> {
                     Navigator.pushNamed(context, 'servicios');
                     break;
                   case 2:
+                    ref.refresh(notificacionesEmpleado);
                     Navigator.pushNamedAndRemoveUntil(
                         context, 'home', (route) => false);
                     break;
