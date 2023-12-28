@@ -235,7 +235,7 @@ class VacacionesState extends ConsumerState<Vacaciones> {
                               headerHeight: 20,
                               //  showActionButtons: true,
                               selectionColor:
-                                  const Color.fromARGB(255, 255, 64, 64),
+                                  Colors.amber,
                               startRangeSelectionColor:
                                   const Color.fromARGB(255, 67, 159, 234),
                               endRangeSelectionColor: Colors.blue,
@@ -244,7 +244,24 @@ class VacacionesState extends ConsumerState<Vacaciones> {
                               selectionMode:
                                   DateRangePickerSelectionMode.multiple,
                               view: DateRangePickerView.month,
-
+                              cellBuilder: (BuildContext context, DateRangePickerCellDetails details) {
+                                bool isWeekend = details.date.weekday == 6 || details.date.weekday == 7;
+                                bool isHoliday = fechaActual(details.date);
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    color: isHoliday ? Colors.blue : (isWeekend ? const Color.fromARGB(255, 255, 88, 76) : null),
+                                    borderRadius: BorderRadius.circular(5.0),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      details.date.day.toString(),
+                                      style: TextStyle(
+                                        color: isHoliday ? Colors.white : null,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
                               // onSubmit: (dateRange){
                               //   setState(() {
                               //     diasnolavorados = dateRange;
@@ -593,5 +610,12 @@ class VacacionesState extends ConsumerState<Vacaciones> {
         ),
       ),
     );
+  }
+    bool fechaActual(DateTime date) {
+      DateTime fecha = DateTime.now();
+      // int year = fecha.year;
+      int month = fecha.month;
+      int day = fecha.day;
+    return date.month == month && date.day == day;
   }
 }

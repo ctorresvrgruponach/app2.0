@@ -35,6 +35,7 @@ class EditaPrestamoState extends ConsumerState<EditaPrestamo> {
   bool showForm = false;
   int idPrestamoSolicitado = 0;
   bool ocultaBtn = true;
+  bool isLoading = false;
 
   List<int> montoavales = [];
   int get totalAmount => montoavales.fold(0, (prev, amount) => prev + amount);
@@ -56,6 +57,61 @@ class EditaPrestamoState extends ConsumerState<EditaPrestamo> {
       // Actualiza montoavales con el nuevo valor de avalesn
       montoavales = List.filled(x, 0);
     });
+  }
+    void fetchData(idPrestamo) async {
+    final token       = await SharedPreferencesHelper.getdatos('token');
+    final empleadoId  = await SharedPreferencesHelper.getdatos('id_empleado_aval');
+
+    final postDatas = {
+      "idEmpleado": empleadoId,
+      "token": token,
+      "idPrestamo": idPrestamo,
+      "estatus": '2',
+      "ine": '',
+      "comprobante": '',
+    };
+
+    final response = await fetchPostData( modo, completeUrldev, baseUrl, enviarAprobacion, postDatas);
+
+    if (response['success'] == true) {
+      setState(() {
+        isLoading = false;
+      });
+      // ignore: use_build_context_synchronously
+      Navigator.of(context).pop();
+      return
+          // ignore: use_build_context_synchronously
+          showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return CustomAlertDialog(
+              message: response['mensaje'],
+              title: 'Éxito',
+              icon: Icons.check,
+              color: Colors.green);
+        },
+      );
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+      // ignore: use_build_context_synchronously
+      Navigator.of(context).pop();
+      return
+          // ignore: use_build_context_synchronously
+          showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return const CustomAlertDialog(
+              message: 'Error al realizar la solicitud intentalo mas tarde.',
+              title: 'Error...!',
+              icon: Icons.error_sharp,
+              color: Colors.red);
+        },
+      );
+    }
   }
 
   @override
@@ -108,11 +164,9 @@ class EditaPrestamoState extends ConsumerState<EditaPrestamo> {
               future: ref.watch(editaPrestamo.future),
               builder: (context, snapshot) {
                 if (snapshot.hasData && snapshot.data!['prestamo'] != null) {
-                  final avalesConfirmados =
-                      snapshot.data!['avales_confirmados'];
-                  final avales = snapshot.data!['avales'];
-                  final montoSolicitado =
-                      snapshot.data!['prestamo']['monto_prestamo'];
+                  final avalesConfirmados = snapshot.data!['avales_confirmados'];
+                  final avales            = snapshot.data!['avales'];
+                  final montoSolicitado   = snapshot.data!['prestamo']['monto_prestamo'];
                   // final saldoPendiente    = snapshot.data!['prestamo']['saldo_pendiente'];
                   final idPrestamo = snapshot.data!['prestamo']['id'];
                   SharedPreferencesHelper.setdatos('avales', '$idPrestamo');
@@ -164,6 +218,7 @@ class EditaPrestamoState extends ConsumerState<EditaPrestamo> {
                             DataColumn(label: Text('Nombre')),
                             DataColumn(label: Text('Monto')),
                             DataColumn(label: Text('Estatus')),
+                            DataColumn(label: Text('Acciones')),
                           ],
                           rows: confirmados.map((mapa) {
                             return DataRow(cells: [
@@ -179,6 +234,31 @@ class EditaPrestamoState extends ConsumerState<EditaPrestamo> {
                                       ? 'Notificado'
                                       : 'Aceptado',
                                   style: const TextStyle(fontSize: 12))),
+                              DataCell(
+                                ElevatedButton(
+                                    style: ButtonStyle(
+                                      backgroundColor: MaterialStateProperty.all<Color>(
+                                        const Color.fromARGB(255, 255, 255, 255), // Color completamente transparente
+                                      ),
+                                    ),
+                                    onPressed:() {
+                                      print('me tocaste');
+                                      SharedPreferencesHelper.setdatos('id_empleado_aval','${mapa['id_empleado']}');
+                                      modalCargando(idPrestamo);
+                                    },
+
+                                    child: const Wrap(
+                                        children: <Widget>[
+                                        Icon(
+                                            Icons.delete_outline,
+                                            color: Colors.red,
+                                            size: 25.0,
+                                        ),
+                                        Text(''),
+                                        ],
+                                    ),
+                                ),
+                              ),
                               // DataCell(Text(mapa['no_empleado'].toString())),
                             ]);
                           }).toList(), // <-- Importante: Usa toList() aquí
@@ -534,5 +614,37 @@ class EditaPrestamoState extends ConsumerState<EditaPrestamo> {
     );
   }
 
-  algo() {}
+  void modalCargando(idPrestamo) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return AbsorbPointer(
+          absorbing: true, // Establece en true para bloquear la interacción
+          child: Container(
+            height: MediaQuery.of(context).size.height * 0.3,
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text('Procesando solicitud, por favor espere...'),
+                const SizedBox(height: 30),
+                SizedBox(
+                  width: MediaQuery.of(context).size.height * 0.1,
+                  height: MediaQuery.of(context).size.height * 0.1,
+                  child: const CircularProgressIndicator(
+                    strokeWidth: 8,
+                    backgroundColor: Color.fromARGB(255, 5, 50, 91),
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      Color.fromARGB(255, 255, 255, 255),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+    fetchData(idPrestamo);
+  }
 }
