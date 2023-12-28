@@ -2,7 +2,6 @@ import '../../api/actualizadatosempleado.dart';
 import '../../api/apiadelanto.dart';
 import '../../libs/lib.dart';
 import '../../ui/decoracioninput.dart';
-import '../docshtml/documentodeidentidad.dart';
 
 class ActualizaEmpleadoScreen extends ConsumerStatefulWidget {
   const ActualizaEmpleadoScreen({super.key});
@@ -65,7 +64,7 @@ class ActualizaEmpleadoScreenState
     final navegador = NavegadorDeRuta(context, argumentos);
     //InputDecoration decoration = CustomInputDecoration.getDecoration();
     CustomTitulo customTitulo = CustomTitulo();
-    PdfGenerator pdfGenerator = PdfGenerator(context);
+
     double resultadoResta = 0.0;
 
     // var datos = getdatos();
@@ -745,61 +744,56 @@ class ActualizaEmpleadoScreenState
                                                   .hasMatch(telefonot.text)) {
                                                 if (emailRegex
                                                     .hasMatch(emailt.text)) {
-                                                  final resulta = pdfGenerator
-                                                      .generatePdf();
-                                                  if (await resulta) {
-                                                    final enviaDatosEmpleado =
-                                                        EnviaDatosEmpleadoClass();
-                                                    final resultado =
-                                                        await enviaDatosEmpleado
-                                                            .enviaDatos();
-                                                    if (resultado['success'] ==
-                                                        false) {
-                                                      // await customDialogManager
-                                                      //     .showCustomDialog(
-                                                      //   icon:
-                                                      //       Icons.airlines_rounded,
-                                                      //   message:
-                                                      //       resultado['mensaje'],
-                                                      //   title: resultado['mensaje'],
-                                                      //   color: const Color.fromARGB(
-                                                      //       255, 244, 54, 54),
-                                                      // );
-                                                    }
-
-                                                    if (resultado.isNotEmpty) {
-                                                      // ignore: use_build_context_synchronously
-                                                      final customDialogManager =
-                                                          // ignore: use_build_context_synchronously
-                                                          CustomDialogManager(
-                                                              context);
-                                                      if (resultadoResta <
-                                                              100 &&
-                                                          argumento1 ==
-                                                              'valores_pedir_adelanto') {
-                                                        await customDialogManager
-                                                            .showCustomDialog(
-                                                          icon: Icons
-                                                              .airlines_rounded,
-                                                          message:
-                                                              'La suma de tus adelantos supera el disponible para solicitar',
-                                                          title:
-                                                              'La suma de tus adelantos supera el disponible para solicitar',
-                                                          color: const Color
-                                                              .fromARGB(
-                                                              255, 244, 54, 54),
-                                                        );
-                                                        await navegador
-                                                            .algunlugar('home');
-                                                      } else {
-                                                        await navegador
-                                                            .algunlugar(
-                                                                argumento1);
-                                                      }
-                                                    }
-
-                                                    // // print(resultado['success']);
+                                                  final enviaDatosEmpleado =
+                                                      EnviaDatosEmpleadoClass();
+                                                  final resultado =
+                                                      await enviaDatosEmpleado
+                                                          .enviaDatos();
+                                                  if (resultado['success'] ==
+                                                      false) {
+                                                    // await customDialogManager
+                                                    //     .showCustomDialog(
+                                                    //   icon:
+                                                    //       Icons.airlines_rounded,
+                                                    //   message:
+                                                    //       resultado['mensaje'],
+                                                    //   title: resultado['mensaje'],
+                                                    //   color: const Color.fromARGB(
+                                                    //       255, 244, 54, 54),
+                                                    // );
                                                   }
+
+                                                  if (resultado.isNotEmpty) {
+                                                    // ignore: use_build_context_synchronously
+                                                    final customDialogManager =
+                                                        // ignore: use_build_context_synchronously
+                                                        CustomDialogManager(
+                                                            context);
+                                                    if (resultadoResta < 100 &&
+                                                        argumento1 ==
+                                                            'valores_pedir_adelanto') {
+                                                      await customDialogManager
+                                                          .showCustomDialog(
+                                                        icon: Icons
+                                                            .airlines_rounded,
+                                                        message:
+                                                            'La suma de tus adelantos supera el disponible para solicitar',
+                                                        title:
+                                                            'La suma de tus adelantos supera el disponible para solicitar',
+                                                        color: const Color
+                                                            .fromARGB(
+                                                            255, 244, 54, 54),
+                                                      );
+                                                      await navegador
+                                                          .algunlugar('home');
+                                                    } else {
+                                                      await navegador
+                                                          .algunlugar(
+                                                              argumento1);
+                                                    }
+                                                  }
+
+                                                  // // print(resultado['success']);
                                                 } else {
                                                   final customDialogManager =
                                                       // ignore: use_build_context_synchronously
@@ -871,7 +865,7 @@ class ActualizaEmpleadoScreenState
                   }
                   // By default show a loading spinner.
                   return Center(
-                    child: SizedBox(
+                      child: SizedBox(
                     child: Column(
                       children: [
                         const LogoandSpinner(
@@ -881,13 +875,14 @@ class ActualizaEmpleadoScreenState
                           spinSpeed: Duration(milliseconds: 500),
                         ),
                         Container(
-                          margin: const EdgeInsets.only(top: 5),
-                          child: const Text("Cargando...",style: TextStyle(color: Colors.white),)
-                        ),
+                            margin: const EdgeInsets.only(top: 5),
+                            child: const Text(
+                              "Cargando...",
+                              style: TextStyle(color: Colors.white),
+                            )),
                       ],
                     ),
-                  )
-                );
+                  ));
                 },
               ),
             ],
