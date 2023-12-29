@@ -1,5 +1,6 @@
 // app_routes.dart
 
+import 'package:com.gruponach.nach_empleado/views/adelanto/documentos_adelantos.dart';
 import 'package:com.gruponach.nach_empleado/views/cajadeahorro/valorescaja.dart';
 import 'package:com.gruponach.nach_empleado/views/prestamos/documentos.dart';
 
@@ -30,17 +31,18 @@ class AppRoutes {
   static const String solicitudes = 'solicitudes';
   static const String cajaopereciones = 'caja_ahorro';
   static const String cajavalores = 'cajavalores';
+  static const String documentosadelanto = 'documentosadelanto';
   //Prestamos
-  static const String prestamo         = 'prestamo';
+  static const String prestamo = 'prestamo';
   static const String solicitaPrestamo = 'solicita_prestamo';
-  static const String documentos       = 'documentos';
+  static const String documentos = 'documentos';
   //Vacaciones
-  static const String vacaciones       = 'solicitud_vacaciones';
-  static const String detallesNotificacion         = 'detalles_notificacion';
+  static const String vacaciones = 'solicitud_vacaciones';
+  static const String detallesNotificacion = 'detalles_notificacion';
 
   //Notificaciones
-  static const String notificaciones   = 'notificaciones';
-  static const String solicitudesPendientes   = 'solicitudesPendientes';
+  static const String notificaciones = 'notificaciones';
+  static const String solicitudesPendientes = 'solicitudesPendientes';
 
   // Servicios Activos
   static const String serviciosActivos = 'servicios_activos';
@@ -55,7 +57,9 @@ class AppRoutes {
     nuevohome: (context) => const Home(),
     login: (context) => const Login(),
     otraPantalla: (context) => const OtraPantalla(),
-    firma: (context) => const Firma(data: '0',),
+    firma: (context) => const Firma(
+          data: '0',
+        ),
     servicios: (context) => const ServiciosScreen(),
     solicitudes: (context) => const SolicitudesScreen(),
     misAdelantos: (context) => const MisAdelantos(),
@@ -69,23 +73,30 @@ class AppRoutes {
     xml: (context) => const XmlDownloadPage(),
     cajaopereciones: (context) => const CajaDeAhorroScreen(),
     cajavalores: (context) => const ValoresPedirCajaScreen(),
+    documentosadelanto: (context) => const VerDocumentosAdelantos(
+          data: 0,
+          idoperacion: 0,
+        ),
 
     // Prestamos
     prestamo: (context) => const Prestamo(),
     solicitaPrestamo: (context) => const SolicitaPrestamo(),
-    documentos: (context) => const VerDocumentos(data: 0, idoperacion: 0,),
+    documentos: (context) => const VerDocumentos(
+          data: 0,
+          idoperacion: 0,
+        ),
 
     //Vacaciones
     vacaciones: (context) => const Vacaciones(),
-    detallesNotificacion:   (context) => const DetallesNotificaciones(),
+    detallesNotificacion: (context) => const DetallesNotificaciones(),
     // pruebas: (context) =>  MyAppState(),
 
     // notificaciones
-    notificaciones: (context) =>const Notificaciones(),
+    notificaciones: (context) => const Notificaciones(),
     // notificaciones: (context) => VerNotificaciones(),
     solicitudesPendientes: (context) => const SolicitudesRealizadas(),
 
     //Servicios Activos
-    serviciosActivos: (context) =>const  MisSolicitudes(),
+    serviciosActivos: (context) => const MisSolicitudes(),
   };
 }

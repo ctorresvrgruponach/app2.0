@@ -463,7 +463,7 @@ class ValoresPedirAdelantoScreenState
                                             btnsolicitaPrestamo = true;
                                           });
                                           Navigator.pushNamed(
-                                              context, 'vista_html');
+                                              context, 'documentosadelanto');
 
                                           setState(() {
                                             // ishiden = true;

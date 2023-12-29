@@ -32,6 +32,7 @@ const String endpointcajaahorro = '/caja_ahorro';
 const String endpointDatosCaja = '/solicita_caja_ahorro';
 const String endpointPeriodosRecibosTransitorios =
     '/recibos_periodos_transitorios';
+const String muestraDocumentosAdelantos = '/generar_archivos_adelantos';
 
 //PRESTAMOS NOMINA
 const String prestamo = '/prestamo_nomina';
@@ -43,21 +44,20 @@ const String muestraDocumentos = '/generar_archivos_prestamos';
 
 //VACACIONES
 const String operacionSolicitudVacaciones = '/solicitud_vacaciones';
-const String solicitaVacaciones           = '/solicita_vacaciones';
-const String confirmaVacaciones           = '/guarda_vacaciones';
-const String confirmaRechazaVacaciones    = '/autoriza_rechaza_vacaciones';
+const String solicitaVacaciones = '/solicita_vacaciones';
+const String confirmaVacaciones = '/guarda_vacaciones';
+const String confirmaRechazaVacaciones = '/autoriza_rechaza_vacaciones';
 
-//Mis solicitudes 
-const String misSolicitudes               = '/solicitudes_app';
-const String solicitudes                  = '/solicitudes';
+//Mis solicitudes
+const String misSolicitudes = '/solicitudes_app';
+const String solicitudes = '/solicitudes';
 
-//Detalles Notificaciones 
+//Detalles Notificaciones
 const String detallsNotificacion = '/solicitudes_detalle';
 
-//Notificaciones Activas 
+//Notificaciones Activas
 
 const String notificacionesActivas = '/notificaciones';
-
 
 List<String> myList = ['Identificación (INE)', 'INE'];
 
